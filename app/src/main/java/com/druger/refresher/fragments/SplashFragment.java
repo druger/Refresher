@@ -1,4 +1,4 @@
-package com.druger.refresher;
+package com.druger.refresher.fragments;
 
 
 import android.os.AsyncTask;
@@ -7,6 +7,8 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.druger.refresher.R;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +44,9 @@ public class SplashFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            getActivity().getFragmentManager().popBackStack();
+            if (getActivity() != null) {
+                getActivity().getFragmentManager().popBackStack();
+            }
 
             return null;
         }

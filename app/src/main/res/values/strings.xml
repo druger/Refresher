@@ -3,4 +3,7 @@
 
     <string name="do_not_show_splash">Do not show splash</string>
 
+    <string name="current_task">Current</string>
+    <string name="done_task">Done</string>
+
 </resources>
