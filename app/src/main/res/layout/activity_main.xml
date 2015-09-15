@@ -39,6 +39,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fab"
+        app:layout_anchor="@id/pager"
+        app:layout_anchorGravity="bottom|right|end"
+        android:src="@drawable/ic_add_white_24dp"
+        android:layout_margin="@dimen/fab_margin"/>
+
+
 </android.support.design.widget.CoordinatorLayout>
 
 </FrameLayout>
