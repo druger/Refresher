@@ -57,6 +57,15 @@
                 android:cursorVisible="false"/>
         </android.support.design.widget.TextInputLayout>
 
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spDialogTaskPriority"
+            android:layout_below="@+id/dialogTaskDate"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="10dp"/>
+
     </RelativeLayout>
 
 </ScrollView>
