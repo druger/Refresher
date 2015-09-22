@@ -12,7 +12,11 @@ import android.view.ViewGroup;
 
 import com.druger.refresher.R;
 import com.druger.refresher.adapter.DoneTaskAdapter;
+import com.druger.refresher.database.DBHelper;
 import com.druger.refresher.model.ModelTask;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -58,6 +62,17 @@ public class DoneTaskFragment extends TaskFragment {
         return rootView;
     }
 
+
+    @Override
+    public void addTaskFromDB() {
+        List<ModelTask> tasks = new ArrayList<>();
+        tasks.addAll(activity.dbHelper.query().getTasks(DBHelper.SELECTION_STATUS,
+                new String[]{Integer.toString(ModelTask.STATUS_DONE)},
+                DBHelper.TASK_DATE_COLUMN));
+        for (int i = 0; i < tasks.size(); i++) {
+            addTask(tasks.get(i), false);
+        }
+    }
 
     @Override
     public void moveTask(ModelTask task) {

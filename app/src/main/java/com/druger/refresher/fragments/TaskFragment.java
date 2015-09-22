@@ -1,8 +1,10 @@
 package com.druger.refresher.fragments;
 
 import android.app.Fragment;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
+import com.druger.refresher.MainActivity;
 import com.druger.refresher.adapter.TaskAdapter;
 import com.druger.refresher.model.ModelTask;
 
@@ -16,7 +18,20 @@ public abstract class TaskFragment extends Fragment {
 
     protected TaskAdapter tasksAdapter;
 
-    public void addTask(ModelTask newTask){
+    public MainActivity activity;
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getActivity() != null){
+            activity = (MainActivity) getActivity();
+        }
+
+        addTaskFromDB();
+    }
+
+    public void addTask(ModelTask newTask, boolean saveToDB){
         int position = -1;
 
         for (int i = 0; i < tasksAdapter.getItemCount(); i++) {
@@ -34,7 +49,13 @@ public abstract class TaskFragment extends Fragment {
         } else {
             tasksAdapter.addItem(newTask);
         }
+
+        if (saveToDB){
+            activity.dbHelper.saveTask(newTask);
+        }
     }
+
+    public abstract void addTaskFromDB();
 
     public abstract void moveTask(ModelTask task);
 }
