@@ -47,6 +47,13 @@ public abstract class TaskAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
+    public void removeAllItems(){
+        if (getItemCount() != 0){
+            items = new ArrayList<>();
+            notifyDataSetChanged();
+        }
+    }
+
     @Override
     public int getItemCount() {
         return items.size();
