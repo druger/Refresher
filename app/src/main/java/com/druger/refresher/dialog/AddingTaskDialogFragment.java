@@ -21,6 +21,7 @@ import android.widget.TimePicker;
 
 import com.druger.refresher.R;
 import com.druger.refresher.Utils;
+import com.druger.refresher.alarm.AlarmHelper;
 import com.druger.refresher.model.ModelTask;
 
 import java.util.Calendar;
@@ -152,7 +153,11 @@ public class AddingTaskDialogFragment extends DialogFragment {
                 task.setTitle(etTitle.getText().toString());
                 if (etDate.length() != 0 || etDate.length() != 0) {
                     task.setDate(calendar.getTimeInMillis());
+
+                    AlarmHelper alarmHelper = AlarmHelper.getInstance();
+                    alarmHelper.setAlarm(task);
                 }
+
                 task.setStatus(ModelTask.STATUS_CURRENT);
                 addingTaskListener.onTaskAdded(task);
                 dialog.dismiss();

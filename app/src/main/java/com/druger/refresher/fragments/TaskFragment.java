@@ -11,6 +11,7 @@ import android.view.View;
 import com.druger.refresher.MainActivity;
 import com.druger.refresher.R;
 import com.druger.refresher.adapter.TaskAdapter;
+import com.druger.refresher.alarm.AlarmHelper;
 import com.druger.refresher.model.Item;
 import com.druger.refresher.model.ModelTask;
 
@@ -26,6 +27,8 @@ public abstract class TaskFragment extends Fragment {
 
     public MainActivity activity;
 
+    public AlarmHelper alarmHelper;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -33,6 +36,8 @@ public abstract class TaskFragment extends Fragment {
         if (getActivity() != null){
             activity = (MainActivity) getActivity();
         }
+
+        alarmHelper = AlarmHelper.getInstance();
 
         addTaskFromDB();
     }
@@ -98,6 +103,7 @@ public abstract class TaskFragment extends Fragment {
                         @Override
                         public void onViewDetachedFromWindow(View v) {
                             if (isRemoved[0]){
+                                alarmHelper.removeAlarm(timeStamp);
                                 activity.dbHelper.removeTask(timeStamp);
                             }
                         }

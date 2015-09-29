@@ -2,11 +2,11 @@ package com.druger.refresher;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.druger.refresher.adapter.TabAdapter;
+import com.druger.refresher.alarm.AlarmHelper;
 import com.druger.refresher.database.DBHelper;
 import com.druger.refresher.dialog.AddingTaskDialogFragment;
 import com.druger.refresher.fragments.CurrentTaskFragment;
@@ -48,12 +49,26 @@ public class MainActivity extends AppCompatActivity
         PreferenceHelper.getInstance().init(getApplicationContext());
         preferenceHelper = PreferenceHelper.getInstance();
 
+        AlarmHelper.getInstance().init(getApplicationContext());
+
         dbHelper = new DBHelper(getApplicationContext());
 
         fragmentManager = getFragmentManager();
 
         runSplash();
         setUI();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MyApplication.activityPaused();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApplication.activityResumed();
     }
 
     @Override
