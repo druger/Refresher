@@ -18,6 +18,7 @@ import com.druger.refresher.adapter.TabAdapter;
 import com.druger.refresher.alarm.AlarmHelper;
 import com.druger.refresher.database.DBHelper;
 import com.druger.refresher.dialog.AddingTaskDialogFragment;
+import com.druger.refresher.dialog.EditTaskDialogFragment;
 import com.druger.refresher.fragments.CurrentTaskFragment;
 import com.druger.refresher.fragments.DoneTaskFragment;
 import com.druger.refresher.fragments.SplashFragment;
@@ -27,7 +28,8 @@ import com.druger.refresher.model.ModelTask;
 public class MainActivity extends AppCompatActivity
         implements AddingTaskDialogFragment.AddingTaskListener,
         CurrentTaskFragment.OnTaskDoneListener,
-        DoneTaskFragment.OnTaskRestoreListener{
+        DoneTaskFragment.OnTaskRestoreListener,
+        EditTaskDialogFragment.EditingTaskListener {
 
     FragmentManager fragmentManager;
 
@@ -191,5 +193,11 @@ public class MainActivity extends AppCompatActivity
     public void onTaskRestore(ModelTask task) {
         currentTaskFragment.addTask(task, false);
 
+    }
+
+    @Override
+    public void onTaskEdited(ModelTask updatedTask) {
+        currentTaskFragment.updateTask(updatedTask);
+        dbHelper.update().updateTask(updatedTask);
     }
 }

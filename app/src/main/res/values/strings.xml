@@ -11,11 +11,18 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_error_empty_title">Enter the title</string>
 
+    <string name="dialog_editing_title">Editing task</string>
+
     <string name="dialog_removing_message">Remove task?</string>
     <string name="removed">Removed</string>
 
     <string name="task_title">Title</string>
     <string name="task_date">Date</string>
     <string name="task_time">Time</string>
+    
+    <string name="separator_overdue">Overdue</string>
+    <string name="separator_today">Today</string>
+    <string name="separator_tomorrow">Tomorrow</string>
+    <string name="separator_future">Future</string>
 
 </resources>

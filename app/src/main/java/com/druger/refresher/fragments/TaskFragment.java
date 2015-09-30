@@ -1,6 +1,7 @@
 package com.druger.refresher.fragments;
 
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import com.druger.refresher.MainActivity;
 import com.druger.refresher.R;
 import com.druger.refresher.adapter.TaskAdapter;
 import com.druger.refresher.alarm.AlarmHelper;
+import com.druger.refresher.dialog.EditTaskDialogFragment;
 import com.druger.refresher.model.Item;
 import com.druger.refresher.model.ModelTask;
 
@@ -42,28 +44,10 @@ public abstract class TaskFragment extends Fragment {
         addTaskFromDB();
     }
 
-    public void addTask(ModelTask newTask, boolean saveToDB){
-        int position = -1;
+    public abstract void addTask(ModelTask newTask, boolean saveToDB);
 
-        for (int i = 0; i < tasksAdapter.getItemCount(); i++) {
-            if (tasksAdapter.getItem(i).isTask()){
-                ModelTask task = (ModelTask) tasksAdapter.getItem(i);
-                if (newTask.getDate() < task.getDate()){
-                    position = i;
-                    break;
-                }
-            }
-        }
-
-        if (position != -1){
-            tasksAdapter.addItem(position, newTask);
-        } else {
-            tasksAdapter.addItem(newTask);
-        }
-
-        if (saveToDB){
-            activity.dbHelper.saveTask(newTask);
-        }
+    public void updateTask(ModelTask task) {
+        tasksAdapter.updateTask(task);
     }
 
     public void removeTaskDialog(final int location){
@@ -123,6 +107,11 @@ public abstract class TaskFragment extends Fragment {
         }
 
         dialogBuilder.show();
+    }
+
+    public void showEditTaskDialog(ModelTask task) {
+        DialogFragment editingTaskDialog = EditTaskDialogFragment.newInstance(task);
+        editingTaskDialog.show(getActivity().getFragmentManager(), "EditTaskDialogFragment");
     }
 
     public abstract void findTasks(String title);

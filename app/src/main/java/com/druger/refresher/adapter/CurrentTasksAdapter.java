@@ -15,7 +15,10 @@ import com.druger.refresher.R;
 import com.druger.refresher.Utils;
 import com.druger.refresher.fragments.CurrentTaskFragment;
 import com.druger.refresher.model.Item;
+import com.druger.refresher.model.ModelSeparator;
 import com.druger.refresher.model.ModelTask;
+
+import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,6 +46,11 @@ public class CurrentTasksAdapter extends TaskAdapter {
                 CircleImageView priority = (CircleImageView) view.findViewById(R.id.cvTaskPriority);
 
                 return new TaskViewHolder(view, title, date, priority);
+            case TYPE_SEPARATOR:
+                View separator = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.model_separator, viewGroup, false);
+                TextView type = (TextView) separator.findViewById(R.id.tvSeparatorName);
+                return new SeparatorViewHolder(separator, type);
             default:
                 return null;
         }
@@ -53,13 +61,14 @@ public class CurrentTasksAdapter extends TaskAdapter {
 
         Item item = items.get(position);
 
+        final Resources resources = viewHolder.itemView.getResources();
+
         if (item.isTask()){
             viewHolder.itemView.setEnabled(true);
             final ModelTask task = (ModelTask) item;
             final TaskViewHolder taskViewHolder = (TaskViewHolder) viewHolder;
 
             final View itemView = taskViewHolder.itemView;
-            final Resources resources = itemView.getResources();
 
             taskViewHolder.title.setText(task.getTitle());
             if (task.getDate() != 0){
@@ -71,10 +80,23 @@ public class CurrentTasksAdapter extends TaskAdapter {
             itemView.setVisibility(View.VISIBLE);
             taskViewHolder.priority.setEnabled(true);
 
+            if (task.getDate() != 0 && task.getDate() < Calendar.getInstance().getTimeInMillis()) {
+                itemView.setBackgroundColor(resources.getColor(R.color.gray_200));
+            } else {
+                itemView.setBackgroundColor(resources.getColor(R.color.gray_50));
+            }
+
             taskViewHolder.title.setTextColor(resources.getColor(R.color.primary_text_default_material_light));
             taskViewHolder.date.setTextColor(resources.getColor(R.color.secondary_text_default_material_light));
             taskViewHolder.priority.setColorFilter(resources.getColor(task.getPriorityColor()));
             taskViewHolder.priority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getTaskFragment().showEditTaskDialog(task);
+                }
+            });
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -169,6 +191,11 @@ public class CurrentTasksAdapter extends TaskAdapter {
                     flipIn.start();
                 }
             });
+        } else {
+            ModelSeparator separator = (ModelSeparator) item;
+            SeparatorViewHolder separatorViewHolder = (SeparatorViewHolder) viewHolder;
+
+            separatorViewHolder.type.setText(resources.getString(separator.getType()));
         }
     }
 
