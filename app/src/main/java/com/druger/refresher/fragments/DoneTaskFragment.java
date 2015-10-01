@@ -102,6 +102,14 @@ public class DoneTaskFragment extends TaskFragment {
     }
 
     @Override
+    public void checkAdapter() {
+        if (tasksAdapter == null){
+            tasksAdapter = new DoneTaskAdapter(this);
+            addTaskFromDB();
+        }
+    }
+
+    @Override
     public void addTaskFromDB() {
         tasksAdapter.removeAllItems();
         List<ModelTask> tasks = new ArrayList<>();
