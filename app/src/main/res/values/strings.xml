@@ -1,7 +1,13 @@
 <resources>
-    <string name="app_name">Refresher</string>
+    <string name="app_name">Do It</string>
 
     <string name="do_not_show_splash">Do not show splash</string>
+
+    <string-array name="priority_levels">
+        <item>Low priority</item>
+        <item>Normal priority</item>
+        <item>High priority</item>
+    </string-array>
 
     <string name="current_task">Current</string>
     <string name="done_task">Done</string>
@@ -25,6 +31,6 @@
     <string name="separator_tomorrow">Tomorrow</string>
     <string name="separator_future">Future</string>
     
-    <string name="banner_ad_unit_id">ca-app-pub-4722692593987685/5482662258</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-4722692593987685/5482662258</string>
 
 </resources>
