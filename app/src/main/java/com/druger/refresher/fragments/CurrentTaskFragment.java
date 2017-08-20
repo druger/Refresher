@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.druger.refresher.R;
-import com.druger.refresher.adapter.CurrentTasksAdapter;
+import com.druger.refresher.adapters.CurrentTasksAdapter;
 import com.druger.refresher.database.DBHelper;
-import com.druger.refresher.model.ModelSeparator;
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.models.ModelSeparator;
+import com.druger.refresher.models.ModelTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.models.ModelTask;
 
 /**
  * Created by druger on 21.09.2015.

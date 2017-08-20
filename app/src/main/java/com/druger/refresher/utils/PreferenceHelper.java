@@ -1,4 +1,4 @@
-package com.druger.refresher;
+package com.druger.refresher.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

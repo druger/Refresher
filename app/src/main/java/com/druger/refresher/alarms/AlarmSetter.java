@@ -1,11 +1,11 @@
-package com.druger.refresher.alarm;
+package com.druger.refresher.alarms;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 import com.druger.refresher.database.DBHelper;
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.models.ModelTask;
 
 import java.util.ArrayList;
 import java.util.List;

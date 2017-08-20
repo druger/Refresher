@@ -1,11 +1,11 @@
-package com.druger.refresher;
+package com.druger.refresher.utils;
 
 import java.text.SimpleDateFormat;
 
 /**
  * Created by druger on 15.09.2015.
  */
-public class Utils {
+public class DateHelper {
 
     public static String getDate(long date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");

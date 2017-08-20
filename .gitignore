@@ -1,7 +1,5 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 /build
 Refresher.iml
-.idea/misc.xml
+/.idea/

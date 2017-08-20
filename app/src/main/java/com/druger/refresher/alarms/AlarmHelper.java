@@ -1,11 +1,11 @@
-package com.druger.refresher.alarm;
+package com.druger.refresher.alarms;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.models.ModelTask;
 
 /**
  * Created by druger on 29.09.2015.

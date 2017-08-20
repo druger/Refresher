@@ -3,7 +3,7 @@ package com.druger.refresher.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.models.ModelTask;
 
 import java.util.ArrayList;
 import java.util.List;

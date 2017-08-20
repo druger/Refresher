@@ -1,13 +1,13 @@
-package com.druger.refresher.adapter;
+package com.druger.refresher.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.druger.refresher.fragments.TaskFragment;
-import com.druger.refresher.model.Item;
-import com.druger.refresher.model.ModelSeparator;
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.models.Item;
+import com.druger.refresher.models.ModelSeparator;
+import com.druger.refresher.models.ModelTask;
 
 import java.util.ArrayList;
 import java.util.List;

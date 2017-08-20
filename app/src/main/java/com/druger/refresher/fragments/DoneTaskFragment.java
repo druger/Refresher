@@ -2,8 +2,8 @@ package com.druger.refresher.fragments;
 
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.druger.refresher.R;
-import com.druger.refresher.adapter.DoneTaskAdapter;
+import com.druger.refresher.adapters.DoneTaskAdapter;
 import com.druger.refresher.database.DBHelper;
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.models.ModelTask;
 
 import java.util.ArrayList;
 import java.util.List;

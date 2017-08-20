@@ -1,4 +1,4 @@
-package com.druger.refresher;
+package com.druger.refresher.activities;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -15,16 +15,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.druger.refresher.adapter.TabAdapter;
-import com.druger.refresher.alarm.AlarmHelper;
+import com.druger.refresher.Ads;
+import com.druger.refresher.App;
+import com.druger.refresher.R;
+import com.druger.refresher.adapters.TabAdapter;
+import com.druger.refresher.alarms.AlarmHelper;
 import com.druger.refresher.database.DBHelper;
-import com.druger.refresher.dialog.AddingTaskDialogFragment;
-import com.druger.refresher.dialog.EditTaskDialogFragment;
+import com.druger.refresher.dialogs.AddingTaskDialogFragment;
+import com.druger.refresher.dialogs.EditTaskDialogFragment;
 import com.druger.refresher.fragments.CurrentTaskFragment;
 import com.druger.refresher.fragments.DoneTaskFragment;
 import com.druger.refresher.fragments.SplashFragment;
 import com.druger.refresher.fragments.TaskFragment;
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.models.ModelTask;
+import com.druger.refresher.utils.PreferenceHelper;
 
 public class MainActivity extends AppCompatActivity
         implements AddingTaskDialogFragment.AddingTaskListener,
@@ -72,13 +76,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        MyApplication.activityPaused();
+        App.activityPaused();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        MyApplication.activityResumed();
+        App.activityResumed();
     }
 
     @Override

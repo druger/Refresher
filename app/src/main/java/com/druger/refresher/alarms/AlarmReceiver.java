@@ -1,4 +1,4 @@
-package com.druger.refresher.alarm;
+package com.druger.refresher.alarms;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,9 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
-import com.druger.refresher.MainActivity;
-import com.druger.refresher.MyApplication;
+import com.druger.refresher.App;
 import com.druger.refresher.R;
+import com.druger.refresher.activities.MainActivity;
 
 /**
  * Created by druger on 29.09.2015.
@@ -25,7 +25,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Intent resultIntent = new Intent(context, MainActivity.class);
 
-        if (MyApplication.isActivityVisible()){
+        if (App.isActivityVisible()){
             resultIntent = intent;
         }
 

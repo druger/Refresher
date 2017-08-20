@@ -1,4 +1,4 @@
-package com.druger.refresher.model;
+package com.druger.refresher.models;
 
 import com.druger.refresher.R;
 

@@ -1,4 +1,4 @@
-package com.druger.refresher.adapter;
+package com.druger.refresher.adapters;
 
 import android.app.Fragment;
 import android.app.FragmentManager;

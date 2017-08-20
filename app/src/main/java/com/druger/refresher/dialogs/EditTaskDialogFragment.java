@@ -1,4 +1,4 @@
-package com.druger.refresher.dialog;
+package com.druger.refresher.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,41 +20,61 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.druger.refresher.R;
-import com.druger.refresher.Utils;
-import com.druger.refresher.alarm.AlarmHelper;
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.alarms.AlarmHelper;
+import com.druger.refresher.models.ModelTask;
+import com.druger.refresher.utils.DateHelper;
 
 import java.util.Calendar;
 
 /**
- * Created by druger on 15.09.2015.
+ * Created by druger on 30.09.2015.
  */
-public class AddingTaskDialogFragment extends DialogFragment {
+public class EditTaskDialogFragment extends DialogFragment {
 
-    private AddingTaskListener addingTaskListener;
+    public static EditTaskDialogFragment newInstance(ModelTask task) {
+        EditTaskDialogFragment editTaskDialogFragment = new EditTaskDialogFragment();
 
-    public interface AddingTaskListener{
-        void onTaskAdded(ModelTask newTask);
-        void onTaskAddingCancel();
+        Bundle args = new Bundle();
+        args.putString("title", task.getTitle());
+        args.putLong("date", task.getDate());
+        args.putInt("priority", task.getPriority());
+        args.putLong("time_stamp", task.getTimeStamp());
+
+        editTaskDialogFragment.setArguments(args);
+        return editTaskDialogFragment;
+    }
+
+    private EditingTaskListener editingTaskListener;
+
+    public interface EditingTaskListener {
+        void onTaskEdited(ModelTask updatedTask);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            addingTaskListener = (AddingTaskListener) activity;
+            editingTaskListener = (EditingTaskListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() +
-                    " must implement AddingTaskListener");
+                    " must implement EditingTaskListener");
         }
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        Bundle args = new Bundle();
+        String title = args.getString("title");
+        long date = args.getLong("date", 0);
+        int priority = args.getInt("priority", 0);
+        long timeStamp = args.getLong("time_stamp", 0);
+
+        final ModelTask task = new ModelTask(title, date, priority, 0, timeStamp);
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.dialog_title);
+        builder.setTitle(R.string.dialog_editing_title);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -71,19 +91,26 @@ public class AddingTaskDialogFragment extends DialogFragment {
 
         Spinner spPriority = (Spinner) container.findViewById(R.id.spDialogTaskPriority);
 
+        etTitle.setText(task.getTitle());
+        etTitle.setSelection(etTitle.length());
+        if (task.getDate() != 0){
+            etDate.setText(DateHelper.getDate(task.getDate()));
+            etTime.setText(DateHelper.getTime(task.getDate()));
+        }
+
         taskTitle.setHint(getResources().getString(R.string.task_title));
         taskDate.setHint(getResources().getString(R.string.task_date));
         taskTime.setHint(getResources().getString(R.string.task_time));
 
         builder.setView(container);
 
-        final ModelTask task = new ModelTask();
-
         ArrayAdapter<String> priorityAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, /*ModelTask.PRIORITY_LEVELS*/
                 getResources().getStringArray(R.array.priority_levels));
 
         spPriority.setAdapter(priorityAdapter);
+
+        spPriority.setSelection(task.getPriority());
 
         spPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -99,6 +126,9 @@ public class AddingTaskDialogFragment extends DialogFragment {
 
         final Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
+        if (etDate.length() != 0 || etTime.length() != 0){
+            calendar.setTimeInMillis(task.getDate());
+        }
 
         etDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +143,7 @@ public class AddingTaskDialogFragment extends DialogFragment {
                         calendar.set(Calendar.YEAR, year);
                         calendar.set(Calendar.MONTH, monthOfYear);
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        etDate.setText(Utils.getDate(calendar.getTimeInMillis()));
+                        etDate.setText(DateHelper.getDate(calendar.getTimeInMillis()));
                     }
 
                     @Override
@@ -136,7 +166,7 @@ public class AddingTaskDialogFragment extends DialogFragment {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE, minute);
-                        etTime.setText(Utils.getTime(calendar.getTimeInMillis()));
+                        etTime.setText(DateHelper.getTime(calendar.getTimeInMillis()));
                     }
 
                     @Override
@@ -160,7 +190,7 @@ public class AddingTaskDialogFragment extends DialogFragment {
                 }
 
                 task.setStatus(ModelTask.STATUS_CURRENT);
-                addingTaskListener.onTaskAdded(task);
+                editingTaskListener.onTaskEdited(task);
                 dialog.dismiss();
             }
         });
@@ -168,7 +198,6 @@ public class AddingTaskDialogFragment extends DialogFragment {
         builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                addingTaskListener.onTaskAddingCancel();
                 dialog.cancel();
             }
         });

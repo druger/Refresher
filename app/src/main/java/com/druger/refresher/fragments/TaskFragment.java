@@ -9,13 +9,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.druger.refresher.MainActivity;
 import com.druger.refresher.R;
-import com.druger.refresher.adapter.TaskAdapter;
-import com.druger.refresher.alarm.AlarmHelper;
-import com.druger.refresher.dialog.EditTaskDialogFragment;
-import com.druger.refresher.model.Item;
-import com.druger.refresher.model.ModelTask;
+import com.druger.refresher.activities.MainActivity;
+import com.druger.refresher.adapters.TaskAdapter;
+import com.druger.refresher.alarms.AlarmHelper;
+import com.druger.refresher.dialogs.EditTaskDialogFragment;
+import com.druger.refresher.models.Item;
+import com.druger.refresher.models.ModelTask;
 
 /**
  * Created by druger on 19.09.2015.
