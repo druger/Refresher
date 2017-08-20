@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,9 +65,9 @@ public class DoneTaskAdapter extends TaskAdapter {
             itemView.setVisibility(View.VISIBLE);
             taskViewHolder.priority.setEnabled(true);
 
-            taskViewHolder.title.setTextColor(resources.getColor(R.color.primary_text_disabled_material_light));
-            taskViewHolder.date.setTextColor(resources.getColor(R.color.secondary_text_disabled_material_light));
-            taskViewHolder.priority.setColorFilter(resources.getColor(task.getPriorityColor()));
+            taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_disabled_material_light));
+            taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_disabled_material_light));
+            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()));
             taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -94,9 +95,9 @@ public class DoneTaskAdapter extends TaskAdapter {
                     getTaskFragment().activity.dbHelper.update().
                             updateStatus(task.getTimeStamp(), ModelTask.STATUS_CURRENT);
 
-                    taskViewHolder.title.setTextColor(resources.getColor(R.color.primary_text_default_material_light));
-                    taskViewHolder.date.setTextColor(resources.getColor(R.color.secondary_text_default_material_light));
-                    taskViewHolder.priority.setColorFilter(resources.getColor(task.getPriorityColor()));
+                    taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_default_material_light));
+                    taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_default_material_light));
+                    taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()));
 
                     ObjectAnimator flipIn = ObjectAnimator.ofFloat(taskViewHolder.priority, "rotationY", 180f, 0f);
                     taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp);

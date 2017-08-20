@@ -1,9 +1,9 @@
 package com.druger.refresher.dialogs;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -51,12 +51,12 @@ public class EditTaskDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            editingTaskListener = (EditingTaskListener) activity;
+            editingTaskListener = (EditingTaskListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() +
+            throw new ClassCastException(context.toString() +
                     " must implement EditingTaskListener");
         }
     }

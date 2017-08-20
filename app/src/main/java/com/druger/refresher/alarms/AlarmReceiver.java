@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.druger.refresher.App;
 import com.druger.refresher.R;
@@ -36,7 +37,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentTitle("Reminder");
         builder.setContentText(title);
-        builder.setColor(context.getResources().getColor(color));
+        builder.setColor(ContextCompat.getColor(context, color));
         builder.setSmallIcon(R.drawable.ic_check_white_48dp);
 
         builder.setDefaults(Notification.DEFAULT_ALL);

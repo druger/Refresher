@@ -1,8 +1,8 @@
 package com.druger.refresher.fragments;
 
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,10 +37,10 @@ public class CurrentTaskFragment extends TaskFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            onTaskDoneListener = (OnTaskDoneListener) activity;
+            onTaskDoneListener = activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnTaskDoneListener");

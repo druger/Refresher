@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity
     private void setUI(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null){
-            toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+            toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
             setSupportActionBar(toolbar);
         }
 
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity
         viewPager.setAdapter(tabAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
