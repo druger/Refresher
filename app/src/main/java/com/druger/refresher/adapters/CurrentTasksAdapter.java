@@ -87,8 +87,8 @@ public class CurrentTasksAdapter extends TaskAdapter {
                 itemView.setBackgroundColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.gray_50));
             }
 
-            taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_default_material_light));
-            taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_default_material_light));
+            taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_light));
+            taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light));
             taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()));
             taskViewHolder.priority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
 
@@ -124,8 +124,8 @@ public class CurrentTasksAdapter extends TaskAdapter {
                     getTaskFragment().activity.dbHelper.update().
                             updateStatus(task.getTimeStamp(), ModelTask.STATUS_DONE);
 
-                    taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(),R.color.primary_text_disabled_material_light));
-                    taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_disabled_material_light));
+                    taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(),R.color.primary_text_light));
+                    taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light));
                     taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()));
 
                     ObjectAnimator flipIn = ObjectAnimator.ofFloat(taskViewHolder.priority, "rotationY", -180f, 0f);

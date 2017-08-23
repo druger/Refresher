@@ -37,15 +37,16 @@ public class MainActivity extends AppCompatActivity
         DoneTaskFragment.OnTaskRestoreListener,
         EditTaskDialogFragment.EditingTaskListener {
 
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
 
-    PreferenceHelper preferenceHelper;
-    TabAdapter tabAdapter;
+    private PreferenceHelper preferenceHelper;
+    private TabAdapter tabAdapter;
 
-    TaskFragment currentTaskFragment;
-    TaskFragment doneTaskFragment;
+    private TaskFragment currentTaskFragment;
+    private TaskFragment doneTaskFragment;
 
-    SearchView searchView;
+    private SearchView searchView;
+    private FloatingActionButton fab;
 
     public DBHelper dbHelper;
 
@@ -55,18 +56,20 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         Ads.showBanner(this);
+        setupPreference();
+        AlarmHelper.getInstance().init(getApplicationContext());
+        dbHelper = new DBHelper(getApplicationContext());
+        fragmentManager = getFragmentManager();
+        runSplash();
+        setupToolbar();
+        setupViewPager();
+        setupUI();
+        setupUX();
+    }
 
+    private void setupPreference() {
         PreferenceHelper.getInstance().init(getApplicationContext());
         preferenceHelper = PreferenceHelper.getInstance();
-
-        AlarmHelper.getInstance().init(getApplicationContext());
-
-        dbHelper = new DBHelper(getApplicationContext());
-
-        fragmentManager = getFragmentManager();
-
-        runSplash();
-        setUI();
     }
 
     @Override
@@ -123,13 +126,41 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void setUI(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null){
-            toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
-            setSupportActionBar(toolbar);
-        }
+    private void setupUI(){
+        currentTaskFragment = (CurrentTaskFragment) tabAdapter.getItem(TabAdapter.CURRENT_TASK_FRAGMENT_POSITION);
+        doneTaskFragment = (DoneTaskFragment) tabAdapter.getItem(TabAdapter.DONE_TASK_FRAGMENT_POSITION);
 
+        searchView = (SearchView) findViewById(R.id.search_view);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                currentTaskFragment.findTasks(newText);
+                doneTaskFragment.findTasks(newText);
+                return false;
+            }
+        });
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+    }
+
+    private void setupUX() {
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment addingTaskDialogFragment = new AddingTaskDialogFragment();
+                addingTaskDialogFragment.show(fragmentManager, "AddingTaskDialogFragment");
+            }
+        });
+
+    }
+
+    private void setupViewPager() {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.current_task));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.done_task));
@@ -156,34 +187,14 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+    }
 
-        currentTaskFragment = (CurrentTaskFragment) tabAdapter.getItem(TabAdapter.CURRENT_TASK_FRAGMENT_POSITION);
-        doneTaskFragment = (DoneTaskFragment) tabAdapter.getItem(TabAdapter.DONE_TASK_FRAGMENT_POSITION);
-
-        searchView = (SearchView) findViewById(R.id.search_view);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                currentTaskFragment.findTasks(newText);
-                doneTaskFragment.findTasks(newText);
-                return false;
-            }
-        });
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment addingTaskDialogFragment = new AddingTaskDialogFragment();
-                addingTaskDialogFragment.show(fragmentManager, "AddingTaskDialogFragment");
-            }
-        });
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null){
+            toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+            setSupportActionBar(toolbar);
+        }
     }
 
     @Override
@@ -193,7 +204,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTaskAddingCancel() {
-        Toast.makeText(this, "Task adding cancel", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.task_adding_cancel, Toast.LENGTH_LONG).show();
 
     }
 

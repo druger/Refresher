@@ -24,4 +24,5 @@
     <string name="task_date">Дата</string>
     <string name="task_time">Время</string>
     <string name="task_title">Заголовок</string>
+    <string name="task_adding_cancel">Добавление отменено</string>
 </resources>

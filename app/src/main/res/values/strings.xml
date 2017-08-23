@@ -32,5 +32,6 @@
     <string name="separator_future">Future</string>
     
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-4722692593987685/5482662258</string>
+    <string name="task_adding_cancel">Task adding cancel</string>
 
 </resources>

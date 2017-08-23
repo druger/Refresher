@@ -34,6 +34,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, (int) timeStamp, resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
+        setupNotification(context, title, (int) timeStamp, color, pendingIntent);
+    }
+
+    private void setupNotification(Context context, String title, int timeStamp, int color, PendingIntent pendingIntent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentTitle("Reminder");
         builder.setContentText(title);
@@ -48,6 +52,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         NotificationManager notificationManager = (NotificationManager) context.
                 getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify((int) timeStamp, notification);
+        notificationManager.notify(timeStamp, notification);
     }
 }

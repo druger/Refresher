@@ -1,6 +1,7 @@
 package com.druger.refresher.dialogs;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -33,8 +34,9 @@ public class AddingTaskDialogFragment extends DialogFragment {
 
     private AddingTaskListener addingTaskListener;
 
-    public interface AddingTaskListener{
+    public interface AddingTaskListener {
         void onTaskAdded(ModelTask newTask);
+
         void onTaskAddingCancel();
     }
 
@@ -100,53 +102,44 @@ public class AddingTaskDialogFragment extends DialogFragment {
         final Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
 
-        etDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (etDate.length() == 0) {
-                    etDate.setText(" ");
+        if (etDate != null) {
+            etDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (etDate.length() == 0) {
+                        etDate.setText(" ");
+                    }
+                    DatePickerFragment datePickerFragment = new DatePickerFragment();
+                    datePickerFragment.setEtDate(etDate);
+                    datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
                 }
+            });
+        }
 
-                DialogFragment datePickerFragment = new DatePickerFragment() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        calendar.set(Calendar.YEAR, year);
-                        calendar.set(Calendar.MONTH, monthOfYear);
-                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        etDate.setText(DateHelper.getDate(calendar.getTimeInMillis()));
+        if (etTime != null) {
+            etTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (etTime.length() == 0) {
+                        etTime.setText(" ");
                     }
+                    DialogFragment timePickerDialog = new TimePickerFragment() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            calendar.set(Calendar.MINUTE, minute);
+                            etTime.setText(DateHelper.getTime(calendar.getTimeInMillis()));
+                        }
 
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        etDate.setText(null);
-                    }
-                };
-                datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
-            }
-        });
-
-        etTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (etTime.length() == 0) {
-                    etTime.setText(" ");
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            etTime.setText(null);
+                        }
+                    };
+                    timePickerDialog.show(getFragmentManager(), "TimePickerFragment");
                 }
-                DialogFragment timePickerDialog = new TimePickerFragment() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        calendar.set(Calendar.MINUTE, minute);
-                        etTime.setText(DateHelper.getTime(calendar.getTimeInMillis()));
-                    }
-
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        etTime.setText(null);
-                    }
-                };
-                timePickerDialog.show(getFragmentManager(), "TimePickerFragment");
-            }
-        });
+            });
+        }
 
         builder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -213,5 +206,39 @@ public class AddingTaskDialogFragment extends DialogFragment {
         });
 
         return alertDialog;
+    }
+
+    public static class DatePickerFragment extends DialogFragment
+            implements DatePickerDialog.OnDateSetListener {
+
+        EditText etDate;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            etDate.setText(DateHelper.getDate(calendar.getTimeInMillis()));
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            etDate.setText(null);
+        }
+
+        public void setEtDate(EditText etDate) {
+            this.etDate = etDate;
+        }
     }
 }
