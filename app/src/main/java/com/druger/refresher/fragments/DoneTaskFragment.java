@@ -38,7 +38,7 @@ public class DoneTaskFragment extends TaskFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            onTaskRestoreListener = (OnTaskRestoreListener) activity;
+            onTaskRestoreListener = activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnTaskRestoreListener");
@@ -49,17 +49,17 @@ public class DoneTaskFragment extends TaskFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_done_task, container, false);
+        setupRecycler(rootView);
+        return rootView;
+    }
 
+    private void setupRecycler(View rootView) {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rvDoneTasks);
         layoutManager = new LinearLayoutManager(getActivity());
-
         recyclerView.setLayoutManager(layoutManager);
 
         tasksAdapter = new DoneTaskAdapter(this);
         recyclerView.setAdapter(tasksAdapter);
-
-        // Inflate the layout for this fragment
-        return rootView;
     }
 
 

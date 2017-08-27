@@ -69,31 +69,7 @@ public abstract class TaskFragment extends Fragment {
 
                     tasksAdapter.removeItem(location);
                     isRemoved[0] = true;
-                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator),
-                            R.string.removed, Snackbar.LENGTH_LONG);
-                    snackbar.setAction(R.string.dialog_cancel, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            addTask(activity.dbHelper.query().getTask(timeStamp), false);
-                            isRemoved[0] = false;
-                        }
-                    });
-                    snackbar.getView().addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-                        @Override
-                        public void onViewAttachedToWindow(View v) {
-
-                        }
-
-                        @Override
-                        public void onViewDetachedFromWindow(View v) {
-                            if (isRemoved[0]){
-                                alarmHelper.removeAlarm(timeStamp);
-                                activity.dbHelper.removeTask(timeStamp);
-                            }
-                        }
-                    });
-
-                    snackbar.show();
+                    showSnackbar(timeStamp, isRemoved);
                     dialog.dismiss();
                 }
             });
@@ -107,6 +83,34 @@ public abstract class TaskFragment extends Fragment {
         }
 
         dialogBuilder.show();
+    }
+
+    private void showSnackbar(final long timeStamp, final boolean[] isRemoved) {
+        Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator),
+                R.string.removed, Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.dialog_cancel, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addTask(activity.dbHelper.query().getTask(timeStamp), false);
+                isRemoved[0] = false;
+            }
+        });
+        snackbar.getView().addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                if (isRemoved[0]){
+                    alarmHelper.removeAlarm(timeStamp);
+                    activity.dbHelper.removeTask(timeStamp);
+                }
+            }
+        });
+
+        snackbar.show();
     }
 
     public void showEditTaskDialog(ModelTask task) {

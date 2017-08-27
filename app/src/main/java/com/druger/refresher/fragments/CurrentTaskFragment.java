@@ -51,17 +51,17 @@ public class CurrentTaskFragment extends TaskFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_current_task, container, false);
+        setupRecycler(rootView);
+        return rootView;
+    }
 
+    private void setupRecycler(View rootView) {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.rvCurrentTasks);
         layoutManager = new LinearLayoutManager(getActivity());
-
         recyclerView.setLayoutManager(layoutManager);
 
         tasksAdapter = new CurrentTasksAdapter(this);
         recyclerView.setAdapter(tasksAdapter);
-
-        // Inflate the layout for this fragment
-        return rootView;
     }
 
     @Override
