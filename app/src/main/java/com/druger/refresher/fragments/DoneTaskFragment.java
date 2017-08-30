@@ -126,6 +126,8 @@ public class DoneTaskFragment extends TaskFragment {
         if (task.getDate() != 0){
             alarmHelper.setAlarm(task);
         }
-        onTaskRestoreListener.onTaskRestore(task);
+        if (onTaskRestoreListener != null) {
+            onTaskRestoreListener.onTaskRestore(task);
+        }
     }
 }
