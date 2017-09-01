@@ -78,16 +78,16 @@ public class EditTaskDialogFragment extends DialogFragment {
 
         View container = inflater.inflate(R.layout.dialog_task, null);
 
-        final TextInputLayout taskTitle = (TextInputLayout) container.findViewById(R.id.dialogTaskTitle);
+        final TextInputLayout taskTitle = container.findViewById(R.id.dialogTaskTitle);
         final EditText etTitle = taskTitle.getEditText();
 
-        final TextInputLayout taskDate = (TextInputLayout) container.findViewById(R.id.dialogTaskDate);
+        final TextInputLayout taskDate = container.findViewById(R.id.dialogTaskDate);
         final EditText etDate = taskDate.getEditText();
 
-        final TextInputLayout taskTime = (TextInputLayout) container.findViewById(R.id.dialogTaskTime);
+        final TextInputLayout taskTime = container.findViewById(R.id.dialogTaskTime);
         final EditText etTime = taskTime.getEditText();
 
-        Spinner spPriority = (Spinner) container.findViewById(R.id.spDialogTaskPriority);
+        Spinner spPriority = container.findViewById(R.id.spDialogTaskPriority);
 
         etTitle.setText(task.getTitle());
         etTitle.setSelection(etTitle.length());
@@ -128,96 +128,79 @@ public class EditTaskDialogFragment extends DialogFragment {
             calendar.setTimeInMillis(task.getDate());
         }
 
-        etDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (etDate.length() == 0) {
-                    etDate.setText(" ");
-                }
-
-                PickerDialogs.DatePickerFragment datePickerFragment
-                        = new PickerDialogs.DatePickerFragment();
-                datePickerFragment.setEtDate(etDate);
-                datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
+        etDate.setOnClickListener(v -> {
+            if (etDate.length() == 0) {
+                etDate.setText(" ");
             }
+
+            PickerDialogs.DatePickerFragment datePickerFragment
+                    = new PickerDialogs.DatePickerFragment();
+            datePickerFragment.setEtDate(etDate);
+            datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
         });
 
         if (etTime != null) {
-            etTime.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (etTime.length() == 0) {
-                        etTime.setText(" ");
-                    }
-                    PickerDialogs.TimePickerFragment timePickerDialog
-                            = new PickerDialogs.TimePickerFragment();
-                    timePickerDialog.setEtTime(etTime);
-                    timePickerDialog.show(getFragmentManager(), "TimePickerFragment");
+            etTime.setOnClickListener(v -> {
+                if (etTime.length() == 0) {
+                    etTime.setText(" ");
                 }
+                PickerDialogs.TimePickerFragment timePickerDialog
+                        = new PickerDialogs.TimePickerFragment();
+                timePickerDialog.setEtTime(etTime);
+                timePickerDialog.show(getFragmentManager(), "TimePickerFragment");
             });
         }
 
-        builder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                task.setTitle(etTitle.getText().toString());
-                if (etDate.length() != 0 || etDate.length() != 0) {
-                    task.setDate(calendar.getTimeInMillis());
+        builder.setPositiveButton(R.string.dialog_ok, (dialog, which) -> {
+            task.setTitle(etTitle.getText().toString());
+            if (etDate.length() != 0 || etDate.length() != 0) {
+                task.setDate(calendar.getTimeInMillis());
 
-                    AlarmHelper alarmHelper = AlarmHelper.getInstance();
-                    alarmHelper.setAlarm(task);
-                }
-
-                task.setStatus(ModelTask.STATUS_CURRENT);
-                editingTaskListener.onTaskEdited(task);
-                dialog.dismiss();
+                AlarmHelper alarmHelper = AlarmHelper.getInstance();
+                alarmHelper.setAlarm(task);
             }
+
+            task.setStatus(ModelTask.STATUS_CURRENT);
+            editingTaskListener.onTaskEdited(task);
+            dialog.dismiss();
         });
 
-        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.dialog_cancel, (dialog, which) -> dialog.cancel());
 
         AlertDialog alertDialog = builder.create();
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                final Button positiveButton = ((AlertDialog) dialog).
-                        getButton(DialogInterface.BUTTON_POSITIVE);
-                if (etTitle.length() == 0) {
-                    positiveButton.setEnabled(false);
-                    taskTitle.setError(getResources().
-                            getString(R.string.dialog_error_empty_title));
+        alertDialog.setOnShowListener(dialog -> {
+            final Button positiveButton = ((AlertDialog) dialog).
+                    getButton(DialogInterface.BUTTON_POSITIVE);
+            if (etTitle.length() == 0) {
+                positiveButton.setEnabled(false);
+                taskTitle.setError(getResources().
+                        getString(R.string.dialog_error_empty_title));
+            }
+
+            etTitle.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
                 }
 
-                etTitle.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.length() == 0) {
+                        positiveButton.setEnabled(false);
+                        taskTitle.setError(getResources().
+                                getString(R.string.dialog_error_empty_title));
+                    } else {
+                        positiveButton.setEnabled(true);
+                        taskTitle.setErrorEnabled(false);
                     }
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if (s.length() == 0) {
-                            positiveButton.setEnabled(false);
-                            taskTitle.setError(getResources().
-                                    getString(R.string.dialog_error_empty_title));
-                        } else {
-                            positiveButton.setEnabled(true);
-                            taskTitle.setErrorEnabled(false);
-                        }
+                }
 
-                    }
+                @Override
+                public void afterTextChanged(Editable s) {
 
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
-            }
+                }
+            });
         });
         return alertDialog;
     }

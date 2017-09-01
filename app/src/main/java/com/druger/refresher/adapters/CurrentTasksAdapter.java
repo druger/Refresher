@@ -42,15 +42,15 @@ public class CurrentTasksAdapter extends TaskAdapter {
             case TYPE_TASK:
                 View view = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.model_task, viewGroup, false);
-                TextView title = (TextView) view.findViewById(R.id.tvTaskTitle);
-                TextView date = (TextView) view.findViewById(R.id.tvTaskDate);
-                CircleImageView priority = (CircleImageView) view.findViewById(R.id.cvTaskPriority);
+                TextView title = view.findViewById(R.id.tvTaskTitle);
+                TextView date = view.findViewById(R.id.tvTaskDate);
+                CircleImageView priority = view.findViewById(R.id.cvTaskPriority);
 
                 return new TaskViewHolder(view, title, date, priority);
             case TYPE_SEPARATOR:
                 View separator = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.model_separator, viewGroup, false);
-                TextView type = (TextView) separator.findViewById(R.id.tvSeparatorName);
+                TextView type = separator.findViewById(R.id.tvSeparatorName);
                 return new SeparatorViewHolder(separator, type);
             default:
                 return null;
@@ -92,105 +92,89 @@ public class CurrentTasksAdapter extends TaskAdapter {
             taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()));
             taskViewHolder.priority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getTaskFragment().showEditTaskDialog(task);
-                }
+            itemView.setOnClickListener(v -> getTaskFragment().showEditTaskDialog(task));
+
+            itemView.setOnLongClickListener(v -> {
+                // for delay ripple animation
+                Handler handler = new Handler();
+                handler.postDelayed(() -> getTaskFragment().removeTaskDialog(
+                        taskViewHolder.getLayoutPosition()), 1000);
+
+                return true;
             });
 
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    // for delay ripple animation
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            getTaskFragment().removeTaskDialog(
-                                    taskViewHolder.getLayoutPosition());
+            taskViewHolder.priority.setOnClickListener(v -> {
+                taskViewHolder.priority.setEnabled(false);
+                task.setStatus(ModelTask.STATUS_DONE);
+                getTaskFragment().activity.dbHelper.update().
+                        updateStatus(task.getTimeStamp(), ModelTask.STATUS_DONE);
+
+                taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(),R.color.primary_text_light));
+                taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light));
+                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()));
+
+                ObjectAnimator flipIn = ObjectAnimator.ofFloat(taskViewHolder.priority, "rotationY", -180f, 0f);
+
+                flipIn.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        if (task.getStatus() == ModelTask.STATUS_DONE){
+                            taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp);
+
+                            ObjectAnimator translationX = ObjectAnimator.ofFloat(itemView,
+                                    "translationX", 0f, itemView.getWidth());
+
+                            ObjectAnimator translationXBack = ObjectAnimator.ofFloat(itemView,
+                                    "translationX", itemView.getWidth(), 0f);
+
+                            translationX.addListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    itemView.setVisibility(View.GONE);
+                                    getTaskFragment().moveTask(task);
+                                    removeItem(taskViewHolder.getLayoutPosition());
+
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+
+                                }
+                            });
+
+                            AnimatorSet translationSet = new AnimatorSet();
+                            translationSet.play(translationX).before(translationXBack);
+                            translationSet.start();
                         }
-                    }, 1000);
+                    }
 
-                    return true;
-                }
-            });
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
 
-            taskViewHolder.priority.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    taskViewHolder.priority.setEnabled(false);
-                    task.setStatus(ModelTask.STATUS_DONE);
-                    getTaskFragment().activity.dbHelper.update().
-                            updateStatus(task.getTimeStamp(), ModelTask.STATUS_DONE);
+                    }
 
-                    taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(),R.color.primary_text_light));
-                    taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light));
-                    taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()));
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
 
-                    ObjectAnimator flipIn = ObjectAnimator.ofFloat(taskViewHolder.priority, "rotationY", -180f, 0f);
+                    }
+                });
 
-                    flipIn.addListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            if (task.getStatus() == ModelTask.STATUS_DONE){
-                                taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp);
-
-                                ObjectAnimator translationX = ObjectAnimator.ofFloat(itemView,
-                                        "translationX", 0f, itemView.getWidth());
-
-                                ObjectAnimator translationXBack = ObjectAnimator.ofFloat(itemView,
-                                        "translationX", itemView.getWidth(), 0f);
-
-                                translationX.addListener(new Animator.AnimatorListener() {
-                                    @Override
-                                    public void onAnimationStart(Animator animation) {
-
-                                    }
-
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        itemView.setVisibility(View.GONE);
-                                        getTaskFragment().moveTask(task);
-                                        removeItem(taskViewHolder.getLayoutPosition());
-
-                                    }
-
-                                    @Override
-                                    public void onAnimationCancel(Animator animation) {
-
-                                    }
-
-                                    @Override
-                                    public void onAnimationRepeat(Animator animation) {
-
-                                    }
-                                });
-
-                                AnimatorSet translationSet = new AnimatorSet();
-                                translationSet.play(translationX).before(translationXBack);
-                                translationSet.start();
-                            }
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-
-                        }
-                    });
-
-                    flipIn.start();
-                }
+                flipIn.start();
             });
         } else {
             ModelSeparator separator = (ModelSeparator) item;

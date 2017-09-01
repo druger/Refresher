@@ -3,7 +3,6 @@ package com.druger.refresher.fragments;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -63,23 +62,15 @@ public abstract class TaskFragment extends Fragment {
             final long timeStamp = removingTask.getTimeStamp();
             final boolean[] isRemoved = {false};
 
-            dialogBuilder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+            dialogBuilder.setPositiveButton(R.string.dialog_ok, (dialog, which) -> {
 
-                    tasksAdapter.removeItem(location);
-                    isRemoved[0] = true;
-                    showSnackbar(timeStamp, isRemoved);
-                    dialog.dismiss();
-                }
+                tasksAdapter.removeItem(location);
+                isRemoved[0] = true;
+                showSnackbar(timeStamp, isRemoved);
+                dialog.dismiss();
             });
 
-            dialogBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+            dialogBuilder.setNegativeButton(R.string.dialog_cancel, (dialog, which) -> dialog.cancel());
         }
 
         dialogBuilder.show();
@@ -88,12 +79,9 @@ public abstract class TaskFragment extends Fragment {
     private void showSnackbar(final long timeStamp, final boolean[] isRemoved) {
         Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator),
                 R.string.removed, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.dialog_cancel, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addTask(activity.dbHelper.query().getTask(timeStamp), false);
-                isRemoved[0] = false;
-            }
+        snackbar.setAction(R.string.dialog_cancel, v -> {
+            addTask(activity.dbHelper.query().getTask(timeStamp), false);
+            isRemoved[0] = false;
         });
         snackbar.getView().addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
             @Override
