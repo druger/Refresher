@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.druger.refresher.App;
 import com.druger.refresher.R;
 import com.druger.refresher.alarms.AlarmHelper;
 import com.druger.refresher.models.ModelTask;
@@ -24,10 +25,15 @@ import com.druger.refresher.utils.DateHelper;
 
 import java.util.Calendar;
 
+import javax.inject.Inject;
+
 /**
  * Created by druger on 30.09.2015.
  */
 public class EditTaskDialogFragment extends DialogFragment {
+
+    @Inject
+    AlarmHelper alarmHelper;
 
     public static EditTaskDialogFragment newInstance(ModelTask task) {
         EditTaskDialogFragment editTaskDialogFragment = new EditTaskDialogFragment();
@@ -57,6 +63,12 @@ public class EditTaskDialogFragment extends DialogFragment {
             throw new ClassCastException(context.toString() +
                     " must implement EditingTaskListener");
         }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getAppComponent().inject(this);
     }
 
     @Override
@@ -156,7 +168,6 @@ public class EditTaskDialogFragment extends DialogFragment {
             if (etDate.length() != 0 || etDate.length() != 0) {
                 task.setDate(calendar.getTimeInMillis());
 
-                AlarmHelper alarmHelper = AlarmHelper.getInstance();
                 alarmHelper.setAlarm(task);
             }
 

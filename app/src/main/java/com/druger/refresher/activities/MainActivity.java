@@ -30,6 +30,8 @@ import com.druger.refresher.fragments.TaskFragment;
 import com.druger.refresher.models.ModelTask;
 import com.druger.refresher.utils.PreferenceHelper;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity
         implements AddingTaskDialogFragment.AddingTaskListener,
         CurrentTaskFragment.OnTaskDoneListener,
@@ -38,9 +40,12 @@ public class MainActivity extends AppCompatActivity
 
     private FragmentManager fragmentManager;
 
-    private PreferenceHelper preferenceHelper;
-    private TabAdapter tabAdapter;
+    @Inject
+    PreferenceHelper preferenceHelper;
+    @Inject
+    AlarmHelper alarmHelper;
 
+    private TabAdapter tabAdapter;
     private TaskFragment currentTaskFragment;
     private TaskFragment doneTaskFragment;
 
@@ -53,10 +58,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        App.getAppComponent().inject(this);
 
         Ads.showBanner(this);
-        setupPreference();
-        AlarmHelper.getInstance().init(getApplicationContext());
         dbHelper = new DBHelper(getApplicationContext());
         fragmentManager = getFragmentManager();
         runSplash();
@@ -64,11 +68,6 @@ public class MainActivity extends AppCompatActivity
         setupViewPager();
         setupUI();
         setupUX();
-    }
-
-    private void setupPreference() {
-        PreferenceHelper.getInstance().init(getApplicationContext());
-        preferenceHelper = PreferenceHelper.getInstance();
     }
 
     @Override

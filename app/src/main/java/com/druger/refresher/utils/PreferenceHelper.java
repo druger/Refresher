@@ -1,6 +1,5 @@
 package com.druger.refresher.utils;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
@@ -9,26 +8,12 @@ import android.content.SharedPreferences;
 public class PreferenceHelper {
 
     public static final String SPLASH_IS_INVISIBLE = "splash_is_invisible";
-
-    private static PreferenceHelper instance;
-
-    private Context context;
+    public static final String PREFERENCES_NAME = "preferences";
 
     private SharedPreferences preferences;
 
-    private PreferenceHelper() {
-    }
-
-    public static PreferenceHelper getInstance(){
-        if (instance == null){
-            instance = new PreferenceHelper();
-        }
-        return instance;
-    }
-
-    public void init(Context context){
-        this.context = context;
-        preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+    public PreferenceHelper(SharedPreferences preferences) {
+        this.preferences = preferences;
     }
 
     public void putBoolean(String key, boolean value){

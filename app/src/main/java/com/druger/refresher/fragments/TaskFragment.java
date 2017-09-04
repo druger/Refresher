@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.druger.refresher.App;
 import com.druger.refresher.R;
 import com.druger.refresher.activities.MainActivity;
 import com.druger.refresher.adapters.TaskAdapter;
@@ -15,6 +17,8 @@ import com.druger.refresher.alarms.AlarmHelper;
 import com.druger.refresher.dialogs.EditTaskDialogFragment;
 import com.druger.refresher.models.Item;
 import com.druger.refresher.models.ModelTask;
+
+import javax.inject.Inject;
 
 /**
  * Created by druger on 19.09.2015.
@@ -28,7 +32,8 @@ public abstract class TaskFragment extends Fragment {
 
     public MainActivity activity;
 
-    public AlarmHelper alarmHelper;
+    @Inject
+    AlarmHelper alarmHelper;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -37,10 +42,13 @@ public abstract class TaskFragment extends Fragment {
         if (getActivity() != null){
             activity = (MainActivity) getActivity();
         }
-
-        alarmHelper = AlarmHelper.getInstance();
-
         addTaskFromDB();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.getAppComponent().inject(this);
     }
 
     public abstract void addTask(ModelTask newTask, boolean saveToDB);
