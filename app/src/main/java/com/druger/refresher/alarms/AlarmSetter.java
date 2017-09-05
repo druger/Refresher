@@ -20,11 +20,11 @@ public class AlarmSetter extends BroadcastReceiver {
 
     @Inject
     AlarmHelper alarmHelper;
+    @Inject
+    DBHelper dbHelper;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DBHelper dbHelper = new DBHelper(context);
-
         App.getAppComponent().inject(this);
 
         List<ModelTask> tasks = new ArrayList<>();

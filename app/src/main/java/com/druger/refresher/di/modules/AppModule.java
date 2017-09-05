@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.druger.refresher.App;
 import com.druger.refresher.alarms.AlarmHelper;
+import com.druger.refresher.database.DBHelper;
 import com.druger.refresher.utils.PreferenceHelper;
 
 import javax.inject.Singleton;
@@ -24,11 +25,13 @@ public class AppModule {
     private App app;
     private PreferenceHelper preferenceHelper;
     private AlarmHelper alarmHelper;
+    private DBHelper dbHelper;
 
     public AppModule(App app) {
         this.app = app;
         preferenceHelper = new PreferenceHelper(app.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE));
         alarmHelper = new AlarmHelper((AlarmManager) app.getSystemService(Context.ALARM_SERVICE), app);
+        dbHelper = new DBHelper(app);
     }
 
     @Singleton
@@ -47,5 +50,11 @@ public class AppModule {
     @Provides
     AlarmHelper provideAlarmHelper() {
         return alarmHelper;
+    }
+
+    @Singleton
+    @Provides
+    DBHelper provideDBHelper() {
+        return dbHelper;
     }
 }

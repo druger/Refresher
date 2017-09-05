@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity
     PreferenceHelper preferenceHelper;
     @Inject
     AlarmHelper alarmHelper;
+    @Inject
+    public DBHelper dbHelper;
 
     private TabAdapter tabAdapter;
     private TaskFragment currentTaskFragment;
@@ -52,8 +54,6 @@ public class MainActivity extends AppCompatActivity
     private SearchView searchView;
     private FloatingActionButton fab;
 
-    public DBHelper dbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity
         App.getAppComponent().inject(this);
 
         Ads.showBanner(this);
-        dbHelper = new DBHelper(getApplicationContext());
         fragmentManager = getFragmentManager();
         runSplash();
         setupToolbar();
