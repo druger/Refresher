@@ -23,10 +23,10 @@ public abstract class TaskAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     TaskFragment taskFragment;
 
-    public boolean containsSeparatorOverdue;
-    public boolean containsSeparatorToday;
-    public boolean containsSeparatorTomorrow;
-    public boolean containsSeparatorFuture;
+    private boolean containsSeparatorOverdue;
+    private boolean containsSeparatorToday;
+    private boolean containsSeparatorTomorrow;
+    private boolean containsSeparatorFuture;
 
     public TaskAdapter(TaskFragment taskFragment) {
         this.taskFragment = taskFragment;
@@ -95,6 +95,8 @@ public abstract class TaskAdapter extends RecyclerView.Adapter<RecyclerView.View
             case ModelSeparator.TYPE_FUTURE:
                 containsSeparatorFuture = false;
                 break;
+            default:
+                break;
         }
     }
 
@@ -112,6 +114,38 @@ public abstract class TaskAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public boolean isContainsSeparatorOverdue() {
+        return containsSeparatorOverdue;
+    }
+
+    public void setContainsSeparatorOverdue(boolean containsSeparatorOverdue) {
+        this.containsSeparatorOverdue = containsSeparatorOverdue;
+    }
+
+    public boolean isContainsSeparatorToday() {
+        return containsSeparatorToday;
+    }
+
+    public void setContainsSeparatorToday(boolean containsSeparatorToday) {
+        this.containsSeparatorToday = containsSeparatorToday;
+    }
+
+    public boolean isContainsSeparatorTomorrow() {
+        return containsSeparatorTomorrow;
+    }
+
+    public void setContainsSeparatorTomorrow(boolean containsSeparatorTomorrow) {
+        this.containsSeparatorTomorrow = containsSeparatorTomorrow;
+    }
+
+    public boolean isContainsSeparatorFuture() {
+        return containsSeparatorFuture;
+    }
+
+    public void setContainsSeparatorFuture(boolean containsSeparatorFuture) {
+        this.containsSeparatorFuture = containsSeparatorFuture;
     }
 
     protected class TaskViewHolder extends RecyclerView.ViewHolder{

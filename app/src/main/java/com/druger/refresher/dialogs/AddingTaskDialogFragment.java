@@ -90,7 +90,7 @@ public class AddingTaskDialogFragment extends DialogFragment {
         final ModelTask task = new ModelTask();
 
         ArrayAdapter<String> priorityAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, /*ModelTask.PRIORITY_LEVELS*/
+                android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.priority_levels));
 
         spPriority.setAdapter(priorityAdapter);
@@ -134,7 +134,7 @@ public class AddingTaskDialogFragment extends DialogFragment {
 
         builder.setPositiveButton(R.string.dialog_ok, (dialog, which) -> {
             task.setTitle(etTitle.getText().toString());
-            if (etDate.length() != 0 || etDate.length() != 0) {
+            if (etDate.length() != 0 || etTime.length() != 0) {
                 task.setDate(calendar.getTimeInMillis());
 
                 alarmHelper.setAlarm(task);

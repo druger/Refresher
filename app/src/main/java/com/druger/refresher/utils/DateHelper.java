@@ -8,6 +8,9 @@ import java.util.Locale;
  */
 public class DateHelper {
 
+    private DateHelper() {
+    }
+
     public static String getDate(long date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
         return dateFormat.format(date);

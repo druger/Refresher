@@ -13,9 +13,6 @@ public class ModelTask implements Item {
     public static final int PRIORITY_NORMAL = 1;
     public static final int PRIORITY_HIGH = 2;
 
-    public static final String[] PRIORITY_LEVELS = {"Low Priority", "Normal Priority",
-            "High Priority"};
-
     public static final int STATUS_OVERDUE = 0;
     public static final int STATUS_CURRENT = 1;
     public static final int STATUS_DONE = 2;

@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +35,16 @@ public class EditTaskDialogFragment extends DialogFragment {
 
     @Inject
     AlarmHelper alarmHelper;
+
+    private ModelTask task;
+    private Calendar calendar;
+
+    private TextInputLayout taskTitle;
+    private EditText etTitle;
+    private TextInputLayout taskDate;
+    private EditText etDate;
+    private TextInputLayout taskTime;
+    private EditText etTime;
 
     public static EditTaskDialogFragment newInstance(ModelTask task) {
         EditTaskDialogFragment editTaskDialogFragment = new EditTaskDialogFragment();
@@ -74,33 +85,25 @@ public class EditTaskDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        Bundle args = new Bundle();
-        String title = args.getString("title");
-        long date = args.getLong("date", 0);
-        int priority = args.getInt("priority", 0);
-        long timeStamp = args.getLong("time_stamp", 0);
-
-        final ModelTask task = new ModelTask(title, date, priority, 0, timeStamp);
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setTitle(R.string.dialog_editing_title);
+        task = getModelTask();
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-
         View container = inflater.inflate(R.layout.dialog_task, null);
 
-        final TextInputLayout taskTitle = container.findViewById(R.id.dialogTaskTitle);
-        final EditText etTitle = taskTitle.getEditText();
+        bindViews(container);
+        setTextForEditTexts();
 
-        final TextInputLayout taskDate = container.findViewById(R.id.dialogTaskDate);
-        final EditText etDate = taskDate.getEditText();
+        calendar = setupCalendar();
 
-        final TextInputLayout taskTime = container.findViewById(R.id.dialogTaskTime);
-        final EditText etTime = taskTime.getEditText();
+        AlertDialog.Builder builder = setupBuilder(container);
+        setupSpinner(container);
+        setupDatePicker(etDate);
+        setupTimePicker(etTime);
 
-        Spinner spPriority = container.findViewById(R.id.spDialogTaskPriority);
+        return setupAlertDialog(builder);
+    }
 
+    private void setTextForEditTexts() {
         etTitle.setText(task.getTitle());
         etTitle.setSelection(etTitle.length());
         if (task.getDate() != 0){
@@ -111,73 +114,30 @@ public class EditTaskDialogFragment extends DialogFragment {
         taskTitle.setHint(getResources().getString(R.string.task_title));
         taskDate.setHint(getResources().getString(R.string.task_date));
         taskTime.setHint(getResources().getString(R.string.task_time));
+    }
 
-        builder.setView(container);
-
-        ArrayAdapter<String> priorityAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, /*ModelTask.PRIORITY_LEVELS*/
-                getResources().getStringArray(R.array.priority_levels));
-
-        spPriority.setAdapter(priorityAdapter);
-
-        spPriority.setSelection(task.getPriority());
-
-        spPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                task.setPriority(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+    private Calendar setupCalendar() {
         final Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
         if (etDate.length() != 0 || etTime.length() != 0){
             calendar.setTimeInMillis(task.getDate());
         }
+        return calendar;
+    }
 
-        etDate.setOnClickListener(v -> {
-            if (etDate.length() == 0) {
-                etDate.setText(" ");
-            }
+    private void bindViews(View container) {
+        taskTitle = container.findViewById(R.id.dialogTaskTitle);
+        etTitle = taskTitle.getEditText();
 
-            PickerDialogs.DatePickerFragment datePickerFragment
-                    = new PickerDialogs.DatePickerFragment();
-            datePickerFragment.setEtDate(etDate);
-            datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
-        });
+        taskDate = container.findViewById(R.id.dialogTaskDate);
+        etDate = taskDate.getEditText();
 
-        if (etTime != null) {
-            etTime.setOnClickListener(v -> {
-                if (etTime.length() == 0) {
-                    etTime.setText(" ");
-                }
-                PickerDialogs.TimePickerFragment timePickerDialog
-                        = new PickerDialogs.TimePickerFragment();
-                timePickerDialog.setEtTime(etTime);
-                timePickerDialog.show(getFragmentManager(), "TimePickerFragment");
-            });
-        }
+        taskTime = container.findViewById(R.id.dialogTaskTime);
+        etTime = taskTime.getEditText();
+    }
 
-        builder.setPositiveButton(R.string.dialog_ok, (dialog, which) -> {
-            task.setTitle(etTitle.getText().toString());
-            if (etDate.length() != 0 || etDate.length() != 0) {
-                task.setDate(calendar.getTimeInMillis());
-
-                alarmHelper.setAlarm(task);
-            }
-
-            task.setStatus(ModelTask.STATUS_CURRENT);
-            editingTaskListener.onTaskEdited(task);
-            dialog.dismiss();
-        });
-
-        builder.setNegativeButton(R.string.dialog_cancel, (dialog, which) -> dialog.cancel());
-
+    @NonNull
+    private AlertDialog setupAlertDialog(AlertDialog.Builder builder) {
         AlertDialog alertDialog = builder.create();
         alertDialog.setOnShowListener(dialog -> {
             final Button positiveButton = ((AlertDialog) dialog).
@@ -214,5 +174,90 @@ public class EditTaskDialogFragment extends DialogFragment {
             });
         });
         return alertDialog;
+    }
+
+    private AlertDialog.Builder setupBuilder(View container) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.dialog_editing_title);
+        builder.setView(container);
+
+        builder.setPositiveButton(R.string.dialog_ok, (dialog, which) -> {
+            task.setTitle(etTitle.getText().toString());
+            if (etDate.length() != 0 || etTime.length() != 0) {
+                task.setDate(calendar.getTimeInMillis());
+
+                alarmHelper.setAlarm(task);
+            }
+
+            task.setStatus(ModelTask.STATUS_CURRENT);
+            editingTaskListener.onTaskEdited(task);
+            dialog.dismiss();
+        });
+
+        builder.setNegativeButton(R.string.dialog_cancel, (dialog, which) -> dialog.cancel());
+
+        return builder;
+    }
+
+    private void setupTimePicker(EditText etTime) {
+        if (etTime != null) {
+            etTime.setOnClickListener(v -> {
+                if (etTime.length() == 0) {
+                    etTime.setText(" ");
+                }
+                PickerDialogs.TimePickerFragment timePickerDialog
+                        = new PickerDialogs.TimePickerFragment();
+                timePickerDialog.setEtTime(etTime);
+                timePickerDialog.show(getFragmentManager(), "TimePickerFragment");
+            });
+        }
+    }
+
+    private void setupDatePicker(EditText etDate) {
+        etDate.setOnClickListener(v -> {
+            if (etDate.length() == 0) {
+                etDate.setText(" ");
+            }
+
+            PickerDialogs.DatePickerFragment datePickerFragment
+                    = new PickerDialogs.DatePickerFragment();
+            datePickerFragment.setEtDate(etDate);
+            datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
+        });
+    }
+
+    private void setupSpinner(View container) {
+        Spinner spPriority = container.findViewById(R.id.spDialogTaskPriority);
+
+        ArrayAdapter<String> priorityAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.priority_levels));
+
+        spPriority.setAdapter(priorityAdapter);
+
+        spPriority.setSelection(task.getPriority());
+
+        spPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                task.setPriority(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    @NonNull
+    private ModelTask getModelTask() {
+        Bundle args = new Bundle();
+        String title = args.getString("title");
+        long date = args.getLong("date", 0);
+        int priority = args.getInt("priority", 0);
+        long timeStamp = args.getLong("time_stamp", 0);
+
+        return new ModelTask(title, date, priority, 0, timeStamp);
     }
 }

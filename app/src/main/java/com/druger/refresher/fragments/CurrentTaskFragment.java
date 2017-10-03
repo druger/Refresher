@@ -84,26 +84,26 @@ public class CurrentTaskFragment extends TaskFragment {
 
             if (calendar.get(Calendar.DAY_OF_YEAR) < Calendar.getInstance().get(Calendar.DAY_OF_YEAR)) {
                 newTask.setDateStatus(ModelSeparator.TYPE_OVERDUE);
-                if (!tasksAdapter.containsSeparatorOverdue) {
-                    tasksAdapter.containsSeparatorOverdue = true;
+                if (!tasksAdapter.isContainsSeparatorOverdue()) {
+                    tasksAdapter.setContainsSeparatorOverdue(true);
                     separator = new ModelSeparator(ModelSeparator.TYPE_OVERDUE);
                 }
             } else if (calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR)) {
                 newTask.setDateStatus(ModelSeparator.TYPE_TODAY);
-                if (!tasksAdapter.containsSeparatorToday) {
-                    tasksAdapter.containsSeparatorToday = true;
+                if (!tasksAdapter.isContainsSeparatorToday()) {
+                    tasksAdapter.setContainsSeparatorToday(true);
                     separator = new ModelSeparator(ModelSeparator.TYPE_TODAY);
                 }
             } else if (calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1) {
                 newTask.setDateStatus(ModelSeparator.TYPE_TOMORROW);
-                if (!tasksAdapter.containsSeparatorTomorrow) {
-                    tasksAdapter.containsSeparatorTomorrow = true;
+                if (!tasksAdapter.isContainsSeparatorTomorrow()) {
+                    tasksAdapter.setContainsSeparatorTomorrow(true);
                     separator = new ModelSeparator(ModelSeparator.TYPE_TOMORROW);
                 }
             } else if (calendar.get(Calendar.DAY_OF_YEAR) > Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1) {
                 newTask.setDateStatus(ModelSeparator.TYPE_FUTURE);
-                if (!tasksAdapter.containsSeparatorFuture) {
-                    tasksAdapter.containsSeparatorFuture = true;
+                if (!tasksAdapter.isContainsSeparatorFuture()) {
+                    tasksAdapter.setContainsSeparatorFuture(true);
                     separator = new ModelSeparator(ModelSeparator.TYPE_FUTURE);
                 }
             }

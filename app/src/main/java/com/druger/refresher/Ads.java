@@ -12,6 +12,9 @@ import com.google.android.gms.ads.AdView;
  */
 public class Ads {
 
+    private Ads() {
+    }
+
     public static void showBanner(final Activity activity) {
 
         final AdView banner = (AdView) activity.findViewById(R.id.banner);
