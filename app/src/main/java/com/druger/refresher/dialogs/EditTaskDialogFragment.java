@@ -31,6 +31,7 @@ import javax.inject.Inject;
 /**
  * Created by druger on 30.09.2015.
  */
+// TODO вынести в базовый класс
 public class EditTaskDialogFragment extends DialogFragment {
 
     @Inject
