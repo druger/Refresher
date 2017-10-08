@@ -4,10 +4,13 @@ import com.druger.refresher.R;
 
 import java.util.Date;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by druger on 16.09.2015.
  */
-public class ModelTask implements Item {
+public class ModelTask extends RealmObject implements Item {
 
     public static final int PRIORITY_LOW = 0;
     public static final int PRIORITY_NORMAL = 1;
@@ -17,6 +20,8 @@ public class ModelTask implements Item {
     public static final int STATUS_CURRENT = 1;
     public static final int STATUS_DONE = 2;
 
+    @PrimaryKey
+    private String id;
     private String title;
     private long date;
     private int priority;

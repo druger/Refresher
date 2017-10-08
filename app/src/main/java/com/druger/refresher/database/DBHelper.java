@@ -14,8 +14,10 @@ import com.druger.refresher.models.ModelTask;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final int DATA_BASE_VERSION = 1;
+    public static final int SCHEMA_VERSION = 1;
 
     public static final String DATABASE_NAME = "refresher_database";
+    public static final String REALM_NAME = "refresher.realm";
 
     public static final String TASKS_TABLE = "tasks_table";
 
