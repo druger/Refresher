@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.druger.refresher.R;
 import com.druger.refresher.adapters.DoneTaskAdapter;
-import com.druger.refresher.database.DBHelper;
 import com.druger.refresher.models.ModelTask;
 
 import java.util.ArrayList;
@@ -91,10 +90,7 @@ public class DoneTaskFragment extends TaskFragment {
     public void findTasks(String title) {
         tasksAdapter.removeAllItems();
         List<ModelTask> tasks = new ArrayList<>();
-        tasks.addAll(activity.dbHelper.query().getTasks(DBHelper.SELECTION_LIKE_TITLE + " AND "
-                        + DBHelper.SELECTION_STATUS,
-                new String[]{"%" + title + "%", Integer.toString(ModelTask.STATUS_DONE)},
-                DBHelper.TASK_DATE_COLUMN));
+        tasks.addAll(activity.dbHelper.getTasksByTitleAndDoneStatus(title));
         for (int i = 0; i < tasks.size(); i++) {
             addTask(tasks.get(i), false);
         }
@@ -112,9 +108,7 @@ public class DoneTaskFragment extends TaskFragment {
     public void addTaskFromDB() {
         tasksAdapter.removeAllItems();
         List<ModelTask> tasks = new ArrayList<>();
-        tasks.addAll(activity.dbHelper.query().getTasks(DBHelper.SELECTION_STATUS,
-                new String[]{Integer.toString(ModelTask.STATUS_DONE)},
-                DBHelper.TASK_DATE_COLUMN));
+        tasks.addAll(activity.dbHelper.getTasksByDoneStatus());
         for (int i = 0; i < tasks.size(); i++) {
             addTask(tasks.get(i), false);
         }

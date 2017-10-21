@@ -216,6 +216,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTaskEdited(ModelTask updatedTask) {
         currentTaskFragment.updateTask(updatedTask);
-        dbHelper.update().updateTask(updatedTask);
+        dbHelper.updateTask(updatedTask);
     }
 }

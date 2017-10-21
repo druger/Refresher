@@ -1,88 +1,96 @@
 package com.druger.refresher.database;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 
 import com.druger.refresher.models.ModelTask;
+
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+
+import static com.druger.refresher.models.ModelTask.STATUS_CURRENT;
+import static com.druger.refresher.models.ModelTask.STATUS_DONE;
+import static com.druger.refresher.models.ModelTask.STATUS_OVERDUE;
 
 /**
  * Created by druger on 21.09.2015.
  */
-public class DBHelper extends SQLiteOpenHelper {
+public class DBHelper {
 
-    public static final int DATA_BASE_VERSION = 1;
     public static final int SCHEMA_VERSION = 1;
 
-    public static final String DATABASE_NAME = "refresher_database";
     public static final String REALM_NAME = "refresher.realm";
 
-    public static final String TASKS_TABLE = "tasks_table";
+    private static final String TITLE_COLUMN = "title";
+    private static final String DATE_COLUMN = "date";
+    private static final String STATUS_COLUMN = "status";
+    private static final String STAMP_COLUMN = "timeStamp";
 
-    public static final String TASK_TITLE_COLUMN = "tasks_title";
-    public static final String TASK_DATE_COLUMN = "tasks_date";
-    public static final String TASK_PRIORITY_COLUMN = "tasks_priority";
-    public static final String TASK_STATUS_COLUMN = "tasks_status";
-    public static final String TASK_TIME_STAMP_COLUMN = "tasks_time_stamp";
-
-    private static final String TASKS_TABLE_CREATE = "CREATE TABLE "
-            + TASKS_TABLE + " (" + BaseColumns._ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + TASK_TITLE_COLUMN + " TEXT NOT NULL, "
-            + TASK_DATE_COLUMN + " LONG, "
-            + TASK_PRIORITY_COLUMN + " INTEGER, "
-            + TASK_STATUS_COLUMN + " INTEGER, "
-            + TASK_TIME_STAMP_COLUMN + " LONG);";
-
-    public static final String SELECTION_STATUS = TASK_STATUS_COLUMN + " = ?";
-    public static final String SELECTION_TIME_STAMP = TASK_TIME_STAMP_COLUMN + " = ?";
-    public static final String SELECTION_LIKE_TITLE = TASK_TITLE_COLUMN + " LIKE ?";
-
-    private DBQueryManager queryManager;
-    private DBUpdateManager updateManager;
+    private Realm realm;
 
     public DBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATA_BASE_VERSION);
-        queryManager = new DBQueryManager(getReadableDatabase());
-        updateManager = new DBUpdateManager(getWritableDatabase());
+        realm = Realm.getDefaultInstance();
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TASKS_TABLE_CREATE);
-
+    public void saveTask(ModelTask task) {
+        realm.beginTransaction();
+        realm.insert(task);
+        realm.commitTransaction();
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE " + TASKS_TABLE);
-        onCreate(db);
+    public ModelTask getTaskByTimestamp(long timestamp) {
+        return realm.where(ModelTask.class)
+                .equalTo(STAMP_COLUMN, timestamp)
+                .findFirst();
     }
 
-    public void saveTask(ModelTask task){
-        ContentValues newValues = new ContentValues();
-
-        newValues.put(TASK_TITLE_COLUMN, task.getTitle());
-        newValues.put(TASK_DATE_COLUMN, task.getDate());
-        newValues.put(TASK_PRIORITY_COLUMN, task.getPriority());
-        newValues.put(TASK_STATUS_COLUMN, task.getStatus());
-        newValues.put(TASK_TIME_STAMP_COLUMN, task.getTimeStamp());
-
-        getWritableDatabase().insert(TASKS_TABLE, null, newValues);
+    public List<ModelTask> getTasksByAnyStatus() {
+        RealmResults<ModelTask> results = realm.where(ModelTask.class)
+                .equalTo(STATUS_COLUMN, STATUS_CURRENT)
+                .or()
+                .equalTo(STATUS_COLUMN, STATUS_OVERDUE)
+                .findAllSorted(DATE_COLUMN);
+        return realm.copyFromRealm(results);
     }
 
-    public DBQueryManager query() {
-        return queryManager;
+    public List<ModelTask> getTasksByDoneStatus() {
+        RealmResults<ModelTask> results = realm.where(ModelTask.class)
+                .equalTo(STATUS_COLUMN, STATUS_DONE)
+                .findAllSorted(DATE_COLUMN);
+        return realm.copyFromRealm(results);
     }
 
-    public DBUpdateManager update() {
-        return updateManager;
+    public List<ModelTask> getTasksByTitleAndAnyStatus(String title) {
+        RealmResults<ModelTask> results = realm.where(ModelTask.class)
+                .like(TITLE_COLUMN, "*" + title + "*")
+                .equalTo(STATUS_COLUMN, STATUS_CURRENT)
+                .or()
+                .equalTo(STATUS_COLUMN, STATUS_OVERDUE)
+                .findAllSorted(DATE_COLUMN);
+        return realm.copyFromRealm(results);
     }
 
-    public void removeTask(long timeStamp){
-        getWritableDatabase().delete(TASKS_TABLE, SELECTION_TIME_STAMP,
-                new String[]{Long.toString(timeStamp)});
+    public List<ModelTask> getTasksByTitleAndDoneStatus(String title) {
+        RealmResults<ModelTask> results = realm.where(ModelTask.class)
+                .like(TITLE_COLUMN, "*" + title + "*")
+                .equalTo(STATUS_COLUMN, STATUS_DONE)
+                .findAllSorted(DATE_COLUMN);
+        return realm.copyFromRealm(results);
+    }
+
+    public void updateTask(ModelTask modelTask) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(modelTask);
+        realm.commitTransaction();
+    }
+
+    public void removeTaskByTimestamp(long timeStamp) {
+        realm.beginTransaction();
+        RealmResults results = realm.where(ModelTask.class)
+                .equalTo(STAMP_COLUMN, timeStamp)
+                .findAll();
+        results.deleteAllFromRealm();
+        realm.commitTransaction();
     }
 }

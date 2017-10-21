@@ -88,7 +88,7 @@ public abstract class TaskFragment extends Fragment {
         Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator),
                 R.string.removed, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.dialog_cancel, v -> {
-            addTask(activity.dbHelper.query().getTask(timeStamp), false);
+            addTask(activity.dbHelper.getTaskByTimestamp(timeStamp), false);
             isRemoved[0] = false;
         });
         snackbar.getView().addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
@@ -101,7 +101,7 @@ public abstract class TaskFragment extends Fragment {
             public void onViewDetachedFromWindow(View v) {
                 if (isRemoved[0]){
                     alarmHelper.removeAlarm(timeStamp);
-                    activity.dbHelper.removeTask(timeStamp);
+                    activity.dbHelper.removeTaskByTimestamp(timeStamp);
                 }
             }
         });

@@ -28,10 +28,7 @@ public class AlarmSetter extends BroadcastReceiver {
         App.getAppComponent().inject(this);
 
         List<ModelTask> tasks = new ArrayList<>();
-        tasks.addAll(dbHelper.query().getTasks(DBHelper.SELECTION_STATUS + " OR "
-                        + DBHelper.SELECTION_STATUS,
-                new String[]{Integer.toString(ModelTask.STATUS_CURRENT), Integer.toString(ModelTask.STATUS_OVERDUE)},
-                DBHelper.TASK_DATE_COLUMN));
+        tasks.addAll(dbHelper.getTasksByAnyStatus());
 
         for (ModelTask task : tasks) {
             if (task.getDate() != 0){
