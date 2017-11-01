@@ -82,7 +82,7 @@ public class DoneTaskFragment extends TaskFragment {
         }
 
         if (saveToDB){
-            activity.dbHelper.saveTask(newTask);
+            activity.realmHelper.saveTask(newTask);
         }
     }
 
@@ -90,7 +90,7 @@ public class DoneTaskFragment extends TaskFragment {
     public void findTasks(String title) {
         tasksAdapter.removeAllItems();
         List<ModelTask> tasks = new ArrayList<>();
-        tasks.addAll(activity.dbHelper.getTasksByTitleAndDoneStatus(title));
+        tasks.addAll(activity.realmHelper.getTasksByTitleAndDoneStatus(title));
         for (int i = 0; i < tasks.size(); i++) {
             addTask(tasks.get(i), false);
         }
@@ -108,7 +108,7 @@ public class DoneTaskFragment extends TaskFragment {
     public void addTaskFromDB() {
         tasksAdapter.removeAllItems();
         List<ModelTask> tasks = new ArrayList<>();
-        tasks.addAll(activity.dbHelper.getTasksByDoneStatus());
+        tasks.addAll(activity.realmHelper.getTasksByDoneStatus());
         for (int i = 0; i < tasks.size(); i++) {
             addTask(tasks.get(i), false);
         }

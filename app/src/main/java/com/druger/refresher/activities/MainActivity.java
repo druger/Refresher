@@ -20,7 +20,7 @@ import com.druger.refresher.App;
 import com.druger.refresher.R;
 import com.druger.refresher.adapters.TabAdapter;
 import com.druger.refresher.alarms.AlarmHelper;
-import com.druger.refresher.database.DBHelper;
+import com.druger.refresher.database.RealmHelper;
 import com.druger.refresher.dialogs.AddingTaskDialogFragment;
 import com.druger.refresher.dialogs.EditTaskDialogFragment;
 import com.druger.refresher.fragments.CurrentTaskFragment;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     @Inject
     AlarmHelper alarmHelper;
     @Inject
-    public DBHelper dbHelper;
+    public RealmHelper realmHelper;
 
     private TabAdapter tabAdapter;
     private TaskFragment currentTaskFragment;
@@ -216,6 +216,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTaskEdited(ModelTask updatedTask) {
         currentTaskFragment.updateTask(updatedTask);
-        dbHelper.updateTask(updatedTask);
+        realmHelper.updateTask(updatedTask);
     }
 }

@@ -16,7 +16,7 @@ import static com.druger.refresher.models.ModelTask.STATUS_OVERDUE;
 /**
  * Created by druger on 21.09.2015.
  */
-public class DBHelper {
+public class RealmHelper {
 
     public static final int SCHEMA_VERSION = 1;
 
@@ -29,7 +29,7 @@ public class DBHelper {
 
     private Realm realm;
 
-    public DBHelper(Context context) {
+    public RealmHelper(Context context) {
         realm = Realm.getDefaultInstance();
     }
 

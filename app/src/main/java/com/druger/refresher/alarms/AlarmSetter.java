@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.druger.refresher.App;
-import com.druger.refresher.database.DBHelper;
+import com.druger.refresher.database.RealmHelper;
 import com.druger.refresher.models.ModelTask;
 
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ public class AlarmSetter extends BroadcastReceiver {
     @Inject
     AlarmHelper alarmHelper;
     @Inject
-    DBHelper dbHelper;
+    RealmHelper realmHelper;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         App.getAppComponent().inject(this);
 
         List<ModelTask> tasks = new ArrayList<>();
-        tasks.addAll(dbHelper.getTasksByAnyStatus());
+        tasks.addAll(realmHelper.getTasksByAnyStatus());
 
         for (ModelTask task : tasks) {
             if (task.getDate() != 0){

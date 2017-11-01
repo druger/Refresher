@@ -9,8 +9,8 @@ import com.druger.refresher.di.modules.AppModule;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-import static com.druger.refresher.database.DBHelper.REALM_NAME;
-import static com.druger.refresher.database.DBHelper.SCHEMA_VERSION;
+import static com.druger.refresher.database.RealmHelper.REALM_NAME;
+import static com.druger.refresher.database.RealmHelper.SCHEMA_VERSION;
 
 /**
  * Created by druger on 29.09.2015.
@@ -24,8 +24,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        setupDagger2();
         setupRealm();
+        setupDagger2();
     }
 
     private void setupRealm() {

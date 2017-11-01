@@ -133,7 +133,7 @@ public class CurrentTaskFragment extends TaskFragment {
         }
 
         if (saveToDB) {
-            activity.dbHelper.saveTask(newTask);
+            activity.realmHelper.saveTask(newTask);
         }
     }
 
@@ -141,7 +141,7 @@ public class CurrentTaskFragment extends TaskFragment {
     public void findTasks(String title) {
         tasksAdapter.removeAllItems();
         List<ModelTask> tasks = new ArrayList<>();
-        tasks.addAll(activity.dbHelper.getTasksByTitleAndAnyStatus(title));
+        tasks.addAll(activity.realmHelper.getTasksByTitleAndAnyStatus(title));
         for (int i = 0; i < tasks.size(); i++) {
             addTask(tasks.get(i), false);
         }
@@ -159,7 +159,7 @@ public class CurrentTaskFragment extends TaskFragment {
     public void addTaskFromDB() {
         tasksAdapter.removeAllItems();
         List<ModelTask> tasks = new ArrayList<>();
-        tasks.addAll(activity.dbHelper.getTasksByAnyStatus());
+        tasks.addAll(activity.realmHelper.getTasksByAnyStatus());
         for (int i = 0; i < tasks.size(); i++) {
             addTask(tasks.get(i), false);
         }
