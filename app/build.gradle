@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 26
@@ -31,12 +33,20 @@ dependencies {
     compile 'com.android.support:support-v13:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'de.hdodenhof:circleimageview:2.2.0'
-    compile 'com.google.android.gms:play-services-ads:11.4.2'
+    compile 'com.google.android.gms:play-services-ads:11.6.0'
     compile 'com.google.dagger:dagger:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
     compile 'com.google.dagger:dagger-android-support:2.11'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+}
+
+kapt {
+    generateStubs = true
 }
 
 realm {
     syncEnabled = true;
+}
+repositories {
+    mavenCentral()
 }
