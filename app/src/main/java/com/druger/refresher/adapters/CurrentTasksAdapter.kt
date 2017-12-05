@@ -80,13 +80,13 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
             taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.priorityColor))
             taskViewHolder.priority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp)
 
-            itemView.setOnClickListener({getTaskFragment().showEditTaskDialog(task)})
+            itemView.setOnClickListener({taskFragment.showEditTaskDialog(task)})
 
             itemView.setOnLongClickListener({
                 // for delay ripple animation
                 val handler = Handler()
                 handler.postDelayed({
-                    getTaskFragment().removeTaskDialog(
+                    taskFragment.removeTaskDialog(
                             taskViewHolder.layoutPosition)
                 },1000)
             })
@@ -94,7 +94,7 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
             taskViewHolder.priority.setOnClickListener({
                 taskViewHolder.priority.isEnabled = false
                 task.status = ModelTask.STATUS_DONE
-                getTaskFragment().activity.realmHelper.updateTask(task)
+                taskFragment.activity.realmHelper.updateTask(task)
 
                 taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_light))
                 taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light))
@@ -126,7 +126,7 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
 
                                 override fun onAnimationEnd(animation: Animator) {
                                     itemView.visibility = View.GONE
-                                    getTaskFragment().moveTask(task)
+                                    taskFragment.moveTask(task)
                                     removeItem(taskViewHolder.layoutPosition)
 
                                 }
