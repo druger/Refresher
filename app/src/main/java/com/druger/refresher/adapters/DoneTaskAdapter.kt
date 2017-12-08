@@ -63,7 +63,7 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
                 // for delay ripple animation
                 val handler = Handler()
                 handler.postDelayed({
-                    getTaskFragment().removeTaskDialog(
+                    taskFragment.removeTaskDialog(
                             taskViewHolder.layoutPosition)
                 }, 1000)
             })
@@ -71,7 +71,7 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
             taskViewHolder.priority.setOnClickListener({
                 taskViewHolder.priority.isEnabled = false
                 task.status = ModelTask.STATUS_CURRENT
-                getTaskFragment().activity.realmHelper.updateTask(task)
+                taskFragment.activity.realmHelper.updateTask(task)
 
                 taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_light))
                 taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light))
@@ -103,7 +103,7 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
 
                                 override fun onAnimationEnd(animation: Animator) {
                                     itemView.visibility = View.GONE
-                                    getTaskFragment().moveTask(task)
+                                    taskFragment.moveTask(task)
                                     removeItem(taskViewHolder.layoutPosition)
 
                                 }
