@@ -110,7 +110,7 @@ public abstract class TaskFragment extends Fragment {
     }
 
     public void showEditTaskDialog(ModelTask task) {
-        DialogFragment editingTaskDialog = EditTaskDialogFragment.newInstance(task);
+        DialogFragment editingTaskDialog = EditTaskDialogFragment.Companion.newInstance(task);
         editingTaskDialog.show(getActivity().getFragmentManager(), "EditTaskDialogFragment");
     }
 
