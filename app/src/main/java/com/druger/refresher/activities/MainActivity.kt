@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity(),
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                currentTaskFragment.findTasks(newText)
+                currentTaskFragment.findTasks(newText!!)
                 doneTaskFragment.findTasks(newText)
                 return false
             }
@@ -166,11 +166,11 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onTaskRestore(task: ModelTask?) {
-        currentTaskFragment.addTask(task, false)
+        currentTaskFragment.addTask(task!!, false)
     }
 
     override fun onTaskDone(task: ModelTask?) {
-        doneTaskFragment.addTask(task, false)
+        doneTaskFragment.addTask(task!!, false)
     }
 
     override fun onTaskAddingCancel() {
@@ -178,11 +178,11 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onTaskEdited(updatedTask: ModelTask?) {
-        currentTaskFragment.updateTask(updatedTask)
+        currentTaskFragment.updateTask(updatedTask!!)
         realmHelper.updateTask(updatedTask)
     }
 
     override fun onTaskAdded(newTask: ModelTask?) {
-        currentTaskFragment.addTask(newTask, true)
+        currentTaskFragment.addTask(newTask!!, true)
     }
 }

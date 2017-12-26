@@ -52,7 +52,7 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         val item = items[position]
 
-        if (item.isTask) {
+        if (item.isTask()) {
             holder?.itemView?.isEnabled = true
             val task = item as ModelTask
             val taskViewHolder = holder as TaskViewHolder
@@ -77,7 +77,7 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
 
             taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_light))
             taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light))
-            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.priorityColor))
+            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()))
             taskViewHolder.priority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp)
 
             itemView.setOnClickListener({taskFragment.showEditTaskDialog(task)})
@@ -98,7 +98,7 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
 
                 taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_light))
                 taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light))
-                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.priorityColor))
+                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()))
 
                 val flipIn: ObjectAnimator = ObjectAnimator.ofFloat(taskViewHolder.priority, "rotationY", -180f, 0f)
 
@@ -167,7 +167,7 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).isTask) {
+        return if (getItem(position).isTask()) {
             TYPE_TASK
         } else {
             TYPE_SEPARATOR
