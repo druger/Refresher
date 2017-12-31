@@ -1,10 +1,10 @@
 package com.druger.refresher.database
 
 import android.content.Context
-
 import com.druger.refresher.models.ModelTask
-import com.druger.refresher.models.ModelTask.*
-
+import com.druger.refresher.models.ModelTask.Companion.STATUS_CURRENT
+import com.druger.refresher.models.ModelTask.Companion.STATUS_DONE
+import com.druger.refresher.models.ModelTask.Companion.STATUS_OVERDUE
 import io.realm.Realm
 import io.realm.RealmResults
 
@@ -13,10 +13,10 @@ import io.realm.RealmResults
 * Created by druger on 21.09.2015.
 */
 
-class RealmHelper(context: Context) {
+class RealmHelper(var context: Context) {
 
     companion object {
-        const val SCHEMA_VERSION = 1
+        const val SCHEMA_VERSION: Long = 1
         const val REALM_NAME = "refresher.realm"
 
         const private val TITLE_COLUMN = "title"

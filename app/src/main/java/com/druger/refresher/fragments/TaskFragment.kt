@@ -43,7 +43,7 @@ abstract class TaskFragment : Fragment() {
 
     override fun onCreate(@Nullable savedInstanceState: Bundle) {
         super.onCreate(savedInstanceState)
-        App.getAppComponent().inject(this)
+        App.getApplicationComponent().inject(this)
     }
 
     abstract fun addTask(newTask: ModelTask, saveToDB: Boolean)
@@ -59,7 +59,7 @@ abstract class TaskFragment : Fragment() {
 
         val item = tasksAdapter.getItem(location)
 
-        if (item.isTask) {
+        if (item.isTask()) {
             val removingTask = item as ModelTask
 
             val timeStamp = removingTask.timeStamp

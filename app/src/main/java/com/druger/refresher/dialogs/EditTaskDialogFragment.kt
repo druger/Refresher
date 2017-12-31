@@ -78,7 +78,7 @@ class EditTaskDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle) {
         super.onCreate(savedInstanceState)
-        App.getAppComponent().inject(this)
+        App.getApplicationComponent().inject(this)
     }
 
     @SuppressLint("InflateParams")

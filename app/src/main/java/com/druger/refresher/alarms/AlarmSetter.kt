@@ -20,10 +20,10 @@ class AlarmSetter : BroadcastReceiver() {
 
 
     override fun onReceive(context: Context, intent: Intent) {
-        App.getAppComponent().inject(this)
+        App.getApplicationComponent().inject(this)
 
         val tasks: MutableList<ModelTask> = mutableListOf()
-        tasks.addAll(realmHelper.tasksByAnyStatus)
+        tasks.addAll(realmHelper.getTasksByAnyStatus())
 
         for (task in tasks) {
             if (task.date.toInt() != 0) {

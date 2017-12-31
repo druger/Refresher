@@ -37,7 +37,7 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
 
         val item = items[position]
 
-        if (item.isTask) {
+        if (item.isTask()) {
             viewHolder.itemView.isEnabled = true
             val task = item as ModelTask
             val taskViewHolder = viewHolder as TaskViewHolder
@@ -56,7 +56,7 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
 
             taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_light))
             taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light))
-            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.priorityColor))
+            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()))
             taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp)
 
             itemView.setOnLongClickListener({
@@ -75,7 +75,7 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
 
                 taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_light))
                 taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light))
-                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.priorityColor))
+                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()))
 
                 val flipIn: ObjectAnimator = ObjectAnimator.ofFloat(taskViewHolder.priority, "rotationY", 180f, 0f)
                 taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp)

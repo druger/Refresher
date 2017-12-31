@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         setContentView(R.layout.activity_main)
-        App.getAppComponent().inject(this)
+        App.getApplicationComponent().inject(this)
 
         Ads.showBanner(this)
 
@@ -165,24 +165,24 @@ class MainActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
     }
 
-    override fun onTaskRestore(task: ModelTask?) {
-        currentTaskFragment.addTask(task!!, false)
+    override fun onTaskRestore(task: ModelTask) {
+        currentTaskFragment.addTask(task, false)
     }
 
-    override fun onTaskDone(task: ModelTask?) {
-        doneTaskFragment.addTask(task!!, false)
+    override fun onTaskDone(task: ModelTask) {
+        doneTaskFragment.addTask(task, false)
     }
 
     override fun onTaskAddingCancel() {
         Toast.makeText(this, R.string.task_adding_cancel, Toast.LENGTH_LONG).show()
     }
 
-    override fun onTaskEdited(updatedTask: ModelTask?) {
-        currentTaskFragment.updateTask(updatedTask!!)
+    override fun onTaskEdited(updatedTask: ModelTask) {
+        currentTaskFragment.updateTask(updatedTask)
         realmHelper.updateTask(updatedTask)
     }
 
-    override fun onTaskAdded(newTask: ModelTask?) {
-        currentTaskFragment.addTask(newTask!!, true)
+    override fun onTaskAdded(newTask: ModelTask) {
+        currentTaskFragment.addTask(newTask, true)
     }
 }

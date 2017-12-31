@@ -41,7 +41,7 @@ abstract class TaskAdapter(val taskFragment: TaskFragment) : RecyclerView.Adapte
 
     fun updateTask(newTask: ModelTask) {
         for (i in 0..itemCount) {
-            if (getItem(i).isTask) {
+            if (getItem(i).isTask()) {
                 val task = getItem(i) as ModelTask
                 if (newTask.timeStamp == task.timeStamp) {
                     removeItem(i)
@@ -56,13 +56,13 @@ abstract class TaskAdapter(val taskFragment: TaskFragment) : RecyclerView.Adapte
             items.removeAt(location)
             notifyItemRemoved(location)
             if (location - 1 >= 0 && location <= itemCount - 1) {
-                if (!getItem(location).isTask && !getItem(location - 1).isTask) {
+                if (!getItem(location).isTask() && !getItem(location - 1).isTask()) {
                     val separator = getItem(location - 1) as ModelSeparator
                     checkSeparators(separator.type)
                     items.removeAt(location - 1)
                     notifyItemRemoved(location - 1)
                 }
-            } else if (itemCount - 1 >= 0 && !getItem(itemCount - 1).isTask) {
+            } else if (itemCount - 1 >= 0 && !getItem(itemCount - 1).isTask()) {
                 val separator = getItem(itemCount - 1) as ModelSeparator
                 checkSeparators(separator.type)
 

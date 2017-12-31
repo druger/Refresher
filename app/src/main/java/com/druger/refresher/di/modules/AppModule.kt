@@ -6,7 +6,7 @@ import com.druger.refresher.App
 import com.druger.refresher.alarms.AlarmHelper
 import com.druger.refresher.database.RealmHelper
 import com.druger.refresher.utils.PreferenceHelper
-import com.druger.refresher.utils.PreferenceHelper.PREFERENCES_NAME
+import com.druger.refresher.utils.PreferenceHelper.Companion.PREFERENCES_NAME
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

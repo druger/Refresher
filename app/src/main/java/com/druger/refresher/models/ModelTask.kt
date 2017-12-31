@@ -8,7 +8,7 @@ import java.util.*
 /**
  * Created by druger on 16.09.2015.
  */
-class ModelTask(var status: Int = -1, var timeStamp: Long = Date().time) : RealmObject(), Item {
+open class ModelTask(var status: Int = -1, var timeStamp: Long = Date().time) : RealmObject(), Item {
 
     companion object {
         private const val PRIORITY_LOW = 0
@@ -25,6 +25,7 @@ class ModelTask(var status: Int = -1, var timeStamp: Long = Date().time) : Realm
     var priority:Int = 0;
     var title: String = ""
     var date: Long = 0
+    var dateStatus: Int = 0
 
     constructor (title: String, date: Long, priority: Int, status: Int, timeStamp: Long) : this() {
         this.title = title

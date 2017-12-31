@@ -17,7 +17,7 @@ class AlarmHelper(private var alarmManager: AlarmManager,
         val intent = Intent(app, AlarmReceiver::class.java)
         intent.putExtra("title", task.title)
         intent.putExtra("time_stamp", task.timeStamp)
-        intent.putExtra("color", task.priorityColor)
+        intent.putExtra("color", task.getPriorityColor())
 
         val pendingIntent: PendingIntent = PendingIntent.getBroadcast(app,
                 task.timeStamp.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)

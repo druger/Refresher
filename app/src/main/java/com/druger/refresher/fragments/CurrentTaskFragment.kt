@@ -54,7 +54,7 @@ class CurrentTaskFragment : TaskFragment() {
         var separator: ModelSeparator? = null
 
         for (i in 0..tasksAdapter.itemCount) {
-            if (tasksAdapter.getItem(i).isTask) {
+            if (tasksAdapter.getItem(i).isTask()) {
                 val task = tasksAdapter.getItem(i) as ModelTask
                 if (newTask.date < task.date) {
                     position = i
@@ -95,8 +95,8 @@ class CurrentTaskFragment : TaskFragment() {
         }
 
         if (position != -1) {
-            if (!tasksAdapter.getItem(position - 1).isTask) {
-                if (position - 2 >= 0 && tasksAdapter.getItem(position - 2).isTask) {
+            if (!tasksAdapter.getItem(position - 1).isTask()) {
+                if (position - 2 >= 0 && tasksAdapter.getItem(position - 2).isTask()) {
                     val task = tasksAdapter.getItem(position - 2) as ModelTask
                     if (task.dateStatus == newTask.dateStatus) {
                         position -= 1
@@ -129,10 +129,8 @@ class CurrentTaskFragment : TaskFragment() {
     }
 
     override fun checkAdapter() {
-        if (tasksAdapter == null) {
-            tasksAdapter = CurrentTasksAdapter(this)
-            addTaskFromDB()
-        }
+        tasksAdapter = CurrentTasksAdapter(this)
+        addTaskFromDB()
     }
 
     override fun addTaskFromDB() {

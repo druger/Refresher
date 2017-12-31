@@ -53,7 +53,7 @@ class DoneTaskFragment : TaskFragment() {
         var position = -1
 
         for (i in 0..tasksAdapter.itemCount) {
-            if (tasksAdapter.getItem(i).isTask) {
+            if (tasksAdapter.getItem(i).isTask()) {
                 val task = tasksAdapter.getItem(i) as ModelTask
                 if (newTask.date < task.date) {
                     position = i
@@ -83,10 +83,8 @@ class DoneTaskFragment : TaskFragment() {
     }
 
     override fun checkAdapter() {
-        if (tasksAdapter == null) {
-            tasksAdapter = DoneTaskAdapter(this)
-            addTaskFromDB()
-        }
+        tasksAdapter = DoneTaskAdapter(this)
+        addTaskFromDB()
     }
 
     override fun addTaskFromDB() {
