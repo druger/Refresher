@@ -9,8 +9,6 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import com.druger.refresher.Ads
 import com.druger.refresher.App
@@ -22,10 +20,8 @@ import com.druger.refresher.dialogs.AddingTaskDialogFragment
 import com.druger.refresher.dialogs.EditTaskDialogFragment
 import com.druger.refresher.fragments.CurrentTaskFragment
 import com.druger.refresher.fragments.DoneTaskFragment
-import com.druger.refresher.fragments.SplashFragment
 import com.druger.refresher.fragments.TaskFragment
 import com.druger.refresher.models.ModelTask
-import com.druger.refresher.utils.PreferenceHelper
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
@@ -34,8 +30,6 @@ class MainActivity : AppCompatActivity(),
         DoneTaskFragment.OnTaskRestoreListener,
         EditTaskDialogFragment.EditingTaskListener {
 
-    @Inject
-    lateinit var preferenceHelper: PreferenceHelper
     @Inject
     lateinit var alarmHelper: AlarmHelper
     @Inject
@@ -55,7 +49,6 @@ class MainActivity : AppCompatActivity(),
 
         Ads.showBanner(this)
 
-        runSplash()
         setupToolbar()
         setupViewPager()
         setupUI()
@@ -70,37 +63,6 @@ class MainActivity : AppCompatActivity(),
     override fun onResume() {
         super.onResume()
         App.activityResumed()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        val splashItem = menu?.findItem(R.id.action_splash)
-        splashItem?.isChecked = preferenceHelper.getBoolean(PreferenceHelper.SPLASH_IS_INVISIBLE)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item : MenuItem?): Boolean {
-        val id = item?.itemId
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_splash) {
-            item.isChecked = !item.isChecked
-            preferenceHelper.putBoolean(PreferenceHelper.SPLASH_IS_INVISIBLE, item.isChecked)
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun runSplash() {
-        if (!preferenceHelper.getBoolean(PreferenceHelper.SPLASH_IS_INVISIBLE)) {
-            val splashFragment = SplashFragment()
-
-            fragmentManager.beginTransaction()
-                    .replace(R.id.coordinator, splashFragment)
-                    .addToBackStack(null)
-                    .commit()
-        }
     }
 
     private fun setupUI(){
