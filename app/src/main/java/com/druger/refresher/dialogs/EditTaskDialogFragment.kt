@@ -15,12 +15,12 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.Spinner
 import com.druger.refresher.App
 import com.druger.refresher.R
 import com.druger.refresher.alarms.AlarmHelper
 import com.druger.refresher.models.ModelTask
 import com.druger.refresher.utils.DateHelper
+import kotlinx.android.synthetic.main.dialog_task.*
 import java.util.*
 import javax.inject.Inject
 
@@ -89,7 +89,7 @@ class EditTaskDialogFragment : DialogFragment() {
         val inflater = activity.layoutInflater
         val container = inflater.inflate(R.layout.dialog_task, null)
 
-        bindViews(container)
+        bindViews()
         setTextForEditTexts()
 
         calendar = setupCalendar()
@@ -124,14 +124,9 @@ class EditTaskDialogFragment : DialogFragment() {
         return calendar
     }
 
-    private fun bindViews(container: View) {
-        taskTitle = container.findViewById(R.id.dialogTaskTitle)
+    private fun bindViews() {
         etTitle = taskTitle.editText!!
-
-        taskDate = container.findViewById(R.id.dialogTaskDate)
         etDate = taskDate.editText!!
-
-        taskTime = container.findViewById(R.id.dialogTaskTime)
         etTime = taskTime.editText!!
     }
 
@@ -218,8 +213,6 @@ class EditTaskDialogFragment : DialogFragment() {
     }
 
     private fun setupSpinner(container: View) {
-        val spPriority: Spinner = container.findViewById(R.id.spDialogTaskPriority)
-
         val priorityAdapter = ArrayAdapter(activity,
                 android.R.layout.simple_spinner_dropdown_item,
                 resources.getStringArray(R.array.priority_levels))

@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.Fragment
 import android.os.Bundle
 import android.support.annotation.Nullable
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.druger.refresher.App
@@ -14,11 +13,13 @@ import com.druger.refresher.adapters.TaskAdapter
 import com.druger.refresher.alarms.AlarmHelper
 import com.druger.refresher.dialogs.EditTaskDialogFragment
 import com.druger.refresher.models.ModelTask
+import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.design.longSnackbar
 import javax.inject.Inject
 
 /**
-* Created by druger on 19.09.2015.
-*/
+ * Created by druger on 19.09.2015.
+ */
 abstract class TaskFragment : Fragment() {
 
     protected lateinit var recyclerView: RecyclerView
@@ -83,12 +84,10 @@ abstract class TaskFragment : Fragment() {
 
     private fun showSnackbar(timeStamp: Long, isRemoved: Boolean) {
         var removed = isRemoved
-        val snackbar = Snackbar.make(getActivity().findViewById(R.id.coordinator),
-                R.string.removed, Snackbar.LENGTH_LONG)
-        snackbar.setAction(R.string.dialog_cancel, {
+        val snackbar = longSnackbar(activity.coordinator, R.string.removed, R.string.dialog_cancel) {
             addTask(activity.realmHelper.getTaskByTimestamp(timeStamp)!!, false)
             removed = false
-        })
+        }
         snackbar.view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
 
             override fun onViewAttachedToWindow(v: View) {
@@ -102,11 +101,10 @@ abstract class TaskFragment : Fragment() {
                 }
             }
         })
-        snackbar.show()
     }
 
     fun showEditTaskDialog(task: ModelTask) {
-        val editingTaskDialog = EditTaskDialogFragment.Companion.newInstance(task)
+        val editingTaskDialog = EditTaskDialogFragment.newInstance(task)
         editingTaskDialog.show(getActivity().fragmentManager, "EditTaskDialogFragment")
     }
 

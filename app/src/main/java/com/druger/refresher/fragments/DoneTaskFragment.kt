@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.druger.refresher.R
 import com.druger.refresher.adapters.DoneTaskAdapter
 import com.druger.refresher.models.ModelTask
+import kotlinx.android.synthetic.main.fragment_done_task.*
 
 
 /**
@@ -36,12 +37,12 @@ class DoneTaskFragment : TaskFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup,
                               savedInstanceState: Bundle): View {
         val rootView = inflater.inflate(R.layout.fragment_done_task, container, false)
-        setupRecycler(rootView)
+        setupRecycler()
         return rootView
     }
 
-    private fun setupRecycler(rootView: View) {
-        recyclerView = rootView.findViewById(R.id.rvDoneTasks)
+    private fun setupRecycler() {
+        recyclerView = rvDoneTasks;
         layoutManager = LinearLayoutManager(getActivity())
         recyclerView.layoutManager = layoutManager
 

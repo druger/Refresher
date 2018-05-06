@@ -5,11 +5,8 @@ import android.os.PersistableBundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
-import android.support.v7.widget.Toolbar
-import android.widget.Toast
 import com.druger.refresher.Ads
 import com.druger.refresher.App
 import com.druger.refresher.R
@@ -22,6 +19,8 @@ import com.druger.refresher.fragments.CurrentTaskFragment
 import com.druger.refresher.fragments.DoneTaskFragment
 import com.druger.refresher.fragments.TaskFragment
 import com.druger.refresher.models.ModelTask
+import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
@@ -69,7 +68,6 @@ class MainActivity : AppCompatActivity(),
         currentTaskFragment = tabAdapter.getItem(TabAdapter.CURRENT_TASK_FRAGMENT_POSITION) as TaskFragment
         doneTaskFragment = tabAdapter.getItem(TabAdapter.DONE_TASK_FRAGMENT_POSITION) as TaskFragment
 
-        searchView = findViewById(R.id.search_view)
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -82,9 +80,6 @@ class MainActivity : AppCompatActivity(),
             }
 
         })
-
-
-        fab = findViewById(R.id.fab)
     }
 
     private fun setupUX() {
@@ -96,11 +91,9 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun setupViewPager() {
-        val tabLayout: TabLayout = findViewById(R.id.tab_layout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.current_task))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.done_task))
 
-        val viewPager: ViewPager = findViewById(R.id.pager)
         tabAdapter = TabAdapter(fragmentManager, 2)
 
         viewPager.adapter = tabAdapter
@@ -122,7 +115,6 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun setupToolbar() {
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
         setSupportActionBar(toolbar)
     }
@@ -136,7 +128,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onTaskAddingCancel() {
-        Toast.makeText(this, R.string.task_adding_cancel, Toast.LENGTH_LONG).show()
+        toast(R.string.task_adding_cancel)
     }
 
     override fun onTaskEdited(updatedTask: ModelTask) {

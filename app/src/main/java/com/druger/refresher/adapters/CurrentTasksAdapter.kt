@@ -28,32 +28,36 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
         private const val TYPE_SEPARATOR = 1
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
+    private lateinit var viewHolder: RecyclerView.ViewHolder
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
             TYPE_TASK -> {
-                val view = LayoutInflater.from(parent?.context)
+                val view = LayoutInflater.from(parent.context)
                         .inflate(R.layout.model_task, parent, false)
                 val title: TextView = view.findViewById(R.id.tvTaskTitle)
                 val date: TextView = view.findViewById(R.id.tvTaskDate)
                 val priority: CircleImageView = view.findViewById(R.id.cvTaskPriority)
 
-                return TaskViewHolder (view, title, date, priority)
+                viewHolder = TaskViewHolder (view, title, date, priority)
+                return viewHolder
             }
             TYPE_SEPARATOR -> {
-                val separator = LayoutInflater.from (parent?.context)
+                val separator = LayoutInflater.from (parent.context)
                         .inflate(R.layout.model_separator, parent, false)
                 val type: TextView = separator.findViewById (R.id.tvSeparatorName)
-                return SeparatorViewHolder (separator, type)
+                viewHolder = SeparatorViewHolder (separator, type)
+                return viewHolder
             }
-            else -> return null
+            else -> return viewHolder;
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
 
         if (item.isTask()) {
-            holder?.itemView?.isEnabled = true
+            holder.itemView?.isEnabled = true
             val task = item as ModelTask
             val taskViewHolder = holder as TaskViewHolder
 
