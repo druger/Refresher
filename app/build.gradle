@@ -31,7 +31,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:support-v13:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
@@ -43,9 +42,6 @@ dependencies {
     implementation "org.jetbrains.anko:anko-design:$anko_version"
 }
 
-realm {
-    syncEnabled = true;
-}
 repositories {
     mavenCentral()
 }

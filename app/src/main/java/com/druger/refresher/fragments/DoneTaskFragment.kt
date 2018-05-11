@@ -3,14 +3,12 @@ package com.druger.refresher.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.druger.refresher.R
 import com.druger.refresher.adapters.DoneTaskAdapter
 import com.druger.refresher.models.ModelTask
-import kotlinx.android.synthetic.main.fragment_done_task.*
 
 
 /**
@@ -34,8 +32,7 @@ class DoneTaskFragment : TaskFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup,
-                              savedInstanceState: Bundle): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_done_task, container, false)
         setupRecycler()
         return rootView

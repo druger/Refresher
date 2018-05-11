@@ -44,14 +44,16 @@ class RealmHelper(var context: Context) {
                 .equalTo(STATUS_COLUMN, STATUS_CURRENT)
                 .or()
                 .equalTo(STATUS_COLUMN, STATUS_OVERDUE)
-                .findAllSorted(DATE_COLUMN)
+                .sort(DATE_COLUMN)
+                .findAll()
         return realm.copyFromRealm(results)
     }
 
     fun getTasksByDoneStatus(): List<ModelTask> {
         val results: RealmResults<ModelTask> = realm.where(ModelTask::class.java)
                 .equalTo(STATUS_COLUMN, STATUS_DONE)
-                .findAllSorted(DATE_COLUMN)
+                .sort(DATE_COLUMN)
+                .findAll()
         return realm.copyFromRealm(results)
     }
 
@@ -61,7 +63,8 @@ class RealmHelper(var context: Context) {
                 .equalTo(STATUS_COLUMN, STATUS_CURRENT)
                 .or()
                 .equalTo(STATUS_COLUMN, STATUS_OVERDUE)
-                .findAllSorted(DATE_COLUMN)
+                .sort(DATE_COLUMN)
+                .findAll()
         return realm.copyFromRealm(results)
     }
 
@@ -69,7 +72,8 @@ class RealmHelper(var context: Context) {
         val results: RealmResults<ModelTask> = realm.where(ModelTask::class.java)
                 .like(TITLE_COLUMN, "*$title*")
                 .equalTo(STATUS_COLUMN, STATUS_DONE)
-                .findAllSorted(DATE_COLUMN)
+                .sort(DATE_COLUMN)
+                .findAll()
         return realm.copyFromRealm(results)
     }
 

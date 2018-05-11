@@ -1,10 +1,7 @@
 package com.druger.refresher.fragments
 
 import android.app.AlertDialog
-import android.app.Fragment
 import android.os.Bundle
-import android.support.annotation.Nullable
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.druger.refresher.App
 import com.druger.refresher.R
@@ -13,7 +10,6 @@ import com.druger.refresher.adapters.TaskAdapter
 import com.druger.refresher.alarms.AlarmHelper
 import com.druger.refresher.dialogs.EditTaskDialogFragment
 import com.druger.refresher.models.ModelTask
-import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.design.longSnackbar
 import javax.inject.Inject
 
@@ -32,17 +28,15 @@ abstract class TaskFragment : Fragment() {
     @Inject
     lateinit var alarmHelper: AlarmHelper
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         if (getActivity() != null) {
             activity = getActivity() as MainActivity
         }
         addTaskFromDB()
     }
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.getApplicationComponent().inject(this)
     }
@@ -105,7 +99,7 @@ abstract class TaskFragment : Fragment() {
 
     fun showEditTaskDialog(task: ModelTask) {
         val editingTaskDialog = EditTaskDialogFragment.newInstance(task)
-        editingTaskDialog.show(getActivity().fragmentManager, "EditTaskDialogFragment")
+        editingTaskDialog.show(getActivity()?.fragmentManager, "EditTaskDialogFragment")
     }
 
     abstract fun findTasks(title: String)

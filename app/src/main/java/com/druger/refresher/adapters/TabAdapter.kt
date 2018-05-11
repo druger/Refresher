@@ -1,9 +1,5 @@
 package com.druger.refresher.adapters
 
-import android.app.Fragment
-import android.app.FragmentManager
-import android.support.v13.app.FragmentStatePagerAdapter
-
 import com.druger.refresher.fragments.CurrentTaskFragment
 import com.druger.refresher.fragments.DoneTaskFragment
 

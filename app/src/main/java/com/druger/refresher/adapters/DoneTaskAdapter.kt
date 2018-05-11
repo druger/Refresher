@@ -4,8 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Handler
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +12,6 @@ import com.druger.refresher.R
 import com.druger.refresher.fragments.DoneTaskFragment
 import com.druger.refresher.models.ModelTask
 import com.druger.refresher.utils.DateHelper
-import de.hdodenhof.circleimageview.CircleImageView
 
 /**
 * Created by druger on 19.09.2015.
@@ -54,9 +51,9 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
             itemView.visibility = View.VISIBLE
             taskViewHolder.priority.isEnabled = true
 
-            taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_light))
-            taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light))
-            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()))
+            taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.primary_text_light))
+            taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.secondary_text_light))
+            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity()!!, task.getPriorityColor()))
             taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp)
 
             itemView.setOnLongClickListener({
@@ -73,9 +70,9 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
                 task.status = ModelTask.STATUS_CURRENT
                 taskFragment.activity.realmHelper.updateTask(task)
 
-                taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.primary_text_light))
-                taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity(), R.color.secondary_text_light))
-                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity(), task.getPriorityColor()))
+                taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.primary_text_light))
+                taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.secondary_text_light))
+                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity()!!, task.getPriorityColor()))
 
                 val flipIn: ObjectAnimator = ObjectAnimator.ofFloat(taskViewHolder.priority, "rotationY", 180f, 0f)
                 taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp)

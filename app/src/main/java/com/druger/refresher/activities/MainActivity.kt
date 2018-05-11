@@ -2,11 +2,6 @@ package com.druger.refresher.activities
 
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.TabLayout
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
 import com.druger.refresher.Ads
 import com.druger.refresher.App
 import com.druger.refresher.R
@@ -19,8 +14,6 @@ import com.druger.refresher.fragments.CurrentTaskFragment
 import com.druger.refresher.fragments.DoneTaskFragment
 import com.druger.refresher.fragments.TaskFragment
 import com.druger.refresher.models.ModelTask
-import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
@@ -94,7 +87,7 @@ class MainActivity : AppCompatActivity(),
         tabLayout.addTab(tabLayout.newTab().setText(R.string.current_task))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.done_task))
 
-        tabAdapter = TabAdapter(fragmentManager, 2)
+        tabAdapter = TabAdapter(supportFragmentManager, 2)
 
         viewPager.adapter = tabAdapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
