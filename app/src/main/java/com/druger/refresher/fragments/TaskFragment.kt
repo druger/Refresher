@@ -2,6 +2,8 @@ package com.druger.refresher.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.druger.refresher.App
 import com.druger.refresher.R
@@ -10,6 +12,7 @@ import com.druger.refresher.adapters.TaskAdapter
 import com.druger.refresher.alarms.AlarmHelper
 import com.druger.refresher.dialogs.EditTaskDialogFragment
 import com.druger.refresher.models.ModelTask
+import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.design.longSnackbar
 import javax.inject.Inject
 

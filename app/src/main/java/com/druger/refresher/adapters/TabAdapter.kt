@@ -1,5 +1,9 @@
 package com.druger.refresher.adapters
 
+
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentStatePagerAdapter
 import com.druger.refresher.fragments.CurrentTaskFragment
 import com.druger.refresher.fragments.DoneTaskFragment
 
@@ -15,6 +19,7 @@ class TabAdapter(fm: FragmentManager, private var numberOfTabs: Int) : FragmentS
 
     private var currentTaskFragment = CurrentTaskFragment()
     private var doneTaskFragment = DoneTaskFragment()
+
 
     override fun getItem(position: Int): Fragment? {
         return when (position) {

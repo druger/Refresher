@@ -3,6 +3,7 @@ package com.druger.refresher.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.druger.refresher.R
 import com.druger.refresher.adapters.CurrentTasksAdapter
 import com.druger.refresher.models.ModelSeparator
 import com.druger.refresher.models.ModelTask
+import kotlinx.android.synthetic.main.fragment_current_task.*
 import java.util.Calendar
 import kotlin.collections.ArrayList
 
