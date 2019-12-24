@@ -3,17 +3,16 @@ package com.druger.refresher.dialogs
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.app.DialogFragment
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.support.design.widget.TextInputLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import androidx.fragment.app.DialogFragment
 import com.druger.refresher.App
 import com.druger.refresher.R
 import com.druger.refresher.alarms.AlarmHelper
@@ -34,13 +33,6 @@ class AddingTaskDialogFragment : DialogFragment() {
     private lateinit var task: ModelTask
     private lateinit var calendar: Calendar
 
-    private lateinit var taskTitle: TextInputLayout
-    private lateinit var etTitle: EditText
-    private lateinit var taskDate: TextInputLayout
-    private lateinit var etDate: EditText
-    private lateinit var taskTime: TextInputLayout
-    private lateinit var etTime: EditText
-
     private lateinit var addingTaskListener: AddingTaskListener
 
     interface AddingTaskListener {
@@ -59,44 +51,41 @@ class AddingTaskDialogFragment : DialogFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.getApplicationComponent().inject(this)
     }
 
 
     @SuppressLint("InflateParams")
-    override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         task = ModelTask()
 
-        val inflater = activity.layoutInflater
-        val container = inflater.inflate(R.layout.dialog_task, null)
+        val inflater = activity?.layoutInflater
+        val container = inflater?.inflate(R.layout.dialog_task, null)
 
-        bindViews()
         setTextForEditTexts()
 
         calendar = setupCalendar()
 
-        val builder = setupBuilder(container)
-        setupSpinner(container)
-        setupDatePicker(etDate)
-        setupTimePicker(etTime)
+        container?.let { setupSpinner() }
+        taskDate.editText?.let { setupDatePicker(it) }
+        taskTime.editText?.let { setupTimePicker(it) }
 
-        return setupAlertDialog(builder)
+        return setupAlertDialog(container?.let { setupBuilder(it) })
     }
 
-    private fun setupAlertDialog(builder: AlertDialog.Builder): AlertDialog {
-        val alertDialog: AlertDialog = builder.create()
-        alertDialog.setOnShowListener({
-            val positiveButton = (dialog as AlertDialog).
-                    getButton(DialogInterface.BUTTON_POSITIVE)
-            if (etTitle.length() == 0) {
+    private fun setupAlertDialog(builder: AlertDialog.Builder?): AlertDialog {
+        val alertDialog: AlertDialog? = builder?.create()
+        alertDialog?.setOnShowListener {
+            val positiveButton = (dialog as AlertDialog).getButton(DialogInterface.BUTTON_POSITIVE)
+            if (taskTitle.editText?.length() == 0) {
                 positiveButton.isEnabled = false
                 taskTitle.error = resources.getString(R.string.dialog_error_empty_title)
             }
 
-            etTitle.addTextChangedListener(object : TextWatcher {
+            taskTitle.editText?.addTextChangedListener(object : TextWatcher {
 
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
@@ -116,34 +105,34 @@ class AddingTaskDialogFragment : DialogFragment() {
 
                 }
             })
-        })
-        return alertDialog
+        }
+        return alertDialog!!
     }
 
     private fun setupTimePicker(etTime: EditText) {
-        etTime.setOnClickListener({
+        etTime.setOnClickListener {
             if (etTime.length() == 0) {
                 etTime.setText(" ")
             }
             val timePickerDialog = PickerDialogs.TimePickerFragment()
             timePickerDialog.setEtTime(etTime)
-            timePickerDialog.show(fragmentManager, "TimePickerFragment")
-        })
+            fragmentManager?.let { timePickerDialog.show(it, "TimePickerFragment") }
+        }
     }
 
     private fun setupDatePicker(etDate: EditText) {
-        etDate.setOnClickListener({
+        etDate.setOnClickListener {
             if (etDate.length() == 0) {
                 etDate.setText(" ")
             }
             val datePickerFragment = PickerDialogs.DatePickerFragment()
             datePickerFragment.setEtDate(etDate)
-            datePickerFragment.show(fragmentManager, "DatePickerFragment")
-        })
+            fragmentManager?.let { datePickerFragment.show(it, "DatePickerFragment") }
+        }
     }
 
-    private fun setupSpinner(container: View) {
-        val priorityAdapter: ArrayAdapter<String> = ArrayAdapter(activity,
+    private fun setupSpinner() {
+        val priorityAdapter: ArrayAdapter<String> = ArrayAdapter(requireContext(),
                 android.R.layout.simple_spinner_dropdown_item,
                 resources.getStringArray(R.array.priority_levels))
 
@@ -160,15 +149,15 @@ class AddingTaskDialogFragment : DialogFragment() {
         }
     }
 
-    private fun setupBuilder(container: View): AlertDialog.Builder {
+    private fun setupBuilder(container: View?): AlertDialog.Builder {
         val builder = AlertDialog.Builder(activity)
         builder.setTitle(R.string.dialog_title)
         builder.setView(container)
 
-        builder.setPositiveButton(R.string.dialog_ok, { dialog, _ ->
+        builder.setPositiveButton(R.string.dialog_ok) { dialog, _ ->
             run {
-                task.title = etTitle.text.toString()
-                if (etDate.length() != 0 || etTime.length() != 0) {
+                task.title = taskTitle.editText?.text.toString()
+                if (taskDate.editText?.length() != 0 || taskTime.editText?.length() != 0) {
                     task.date = calendar.timeInMillis
 
                     alarmHelper.setAlarm(task)
@@ -177,14 +166,14 @@ class AddingTaskDialogFragment : DialogFragment() {
                 addingTaskListener.onTaskAdded(task)
                 dialog.dismiss()
             }
-        })
+        }
 
-        builder.setNegativeButton(R.string.dialog_cancel, { dialog, _ ->
+        builder.setNegativeButton(R.string.dialog_cancel) { dialog, _ ->
             run {
                 addingTaskListener.onTaskAddingCancel()
                 dialog.cancel()
             }
-        })
+        }
         return builder
     }
 
@@ -198,11 +187,5 @@ class AddingTaskDialogFragment : DialogFragment() {
         taskTitle.hint = resources.getString(R.string.task_title)
         taskDate.hint = resources.getString(R.string.task_date)
         taskTime.hint = resources.getString(R.string.task_time)
-    }
-
-    private fun bindViews() {
-        etTitle = taskTitle.editText!!
-        etDate = taskDate.editText!!
-        etTime = taskTime.editText!!
     }
 }

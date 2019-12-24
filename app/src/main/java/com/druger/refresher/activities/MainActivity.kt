@@ -2,12 +2,10 @@ package com.druger.refresher.activities
 
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.TabLayout
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.widget.SearchView
-import com.druger.refresher.Ads
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.druger.refresher.App
 import com.druger.refresher.R
 import com.druger.refresher.adapters.TabAdapter
@@ -19,8 +17,9 @@ import com.druger.refresher.fragments.CurrentTaskFragment
 import com.druger.refresher.fragments.DoneTaskFragment
 import com.druger.refresher.fragments.TaskFragment
 import com.druger.refresher.models.ModelTask
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.toast
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
@@ -45,9 +44,6 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState, persistentState)
         setContentView(R.layout.activity_main)
         App.getApplicationComponent().inject(this)
-
-        Ads.showBanner(this)
-
         setupToolbar()
         setupViewPager()
         setupUI()
@@ -83,11 +79,10 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun setupUX() {
-        fab.setOnClickListener({
+        fab.setOnClickListener {
             val addingTaskDialogFragment = AddingTaskDialogFragment()
-            addingTaskDialogFragment.show(fragmentManager, "AddingTaskDialogFragment")
-        })
-
+            addingTaskDialogFragment.show(supportFragmentManager, "AddingTaskDialogFragment")
+        }
     }
 
     private fun setupViewPager() {
@@ -128,7 +123,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onTaskAddingCancel() {
-        toast(R.string.task_adding_cancel)
+        Toast.makeText(this, R.string.task_adding_cancel, Toast.LENGTH_SHORT).show()
     }
 
     override fun onTaskEdited(updatedTask: ModelTask) {

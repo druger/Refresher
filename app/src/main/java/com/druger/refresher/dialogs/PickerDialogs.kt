@@ -2,7 +2,6 @@ package com.druger.refresher.dialogs
 
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.app.DialogFragment
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
@@ -10,6 +9,7 @@ import android.text.format.DateFormat
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TimePicker
+import androidx.fragment.app.DialogFragment
 import com.druger.refresher.utils.DateHelper
 import java.util.*
 
@@ -22,13 +22,13 @@ class PickerDialogs {
 
         private lateinit var etDate: EditText
 
-        override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            return DatePickerDialog(activity, this, year, month, day)
+            return DatePickerDialog(requireContext(), this, year, month, day)
         }
 
         override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int) {
@@ -52,7 +52,7 @@ class PickerDialogs {
 
         private lateinit var etTime: EditText
 
-        override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val calendar = Calendar.getInstance()
             val hour = calendar.get(Calendar.HOUR_OF_DAY)
             val minute = calendar.get(Calendar.MINUTE)

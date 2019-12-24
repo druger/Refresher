@@ -2,15 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.druger.refresher.fragments.CurrentTaskFragment"
     android:background="@color/gray_50">
 
-   <android.support.v7.widget.RecyclerView
+   <androidx.recyclerview.widget.RecyclerView
        android:id="@+id/rvCurrentTasks"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:scrollbars="vertical"
        android:clipToPadding="false"
-       android:paddingBottom="88dp"/>
+       android:paddingBottom="88dp"
+       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </FrameLayout>

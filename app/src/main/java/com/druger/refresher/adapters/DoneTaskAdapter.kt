@@ -4,16 +4,17 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Handler
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.druger.refresher.R
 import com.druger.refresher.fragments.DoneTaskFragment
 import com.druger.refresher.models.ModelTask
 import com.druger.refresher.utils.DateHelper
+import de.hdodenhof.circleimageview.CircleImageView
 
 /**
 * Created by druger on 19.09.2015.
@@ -53,28 +54,28 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
             itemView.visibility = View.VISIBLE
             taskViewHolder.priority.isEnabled = true
 
-            taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.primary_text_light))
-            taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.secondary_text_light))
-            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity()!!, task.getPriorityColor()))
+            taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.primary_text_light))
+            taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.secondary_text_light))
+            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.requireContext(), task.getPriorityColor()))
             taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp)
 
-            itemView.setOnLongClickListener({
+            itemView.setOnLongClickListener {
                 // for delay ripple animation
                 val handler = Handler()
                 handler.postDelayed({
                     taskFragment.removeTaskDialog(
-                            taskViewHolder.layoutPosition)
+                        taskViewHolder.layoutPosition)
                 }, 1000)
-            })
+            }
 
-            taskViewHolder.priority.setOnClickListener({
+            taskViewHolder.priority.setOnClickListener {
                 taskViewHolder.priority.isEnabled = false
                 task.status = ModelTask.STATUS_CURRENT
                 taskFragment.activity.realmHelper.updateTask(task)
 
-                taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.primary_text_light))
-                taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.secondary_text_light))
-                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity()!!, task.getPriorityColor()))
+                taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.primary_text_light))
+                taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.secondary_text_light))
+                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.requireContext(), task.getPriorityColor()))
 
                 val flipIn: ObjectAnimator = ObjectAnimator.ofFloat(taskViewHolder.priority, "rotationY", 180f, 0f)
                 taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp)
@@ -89,10 +90,10 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
                         if (task.status != ModelTask.STATUS_DONE) {
 
                             val translationX: ObjectAnimator = ObjectAnimator.ofFloat(itemView,
-                                    "translationX", 0f, -itemView.width.toFloat())
+                                "translationX", 0f, -itemView.width.toFloat())
 
                             val translationXBack: ObjectAnimator = ObjectAnimator.ofFloat(itemView,
-                                    "translationX", -itemView.width.toFloat(), 0f)
+                                "translationX", -itemView.width.toFloat(), 0f)
 
                             translationX.addListener(object : Animator.AnimatorListener {
 
@@ -131,7 +132,7 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
                     }
                 })
                 flipIn.start()
-            })
+            }
         }
     }
 }

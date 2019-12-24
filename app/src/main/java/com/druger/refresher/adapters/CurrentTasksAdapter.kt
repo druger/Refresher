@@ -4,17 +4,18 @@ import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Handler
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.druger.refresher.R
 import com.druger.refresher.fragments.CurrentTaskFragment
 import com.druger.refresher.models.ModelSeparator
 import com.druger.refresher.models.ModelTask
 import com.druger.refresher.utils.DateHelper
+import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
 /**
@@ -56,7 +57,7 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
         val item = items[position]
 
         if (item.isTask()) {
-            holder.itemView?.isEnabled = true
+            holder.itemView.isEnabled = true
             val task = item as ModelTask
             val taskViewHolder = holder as TaskViewHolder
 
@@ -73,35 +74,35 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
             taskViewHolder.priority.isEnabled = true
 
             if (task.date != 0L && task.date < Calendar.getInstance().timeInMillis) {
-                itemView.setBackgroundColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.gray_200))
+                itemView.setBackgroundColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.gray_200))
             } else {
-                itemView.setBackgroundColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.gray_50))
+                itemView.setBackgroundColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.gray_50))
             }
 
-            taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.primary_text_light))
-            taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.secondary_text_light))
-            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity()!!, task.getPriorityColor()))
+            taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.primary_text_light))
+            taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.secondary_text_light))
+            taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.requireContext(), task.getPriorityColor()))
             taskViewHolder.priority.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp)
 
-            itemView.setOnClickListener({taskFragment.showEditTaskDialog(task)})
+            itemView.setOnClickListener {taskFragment.showEditTaskDialog(task)}
 
-            itemView.setOnLongClickListener({
+            itemView.setOnLongClickListener{
                 // for delay ripple animation
                 val handler = Handler()
                 handler.postDelayed({
                     taskFragment.removeTaskDialog(
                             taskViewHolder.layoutPosition)
                 },1000)
-            })
+            }
 
-            taskViewHolder.priority.setOnClickListener({
+            taskViewHolder.priority.setOnClickListener {
                 taskViewHolder.priority.isEnabled = false
                 task.status = ModelTask.STATUS_DONE
                 taskFragment.activity.realmHelper.updateTask(task)
 
-                taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.primary_text_light))
-                taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.getActivity()!!, R.color.secondary_text_light))
-                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.getActivity()!!, task.getPriorityColor()))
+                taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.primary_text_light))
+                taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.secondary_text_light))
+                taskViewHolder.priority.setColorFilter(ContextCompat.getColor(taskFragment.requireContext(), task.getPriorityColor()))
 
                 val flipIn: ObjectAnimator = ObjectAnimator.ofFloat(taskViewHolder.priority, "rotationY", -180f, 0f)
 
@@ -116,10 +117,10 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
                             taskViewHolder.priority.setImageResource(R.drawable.ic_check_circle_white_48dp)
 
                             val translationX: ObjectAnimator = ObjectAnimator.ofFloat(itemView,
-                            "translationX", 0f, itemView.width.toFloat())
+                                "translationX", 0f, itemView.width.toFloat())
 
                             val translationXBack: ObjectAnimator = ObjectAnimator.ofFloat(itemView,
-                            "translationX", itemView.width.toFloat(), 0f)
+                                "translationX", itemView.width.toFloat(), 0f)
 
                             translationX.addListener(object : Animator.AnimatorListener {
 
@@ -159,12 +160,12 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
                 })
 
                 flipIn.start()
-            })
+            }
         } else {
             val separator = item as ModelSeparator
             val separatorViewHolder = holder as SeparatorViewHolder
 
-            val resources = holder.itemView?.resources
+            val resources = holder.itemView.resources
             separatorViewHolder.type.text = resources?.getString(separator.type)
         }
     }

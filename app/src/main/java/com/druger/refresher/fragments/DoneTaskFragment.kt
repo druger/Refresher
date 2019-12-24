@@ -3,7 +3,6 @@ package com.druger.refresher.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_done_task.*
  */
 class DoneTaskFragment : TaskFragment() {
 
-    lateinit var onTaskRestoreListener: OnTaskRestoreListener
+    private lateinit var onTaskRestoreListener: OnTaskRestoreListener
 
     interface OnTaskRestoreListener {
         fun onTaskRestore(task: ModelTask)
@@ -41,12 +40,8 @@ class DoneTaskFragment : TaskFragment() {
     }
 
     private fun setupRecycler() {
-        recyclerView = rvDoneTasks;
-        layoutManager = LinearLayoutManager(getActivity())
-        recyclerView.layoutManager = layoutManager
-
         tasksAdapter = DoneTaskAdapter(this)
-        recyclerView.adapter = tasksAdapter
+        rvDoneTasks.adapter = tasksAdapter
     }
 
     override fun addTask(newTask: ModelTask, saveToDB: Boolean) {

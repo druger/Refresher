@@ -3,7 +3,6 @@ package com.druger.refresher.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import com.druger.refresher.adapters.CurrentTasksAdapter
 import com.druger.refresher.models.ModelSeparator
 import com.druger.refresher.models.ModelTask
 import kotlinx.android.synthetic.main.fragment_current_task.*
-import java.util.Calendar
+import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -41,12 +40,8 @@ class CurrentTaskFragment : TaskFragment() {
     }
 
     private fun setupRecycler() {
-        recyclerView = rvCurrentTasks
-        layoutManager = LinearLayoutManager(getActivity())
-        recyclerView.layoutManager = layoutManager
-
         tasksAdapter = CurrentTasksAdapter(this)
-        recyclerView.adapter = tasksAdapter
+        rvCurrentTasks.adapter = tasksAdapter
     }
 
     override fun addTask(newTask: ModelTask, saveToDB: Boolean) {

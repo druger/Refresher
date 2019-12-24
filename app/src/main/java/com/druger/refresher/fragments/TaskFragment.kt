@@ -2,9 +2,8 @@ package com.druger.refresher.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.druger.refresher.App
 import com.druger.refresher.R
 import com.druger.refresher.activities.MainActivity
@@ -12,17 +11,14 @@ import com.druger.refresher.adapters.TaskAdapter
 import com.druger.refresher.alarms.AlarmHelper
 import com.druger.refresher.dialogs.EditTaskDialogFragment
 import com.druger.refresher.models.ModelTask
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.design.longSnackbar
 import javax.inject.Inject
 
 /**
  * Created by druger on 19.09.2015.
  */
 abstract class TaskFragment : Fragment() {
-
-    protected lateinit var recyclerView: RecyclerView
-    protected lateinit var layoutManager: RecyclerView.LayoutManager
 
     protected lateinit var tasksAdapter: TaskAdapter
 
@@ -63,7 +59,7 @@ abstract class TaskFragment : Fragment() {
             val timeStamp = removingTask.timeStamp
             var isRemoved: Boolean
 
-            dialogBuilder.setPositiveButton(R.string.dialog_ok, { dialog, _ ->
+            dialogBuilder.setPositiveButton(R.string.dialog_ok) { dialog, _ ->
                 run {
 
                     tasksAdapter.removeItem(location)
@@ -71,9 +67,9 @@ abstract class TaskFragment : Fragment() {
                     showSnackbar(timeStamp, isRemoved)
                     dialog.dismiss()
                 }
-            })
+            }
 
-            dialogBuilder.setNegativeButton(R.string.dialog_cancel, { dialog, _ -> dialog.cancel() })
+            dialogBuilder.setNegativeButton(R.string.dialog_cancel) { dialog, _ -> dialog.cancel() }
         }
 
         dialogBuilder.show()
@@ -81,28 +77,29 @@ abstract class TaskFragment : Fragment() {
 
     private fun showSnackbar(timeStamp: Long, isRemoved: Boolean) {
         var removed = isRemoved
-        val snackbar = longSnackbar(activity.coordinator, R.string.removed, R.string.dialog_cancel) {
-            addTask(activity.realmHelper.getTaskByTimestamp(timeStamp)!!, false)
-            removed = false
-        }
-        snackbar.view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-
-            override fun onViewAttachedToWindow(v: View) {
-
+        Snackbar.make(activity.coordinator, R.string.removed, Snackbar.LENGTH_LONG).apply {
+            setAction(R.string.dialog_cancel) {
+                addTask(activity.realmHelper.getTaskByTimestamp(timeStamp)!!, false)
+                removed = false
             }
+            view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
 
-            override fun onViewDetachedFromWindow(v: View) {
-                if (removed) {
-                    alarmHelper.removeAlarm(timeStamp)
-                    activity.realmHelper.removeTaskByTimestamp(timeStamp)
+                override fun onViewAttachedToWindow(v: View) {}
+
+                override fun onViewDetachedFromWindow(v: View) {
+                    if (removed) {
+                        alarmHelper.removeAlarm(timeStamp)
+                        activity.realmHelper.removeTaskByTimestamp(timeStamp)
+                    }
                 }
-            }
-        })
+            })
+            show()
+        }
     }
 
     fun showEditTaskDialog(task: ModelTask) {
         val editingTaskDialog = EditTaskDialogFragment.newInstance(task)
-        editingTaskDialog.show(getActivity()?.fragmentManager, "EditTaskDialogFragment")
+        fragmentManager?.let { editingTaskDialog.show(it, "EditTaskDialogFragment") }
     }
 
     abstract fun findTasks(title: String)

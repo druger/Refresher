@@ -19,10 +19,10 @@ class RealmHelper(var context: Context) {
         const val SCHEMA_VERSION: Long = 1
         const val REALM_NAME = "refresher.realm"
 
-        const private val TITLE_COLUMN = "title"
-        const private val DATE_COLUMN = "date"
-        const private val STATUS_COLUMN = "status"
-        const private val STAMP_COLUMN = "timeStamp"
+        private const val TITLE_COLUMN = "title"
+        private const val DATE_COLUMN = "date"
+        private const val STATUS_COLUMN = "status"
+        private const val STAMP_COLUMN = "timeStamp"
     }
 
     private var realm: Realm = Realm.getDefaultInstance()
