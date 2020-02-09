@@ -26,20 +26,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.Toolbar
+                <Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?android:attr/actionBarSize"
                     app:layout_scrollFlags="scroll|enterAlways">
 
-                    <androidx.appcompat.widget.SearchView
+                    <SearchView
                         android:id="@+id/searchView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         app:searchIcon="@drawable/ic_search_white_24dp"
                         app:theme="@style/Theme.AppCompat.NoActionBar" />
-                </androidx.appcompat.widget.Toolbar>
+                </Toolbar>
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"

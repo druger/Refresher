@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun setupToolbar() {
         toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white))
-        setSupportActionBar(toolbar)
+//        setSupportActionBar(toolbar)
     }
 
     override fun onTaskRestore(task: ModelTask) {
