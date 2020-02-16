@@ -26,7 +26,7 @@ class DoneTaskFragment : TaskFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            onTaskRestoreListener = activity
+//            onTaskRestoreListener = activity
         } catch (e: ClassCastException) {
             throw ClassCastException(activity.toString()
                     + " must implement OnTaskRestoreListener")
@@ -35,7 +35,7 @@ class DoneTaskFragment : TaskFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_done_task, container, false)
-        setupRecycler()
+//        setupRecycler()
         return rootView
     }
 
@@ -64,14 +64,14 @@ class DoneTaskFragment : TaskFragment() {
         }
 
         if (saveToDB) {
-            activity.realmHelper.saveTask(newTask)
+//            activity.realmHelper.saveTask(newTask)
         }
     }
 
     override fun findTasks(title: String) {
         tasksAdapter.removeAllItems()
         val tasks: MutableList<ModelTask> = ArrayList()
-        tasks.addAll(activity.realmHelper.getTasksByTitleAndDoneStatus(title))
+//        tasks.addAll(activity.realmHelper.getTasksByTitleAndDoneStatus(title))
         for (i in 0..tasks.size) {
             addTask(tasks.get(i), false)
         }
@@ -85,7 +85,7 @@ class DoneTaskFragment : TaskFragment() {
     override fun addTaskFromDB() {
         tasksAdapter.removeAllItems()
         val tasks: MutableList<ModelTask> = ArrayList()
-        tasks.addAll(activity.realmHelper.getTasksByDoneStatus())
+//        tasks.addAll(activity.realmHelper.getTasksByDoneStatus())
         for (i in 0..tasks.size) {
             addTask(tasks.get(i), false)
         }

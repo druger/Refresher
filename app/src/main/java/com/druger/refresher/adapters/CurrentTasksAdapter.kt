@@ -98,7 +98,7 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
             taskViewHolder.priority.setOnClickListener {
                 taskViewHolder.priority.isEnabled = false
                 task.status = ModelTask.STATUS_DONE
-                taskFragment.activity.realmHelper.updateTask(task)
+//                taskFragment.activity.realmHelper.updateTask(task)
 
                 taskViewHolder.title.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.primary_text_light))
                 taskViewHolder.date.setTextColor(ContextCompat.getColor(taskFragment.requireContext(), R.color.secondary_text_light))

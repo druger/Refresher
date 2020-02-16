@@ -2,17 +2,14 @@ package com.druger.refresher.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.Fragment
 import com.druger.refresher.App
 import com.druger.refresher.R
-import com.druger.refresher.activities.MainActivity
+import com.druger.refresher.activities.MainActivityNew
 import com.druger.refresher.adapters.TaskAdapter
 import com.druger.refresher.alarms.AlarmHelper
 import com.druger.refresher.dialogs.EditTaskDialogFragment
 import com.druger.refresher.models.ModelTask
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 /**
@@ -22,7 +19,7 @@ abstract class TaskFragment : Fragment() {
 
     protected lateinit var tasksAdapter: TaskAdapter
 
-    lateinit var activity: MainActivity
+    lateinit var activity: MainActivityNew
 
     @Inject
     lateinit var alarmHelper: AlarmHelper
@@ -30,9 +27,9 @@ abstract class TaskFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (getActivity() != null) {
-            activity = getActivity() as MainActivity
+            activity = getActivity() as MainActivityNew
         }
-        addTaskFromDB()
+//        addTaskFromDB()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +61,7 @@ abstract class TaskFragment : Fragment() {
 
                     tasksAdapter.removeItem(location)
                     isRemoved = true
-                    showSnackbar(timeStamp, isRemoved)
+//                    showSnackbar(timeStamp, isRemoved)
                     dialog.dismiss()
                 }
             }
@@ -75,27 +72,27 @@ abstract class TaskFragment : Fragment() {
         dialogBuilder.show()
     }
 
-    private fun showSnackbar(timeStamp: Long, isRemoved: Boolean) {
-        var removed = isRemoved
-        Snackbar.make(activity.coordinator, R.string.removed, Snackbar.LENGTH_LONG).apply {
-            setAction(R.string.dialog_cancel) {
-                addTask(activity.realmHelper.getTaskByTimestamp(timeStamp)!!, false)
-                removed = false
-            }
-            view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-
-                override fun onViewAttachedToWindow(v: View) {}
-
-                override fun onViewDetachedFromWindow(v: View) {
-                    if (removed) {
-                        alarmHelper.removeAlarm(timeStamp)
-                        activity.realmHelper.removeTaskByTimestamp(timeStamp)
-                    }
-                }
-            })
-            show()
-        }
-    }
+//    private fun showSnackbar(timeStamp: Long, isRemoved: Boolean) {
+//        var removed = isRemoved
+//        Snackbar.make(activity.coordinator, R.string.removed, Snackbar.LENGTH_LONG).apply {
+//            setAction(R.string.dialog_cancel) {
+//                addTask(activity.realmHelper.getTaskByTimestamp(timeStamp)!!, false)
+//                removed = false
+//            }
+//            view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+//
+//                override fun onViewAttachedToWindow(v: View) {}
+//
+//                override fun onViewDetachedFromWindow(v: View) {
+//                    if (removed) {
+//                        alarmHelper.removeAlarm(timeStamp)
+//                        activity.realmHelper.removeTaskByTimestamp(timeStamp)
+//                    }
+//                }
+//            })
+//            show()
+//        }
+//    }
 
     fun showEditTaskDialog(task: ModelTask) {
         val editingTaskDialog = EditTaskDialogFragment.newInstance(task)

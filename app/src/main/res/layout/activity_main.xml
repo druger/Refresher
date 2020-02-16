@@ -14,13 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".activities.MainActivity">
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar_layout"
                 android:layout_width="match_parent"
@@ -41,24 +34,21 @@
                         app:theme="@style/Theme.AppCompat.NoActionBar" />
                 </Toolbar>
 
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="?android:attr/actionBarSize"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:tabIndicatorColor="@android:color/background_light"
-                    app:tabSelectedTextColor="@android:color/background_light"
-                    app:tabTextColor="@android:color/background_light" />
+                    app:layout_scrollFlags="scroll|enterAlways" />
 
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <fragment
-                android:id="@+id/nav_host_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/nav_graph" />
+            </androidx.viewpager.widget.ViewPager>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"

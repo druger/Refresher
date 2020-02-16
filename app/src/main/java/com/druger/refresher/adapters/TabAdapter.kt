@@ -2,7 +2,7 @@ package com.druger.refresher.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.FragmentPagerAdapter
 import com.druger.refresher.fragments.CurrentTaskFragment
 import com.druger.refresher.fragments.DoneTaskFragment
 
@@ -11,7 +11,7 @@ import com.druger.refresher.fragments.DoneTaskFragment
 */
 class TabAdapter(
     fm: FragmentManager, private var numberOfTabs: Int
-) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     companion object {
         const val CURRENT_TASK_FRAGMENT_POSITION = 0
@@ -28,5 +28,13 @@ class TabAdapter(
 
     override fun getCount(): Int {
         return numberOfTabs
+    }
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return when(position) {
+            0 -> "Current"
+            1 -> "Done"
+            else -> super.getPageTitle(position)
+        }
     }
 }
