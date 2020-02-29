@@ -1,4 +1,4 @@
-package com.druger.refresher.models;
+package com.druger.refresher.models
 
 import com.druger.refresher.R
 import io.realm.RealmObject
@@ -22,7 +22,7 @@ open class ModelTask(var status: Int = -1, var timeStamp: Long = Date().time) : 
 
     @PrimaryKey
     private lateinit var id: String
-    var priority:Int = 0;
+    var priority:Int = 0
     var title: String = ""
     var date: Long = 0
     var dateStatus: Int = 0
@@ -36,28 +36,28 @@ open class ModelTask(var status: Int = -1, var timeStamp: Long = Date().time) : 
     fun getPriorityColor(): Int {
         when(priority) {
             PRIORITY_HIGH ->
-            if (status == STATUS_CURRENT || status == STATUS_OVERDUE) {
-                return R.color.priority_high;
-            } else {
-                return R.color.priority_high_selected;
-            }
+                return if (status == STATUS_CURRENT || status == STATUS_OVERDUE) {
+                    R.color.priority_high
+                } else {
+                    R.color.priority_high_selected
+                }
             PRIORITY_NORMAL ->
-            if (status == STATUS_CURRENT || status == STATUS_OVERDUE) {
-                return R.color.priority_normal;
-            } else {
-                return R.color.priority_normal_selected;
-            }
+                return if (status == STATUS_CURRENT || status == STATUS_OVERDUE) {
+                    R.color.priority_normal
+                } else {
+                    R.color.priority_normal_selected
+                }
             PRIORITY_LOW ->
-            if (status == STATUS_CURRENT || status == STATUS_OVERDUE) {
-                return R.color.priority_low;
-            } else {
-                return R.color.priority_low_selected;
-            }
+                return if (status == STATUS_CURRENT || status == STATUS_OVERDUE) {
+                    R.color.priority_low
+                } else {
+                    R.color.priority_low_selected
+                }
             else -> return 0
         }
     }
 
     override fun isTask(): Boolean {
-        return true;
+        return true
     }
 }
