@@ -13,4 +13,11 @@ data class Task(
     @ColumnInfo(name = "status") val status: Int = -1,
     @ColumnInfo(name = "priority") val priority: Int,
     @ColumnInfo(name = "reminder_date") val reminderDate: Long
-)
+) {
+    companion object {
+        // TODO make enum
+        const val STATUS_OVERDUE = 0
+        const val STATUS_CURRENT = 1
+        const val STATUS_DONE = 2
+    }
+}
