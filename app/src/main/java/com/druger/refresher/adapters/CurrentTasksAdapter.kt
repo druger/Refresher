@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.druger.refresher.R
-import com.druger.refresher.fragments.CurrentTaskFragment
+import com.druger.refresher.ui.fragments.CurrentTaskFragment
 import com.druger.refresher.models.ModelSeparator
 import com.druger.refresher.models.ModelTask
 import com.druger.refresher.utils.DateHelper

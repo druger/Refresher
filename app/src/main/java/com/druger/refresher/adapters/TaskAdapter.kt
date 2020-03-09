@@ -3,7 +3,7 @@ package com.druger.refresher.adapters
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.druger.refresher.fragments.TaskFragment
+import com.druger.refresher.ui.fragments.TaskFragment
 import com.druger.refresher.models.Item
 import com.druger.refresher.models.ModelSeparator
 import com.druger.refresher.models.ModelTask

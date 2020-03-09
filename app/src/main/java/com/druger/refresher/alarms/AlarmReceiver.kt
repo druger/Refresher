@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 
 import com.druger.refresher.App
 import com.druger.refresher.R
-import com.druger.refresher.activities.MainActivity
+import com.druger.refresher.ui.activities.MainActivity
 
 /**
  * Created by druger on 29.09.2015.

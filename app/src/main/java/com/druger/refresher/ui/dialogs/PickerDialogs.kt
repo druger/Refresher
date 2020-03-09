@@ -1,4 +1,4 @@
-package com.druger.refresher.dialogs
+package com.druger.refresher.ui.dialogs
 
 import android.app.DatePickerDialog
 import android.app.Dialog

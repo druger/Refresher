@@ -1,4 +1,4 @@
-package com.druger.refresher.fragments
+package com.druger.refresher.ui.fragments
 
 
 import android.content.Context

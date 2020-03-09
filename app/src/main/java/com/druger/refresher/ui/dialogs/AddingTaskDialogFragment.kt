@@ -1,4 +1,4 @@
-package com.druger.refresher.dialogs
+package com.druger.refresher.ui.dialogs
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog

@@ -1,4 +1,4 @@
-package com.druger.refresher.activities
+package com.druger.refresher.ui.activities
 
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -11,11 +11,11 @@ import com.druger.refresher.R
 import com.druger.refresher.adapters.TabAdapter
 import com.druger.refresher.alarms.AlarmHelper
 import com.druger.refresher.database.RealmHelper
-import com.druger.refresher.dialogs.AddingTaskDialogFragment
-import com.druger.refresher.dialogs.EditTaskDialogFragment
-import com.druger.refresher.fragments.CurrentTaskFragment
-import com.druger.refresher.fragments.DoneTaskFragment
-import com.druger.refresher.fragments.TaskFragment
+import com.druger.refresher.ui.dialogs.AddingTaskDialogFragment
+import com.druger.refresher.ui.dialogs.EditTaskDialogFragment
+import com.druger.refresher.ui.fragments.CurrentTaskFragment
+import com.druger.refresher.ui.fragments.DoneTaskFragment
+import com.druger.refresher.ui.fragments.TaskFragment
 import com.druger.refresher.models.ModelTask
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout

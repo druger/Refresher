@@ -1,4 +1,4 @@
-package com.druger.refresher.activities
+package com.druger.refresher.ui.activities
 
 import android.os.Bundle
 import androidx.activity.viewModels

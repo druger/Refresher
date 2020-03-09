@@ -3,8 +3,8 @@ package com.druger.refresher.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.druger.refresher.fragments.CurrentTaskFragment
-import com.druger.refresher.fragments.DoneTaskFragment
+import com.druger.refresher.ui.fragments.CurrentTaskFragment
+import com.druger.refresher.ui.fragments.DoneTaskFragment
 
 /**
 * Created by druger on 12.09.2015.

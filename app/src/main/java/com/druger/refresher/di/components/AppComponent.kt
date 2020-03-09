@@ -1,11 +1,11 @@
 package com.druger.refresher.di.components
 
-import com.druger.refresher.activities.MainActivity
+import com.druger.refresher.ui.activities.MainActivity
 import com.druger.refresher.alarms.AlarmSetter
 import com.druger.refresher.di.modules.AppModule
-import com.druger.refresher.dialogs.AddingTaskDialogFragment
-import com.druger.refresher.dialogs.EditTaskDialogFragment
-import com.druger.refresher.fragments.TaskFragment
+import com.druger.refresher.ui.dialogs.AddingTaskDialogFragment
+import com.druger.refresher.ui.dialogs.EditTaskDialogFragment
+import com.druger.refresher.ui.fragments.TaskFragment
 import dagger.Component
 import javax.inject.Singleton
 

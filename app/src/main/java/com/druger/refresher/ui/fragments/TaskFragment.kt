@@ -1,14 +1,14 @@
-package com.druger.refresher.fragments
+package com.druger.refresher.ui.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.druger.refresher.App
 import com.druger.refresher.R
-import com.druger.refresher.activities.MainActivityNew
+import com.druger.refresher.ui.activities.MainActivityNew
 import com.druger.refresher.adapters.TaskAdapter
 import com.druger.refresher.alarms.AlarmHelper
-import com.druger.refresher.dialogs.EditTaskDialogFragment
+import com.druger.refresher.ui.dialogs.EditTaskDialogFragment
 import com.druger.refresher.models.ModelTask
 import javax.inject.Inject
 
