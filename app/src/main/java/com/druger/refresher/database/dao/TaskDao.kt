@@ -11,7 +11,7 @@ interface TaskDao {
     fun insert(task: Task)
 
     @Query("SELECT * from task_table WHERE status = :status ORDER BY time_stamp DESC")
-    fun getTasksByStatus(status: Int): LiveData<List<Task>>
+    fun getTasks(status: Int): LiveData<List<Task>>
 
     @Update
     fun update(task: Task)

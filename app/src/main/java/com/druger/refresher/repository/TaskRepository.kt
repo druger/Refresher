@@ -1,12 +1,26 @@
 package com.druger.refresher.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.druger.refresher.database.dao.TaskDao
 import com.druger.refresher.database.entity.Task
+import com.druger.refresher.database.entity.map
+import com.druger.refresher.models.ModelTaskNew
 
 class TaskRepository(private val taskDao: TaskDao) {
 
-    fun getTasksByStatus(status: Int): LiveData<List<Task>> = taskDao.getTasksByStatus(status)
+    fun getCurrentTasks(): LiveData<List<ModelTaskNew>> =
+        getTasks(Task.STATUS_CURRENT)
+
+    fun getDoneTasks(): LiveData<List<ModelTaskNew>> = getTasks(Task.STATUS_DONE)
+
+    private fun getTasks(status: Int): LiveData<List<ModelTaskNew>> {
+        return taskDao.getTasks(status).map { tasks ->
+            tasks.map { task ->
+                task.map()
+            }
+        }
+    }
 
     fun insert(task: Task) = taskDao.insert(task)
 
