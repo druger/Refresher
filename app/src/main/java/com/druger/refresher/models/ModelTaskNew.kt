@@ -8,5 +8,5 @@ class ModelTaskNew(
     val timeStamp: Long = Date().time,
     val status: Int = -1,
     val priority: Int = 1,
-    val reminderDate: Long?
+    val reminderDate: Long = 0
 )

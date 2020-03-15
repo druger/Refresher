@@ -13,7 +13,7 @@ data class Task(
     @ColumnInfo(name = "time_stamp") val timeStamp: Long =  Date().time,
     @ColumnInfo(name = "status") val status: Int = -1,
     @ColumnInfo(name = "priority") val priority: Int = 1,
-    @ColumnInfo(name = "reminder_date") val reminderDate: Long?
+    @ColumnInfo(name = "reminder_date") val reminderDate: Long = 0
 ) {
     companion object {
         // TODO make enum

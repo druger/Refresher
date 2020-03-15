@@ -11,9 +11,9 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.druger.refresher.R
-import com.druger.refresher.ui.fragments.CurrentTaskFragment
 import com.druger.refresher.models.ModelSeparator
 import com.druger.refresher.models.ModelTask
+import com.druger.refresher.ui.fragments.CurrentTaskFragment
 import com.druger.refresher.utils.DateHelper
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
@@ -34,7 +34,7 @@ class CurrentTasksAdapter(taskFragment: CurrentTaskFragment) : TaskAdapter(taskF
         when (viewType) {
             TYPE_TASK -> {
                 val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.model_task, parent, false)
+                        .inflate(R.layout.model_task_item, parent, false)
                 val title: TextView = view.findViewById(R.id.tvTaskTitle)
                 val date: TextView = view.findViewById(R.id.tvTaskDate)
                 val priority: CircleImageView = view.findViewById(R.id.cvTaskPriority)

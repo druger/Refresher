@@ -11,8 +11,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.druger.refresher.R
-import com.druger.refresher.ui.fragments.DoneTaskFragment
 import com.druger.refresher.models.ModelTask
+import com.druger.refresher.ui.fragments.DoneTaskFragment
 import com.druger.refresher.utils.DateHelper
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -25,7 +25,7 @@ class DoneTaskAdapter(taskFragment: DoneTaskFragment) : TaskAdapter(taskFragment
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         val view: View = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.model_task, viewGroup, false)
+                .inflate(R.layout.model_task_item, viewGroup, false)
         val title: TextView = view.findViewById(R.id.tvTaskTitle)
         val date: TextView = view.findViewById(R.id.tvTaskDate)
         val priority: CircleImageView = view.findViewById(R.id.cvTaskPriority)
