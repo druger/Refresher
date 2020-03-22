@@ -1,13 +1,9 @@
 package com.druger.refresher.ui.activities
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.druger.refresher.R
 import com.druger.refresher.adapters.TabAdapter
-import com.druger.refresher.models.ModelTaskNew
-import com.druger.refresher.viewmodel.TaskViewModel
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,18 +14,15 @@ class MainActivityNew : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupViewPager()
-        setupViewModel()
+        fabAddTask.setOnClickListener { showAddingTaskFragment() }
     }
 
-    private fun setupViewModel() {
-        val taskModel: TaskViewModel by viewModels()
-        taskModel.getTasks().observe(this, Observer<List<ModelTaskNew>> { tasks ->
+    private fun showAddingTaskFragment() {
 
-        })
     }
 
     private fun setupViewPager() {
-        tabAdapter = TabAdapter(supportFragmentManager, 2)
+        tabAdapter = TabAdapter(supportFragmentManager, NUMBER_OF_TABS)
 
         viewPager.adapter = tabAdapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
@@ -50,4 +43,7 @@ class MainActivityNew : AppCompatActivity(R.layout.activity_main) {
         })
     }
 
+    companion object {
+        const val NUMBER_OF_TABS = 2
+    }
 }

@@ -35,7 +35,7 @@ class CurrentTaskAdapterNew(val context: Context):
         val priority: CircleImageView = itemView.findViewById(R.id.cvTaskPriority)
     }
 
-    fun setTasks(tasks: List<ModelTaskNew>) {
+    fun addTasks(tasks: List<ModelTaskNew>) {
         this.tasks = tasks
         notifyDataSetChanged()
     }

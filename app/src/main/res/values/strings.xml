@@ -30,5 +30,6 @@
     <string name="separator_future">Future</string>
     
     <string name="task_adding_cancel">Task adding cancel</string>
+    <string name="text">Text</string>
 
 </resources>
