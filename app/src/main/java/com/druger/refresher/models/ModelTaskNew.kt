@@ -1,8 +1,9 @@
 package com.druger.refresher.models
 
+import com.druger.refresher.database.entity.Task
 import java.util.*
 
-class ModelTaskNew(
+data class ModelTaskNew(
     val id: Int,
     val title: String,
     val timeStamp: Long = Date().time,
@@ -10,3 +11,5 @@ class ModelTaskNew(
     val priority: Int = 1,
     val reminderDate: Long = 0
 )
+
+fun ModelTaskNew.map() = Task(id, title, timeStamp, status, priority, reminderDate)

@@ -28,4 +28,8 @@ class TaskViewModel(application: Application): AndroidViewModel(application) {
     private fun loadTasks() {
         tasks = repository.getCurrentTasks() as MutableLiveData<List<ModelTaskNew>>
     }
+
+    fun insertTask(task: ModelTaskNew) {
+        repository.insert(task)
+    }
 }

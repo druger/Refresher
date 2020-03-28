@@ -31,5 +31,6 @@
     
     <string name="task_adding_cancel">Task adding cancel</string>
     <string name="text">Text</string>
+    <string name="add_task">Add task</string>
 
 </resources>

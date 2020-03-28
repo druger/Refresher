@@ -6,6 +6,7 @@ import com.druger.refresher.database.dao.TaskDao
 import com.druger.refresher.database.entity.Task
 import com.druger.refresher.database.entity.map
 import com.druger.refresher.models.ModelTaskNew
+import com.druger.refresher.models.map
 
 class TaskRepository(private val taskDao: TaskDao) {
 
@@ -22,7 +23,9 @@ class TaskRepository(private val taskDao: TaskDao) {
         }
     }
 
-    fun insert(task: Task) = taskDao.insert(task)
+    fun insert(task: ModelTaskNew) {
+        taskDao.insert(task.map())
+    }
 
     fun update(task: Task) = taskDao.update(task)
 

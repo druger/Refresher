@@ -43,7 +43,7 @@ class AlarmReceiver : BroadcastReceiver() {
         builder.setContentTitle("Reminder")
         builder.setContentText(title)
         builder.color = ContextCompat.getColor(context, color)
-        builder.setSmallIcon(R.drawable.ic_check_white_48dp)
+        builder.setSmallIcon(R.drawable.ic_done)
 
         builder.setDefaults(Notification.DEFAULT_ALL)
         builder.setContentIntent(pendingIntent)
