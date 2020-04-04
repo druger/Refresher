@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.druger.refresher.database.dao.TaskDao
 import com.druger.refresher.database.entity.Task
 
-@Database(entities = [Task::class], version = 1, exportSchema = false)
+@Database(entities = [Task::class], version = 2, exportSchema = false)
 abstract class TaskRoomDatabase: RoomDatabase() {
 
     abstract fun taskDao(): TaskDao
@@ -26,7 +26,7 @@ abstract class TaskRoomDatabase: RoomDatabase() {
                     context.applicationContext,
                     TaskRoomDatabase::class.java,
                     "task_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

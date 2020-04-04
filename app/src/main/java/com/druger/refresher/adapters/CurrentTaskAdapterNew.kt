@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.druger.refresher.R
 import com.druger.refresher.models.ModelTaskNew
 import com.druger.refresher.utils.DateHelper
-import de.hdodenhof.circleimageview.CircleImageView
 
 class CurrentTaskAdapterNew(val context: Context):
     RecyclerView.Adapter<CurrentTaskAdapterNew.CurrentTaskViewHolder>() {
@@ -32,7 +31,6 @@ class CurrentTaskAdapterNew(val context: Context):
     inner class CurrentTaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.tvTaskTitle)
         val date: TextView = itemView.findViewById(R.id.tvTaskDate)
-        val priority: CircleImageView = itemView.findViewById(R.id.cvTaskPriority)
     }
 
     fun addTasks(tasks: List<ModelTaskNew>) {
