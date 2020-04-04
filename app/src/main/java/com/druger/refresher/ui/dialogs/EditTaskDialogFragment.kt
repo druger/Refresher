@@ -176,9 +176,6 @@ class EditTaskDialogFragment : DialogFragment() {
             if (etTime.length() == 0) {
                 etTime.setText(" ")
             }
-            val timePickerDialog = PickerDialogs.TimePickerFragment()
-            timePickerDialog.setEtTime(etTime)
-            fragmentManager?.let { timePickerDialog.show(it, "TimePickerFragment") }
         }
     }
 
@@ -187,9 +184,6 @@ class EditTaskDialogFragment : DialogFragment() {
             if (etDate.length() == 0) {
                 etDate.setText(" ")
             }
-            val datePickerFragment = PickerDialogs.DatePickerFragment()
-            datePickerFragment.setEtDate(etDate)
-            fragmentManager?.let { datePickerFragment.show(it, "DatePickerFragment") }
         }
     }
 
