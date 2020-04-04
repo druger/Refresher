@@ -23,7 +23,7 @@ class TaskRepository(private val taskDao: TaskDao) {
         }
     }
 
-    fun insert(task: ModelTaskNew) {
+    suspend fun insert(task: ModelTaskNew) {
         taskDao.insert(task.map())
     }
 

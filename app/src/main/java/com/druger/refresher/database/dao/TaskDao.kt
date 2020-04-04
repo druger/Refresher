@@ -8,7 +8,7 @@ import com.druger.refresher.database.entity.Task
 interface TaskDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(task: Task)
+    suspend fun insert(task: Task)
 
     @Query("SELECT * from task_table WHERE status = :status ORDER BY time_stamp DESC")
     fun getTasks(status: Int): LiveData<List<Task>>

@@ -4,9 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.druger.refresher.database.TaskRoomDatabase
 import com.druger.refresher.models.ModelTaskNew
 import com.druger.refresher.repository.TaskRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class TaskViewModel(application: Application): AndroidViewModel(application) {
     private val repository: TaskRepository
@@ -29,7 +32,7 @@ class TaskViewModel(application: Application): AndroidViewModel(application) {
         tasks = repository.getCurrentTasks() as MutableLiveData<List<ModelTaskNew>>
     }
 
-    fun insertTask(task: ModelTaskNew) {
+    fun insertTask(task: ModelTaskNew) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(task)
     }
 }
