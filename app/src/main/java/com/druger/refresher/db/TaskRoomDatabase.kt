@@ -1,11 +1,11 @@
-package com.druger.refresher.database
+package com.druger.refresher.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.druger.refresher.database.dao.TaskDao
-import com.druger.refresher.database.entity.Task
+import com.druger.refresher.db.dao.TaskDao
+import com.druger.refresher.db.entity.Task
 
 @Database(entities = [Task::class], version = 2, exportSchema = false)
 abstract class TaskRoomDatabase: RoomDatabase() {

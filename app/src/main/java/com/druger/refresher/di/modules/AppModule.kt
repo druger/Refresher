@@ -4,7 +4,6 @@ import android.app.AlarmManager
 import android.content.Context
 import com.druger.refresher.App
 import com.druger.refresher.alarms.AlarmHelper
-import com.druger.refresher.database.RealmHelper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -24,8 +23,4 @@ class AppModule(val app: App) {
     @Provides
     fun provideAlarmHelper(): AlarmHelper =
             AlarmHelper(app.getSystemService(Context.ALARM_SERVICE) as AlarmManager, app)
-
-    @Singleton
-    @Provides
-    fun provideDBHelper(): RealmHelper = RealmHelper(app)
 }

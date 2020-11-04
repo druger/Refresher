@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Intent
 
 import com.druger.refresher.App
-import com.druger.refresher.models.ModelTask
+import com.druger.refresher.models.ModelTaskNew
 
 /**
 * Created by druger on 29.09.2015.
@@ -13,16 +13,15 @@ import com.druger.refresher.models.ModelTask
 class AlarmHelper(private var alarmManager: AlarmManager,
                   private var app: App) {
 
-    fun setAlarm(task: ModelTask) {
+    fun setAlarm(task: ModelTaskNew) {
         val intent = Intent(app, AlarmReceiver::class.java)
         intent.putExtra("title", task.title)
         intent.putExtra("time_stamp", task.timeStamp)
-        intent.putExtra("color", task.getPriorityColor())
 
         val pendingIntent: PendingIntent = PendingIntent.getBroadcast(app,
                 task.timeStamp.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP, task.date, pendingIntent)
+        alarmManager.set(AlarmManager.RTC_WAKEUP, task.reminderDate, pendingIntent)
     }
 
     fun removeAlarm(taskTimeStamp: Long) {

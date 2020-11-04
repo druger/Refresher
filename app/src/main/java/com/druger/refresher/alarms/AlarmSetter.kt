@@ -4,8 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.druger.refresher.App
-import com.druger.refresher.database.RealmHelper
-import com.druger.refresher.models.ModelTask
+import com.druger.refresher.models.ModelTaskNew
 import javax.inject.Inject
 
 /**
@@ -15,18 +14,14 @@ class AlarmSetter : BroadcastReceiver() {
 
     @Inject
     lateinit var alarmHelper: AlarmHelper
-    @Inject
-    lateinit var realmHelper: RealmHelper
-
 
     override fun onReceive(context: Context, intent: Intent) {
         App.getApplicationComponent().inject(this)
 
-        val tasks: MutableList<ModelTask> = mutableListOf()
-        tasks.addAll(realmHelper.getTasksByAnyStatus())
+        val tasks: MutableList<ModelTaskNew> = mutableListOf()
 
         for (task in tasks) {
-            if (task.date.toInt() != 0) {
+            if (task.reminderDate.toInt() != 0) {
                 alarmHelper.setAlarm(task)
             }
         }

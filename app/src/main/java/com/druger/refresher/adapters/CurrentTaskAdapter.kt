@@ -10,8 +10,8 @@ import com.druger.refresher.R
 import com.druger.refresher.models.ModelTaskNew
 import com.druger.refresher.utils.DateHelper
 
-class CurrentTaskAdapterNew(val context: Context):
-    RecyclerView.Adapter<CurrentTaskAdapterNew.CurrentTaskViewHolder>() {
+class CurrentTaskAdapter(val context: Context):
+    RecyclerView.Adapter<CurrentTaskAdapter.CurrentTaskViewHolder>() {
 
     private var tasks = emptyList<ModelTaskNew>()
 

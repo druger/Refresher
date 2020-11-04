@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.druger.refresher.database.TaskRoomDatabase
+import com.druger.refresher.db.TaskRoomDatabase
 import com.druger.refresher.models.ModelTaskNew
 import com.druger.refresher.repository.TaskRepository
 import kotlinx.coroutines.Dispatchers

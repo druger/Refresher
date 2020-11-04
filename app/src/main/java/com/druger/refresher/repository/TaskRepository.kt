@@ -2,9 +2,9 @@ package com.druger.refresher.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.druger.refresher.database.dao.TaskDao
-import com.druger.refresher.database.entity.Task
-import com.druger.refresher.database.entity.map
+import com.druger.refresher.db.dao.TaskDao
+import com.druger.refresher.db.entity.Task
+import com.druger.refresher.db.entity.map
 import com.druger.refresher.models.ModelTaskNew
 import com.druger.refresher.models.map
 

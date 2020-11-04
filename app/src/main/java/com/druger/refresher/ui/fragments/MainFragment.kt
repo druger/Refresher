@@ -21,7 +21,7 @@ class MainFragment: Fragment(R.layout.fragment_main) {
     }
 
     private fun showAddingTaskFragment() {
-        findNavController().navigate(R.id.go_to_addingTaskFragment)
+        findNavController().navigate(R.id.goToAddingTaskFragment)
     }
 
     private fun setupViewPager() {

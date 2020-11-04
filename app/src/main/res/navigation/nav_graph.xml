@@ -9,7 +9,7 @@
         android:name="com.druger.refresher.ui.fragments.MainFragment"
         android:label="MainFragment" >
         <action
-            android:id="@+id/go_to_addingTaskFragment"
+            android:id="@+id/goToAddingTaskFragment"
             app:destination="@id/addingTaskFragment" />
     </fragment>
     <fragment

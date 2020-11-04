@@ -34,7 +34,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context, timeStamp.toInt(),
                 resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        setupNotification(context, title, timeStamp.toInt(), color, pendingIntent)
+        title?.let { setupNotification(context, it, timeStamp.toInt(), color, pendingIntent) }
     }
 
     private fun setupNotification(context: Context, title: String, timeStamp: Int, color: Int,

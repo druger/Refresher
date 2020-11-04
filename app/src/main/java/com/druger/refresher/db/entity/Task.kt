@@ -1,4 +1,4 @@
-package com.druger.refresher.database.entity
+package com.druger.refresher.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
