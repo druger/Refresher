@@ -8,8 +8,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-
-import com.druger.refresher.App
 import com.druger.refresher.R
 import com.druger.refresher.ui.activities.MainActivity
 
@@ -24,11 +22,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val timeStamp = intent.getLongExtra("time_stamp", 0)
         val color = intent.getIntExtra("color", 0)
 
-        var resultIntent = Intent(context, MainActivity::class.java)
-
-        if (App.isActivityVisible()) {
-            resultIntent = intent
-        }
+        val resultIntent = Intent(context, MainActivity::class.java)
 
         resultIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context, timeStamp.toInt(),

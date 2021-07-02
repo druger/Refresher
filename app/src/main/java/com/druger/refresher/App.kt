@@ -13,11 +13,6 @@ class App : Application() {
 
     companion object {
         private lateinit var appComponent: AppComponent
-        private var activityVisible: Boolean = false
-
-        fun isActivityVisible(): Boolean {
-            return activityVisible
-        }
 
         fun getApplicationComponent(): AppComponent {
             return appComponent
