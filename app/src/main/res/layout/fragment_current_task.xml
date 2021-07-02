@@ -1,18 +1,28 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragments.CurrentTaskFragment"
-    android:background="@color/gray_50">
+    android:background="@color/gray_50"
+    tools:context=".ui.fragments.CurrentTasksFragment">
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/rvCurrentTasks"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:scrollbars="vertical"
-       android:clipToPadding="false"
-       android:paddingBottom="88dp"
-       app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCurrentTasks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="88dp"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:backgroundTint="@color/colorAccent"
+        android:src="@drawable/ic_add_white_24dp"
+        app:tint="@null" />
 
 </FrameLayout>

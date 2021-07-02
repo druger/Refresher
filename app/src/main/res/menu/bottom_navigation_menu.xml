@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/current"
+        android:enabled="true"
+        android:icon="@drawable/ic_current_task"
+        android:title="@string/current_task" />
+    <item
+        android:id="@+id/done"
+        android:enabled="true"
+        android:icon="@drawable/ic_done_task"
+        android:title="@string/done_task" />
+</menu>

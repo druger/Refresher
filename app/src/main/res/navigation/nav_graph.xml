@@ -2,18 +2,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/current">
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.druger.refresher.ui.fragments.MainFragment"
-        android:label="MainFragment" >
+        android:id="@+id/current"
+        android:name="com.druger.refresher.ui.fragments.CurrentTasksFragment">
         <action
-            android:id="@+id/goToAddingTaskFragment"
-            app:destination="@id/addingTaskFragment" />
+            android:id="@+id/goToAddingTask"
+            app:destination="@id/addingTask" />
+        <action
+            android:id="@+id/goToDoneTasks"
+            app:destination="@id/done" />
     </fragment>
+
     <fragment
-        android:id="@+id/addingTaskFragment"
+        android:id="@+id/done"
+        android:name="com.druger.refresher.ui.fragments.DoneTasksFragment" />
+
+    <fragment
+        android:id="@+id/addingTask"
         android:name="com.druger.refresher.ui.fragments.AddingTaskFragment"
         android:label="AddingTaskFragment" />
 </navigation>

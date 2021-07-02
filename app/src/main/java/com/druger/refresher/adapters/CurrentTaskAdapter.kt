@@ -16,7 +16,7 @@ class CurrentTaskAdapter(val context: Context):
     private var tasks = emptyList<ModelTaskNew>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrentTaskViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.model_task_item, parent, false)
+        val itemView = LayoutInflater.from(context).inflate(R.layout.task_item, parent, false)
         return CurrentTaskViewHolder(itemView)
     }
 
