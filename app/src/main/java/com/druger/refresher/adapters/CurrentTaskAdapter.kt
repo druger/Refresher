@@ -1,36 +1,37 @@
 package com.druger.refresher.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.druger.refresher.R
+import com.druger.refresher.databinding.TaskItemBinding
 import com.druger.refresher.models.ModelTaskNew
 import com.druger.refresher.utils.DateHelper
 
-class CurrentTaskAdapter(val context: Context):
+class CurrentTaskAdapter :
     RecyclerView.Adapter<CurrentTaskAdapter.CurrentTaskViewHolder>() {
 
     private var tasks = emptyList<ModelTaskNew>()
 
+    private lateinit var binding: TaskItemBinding
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrentTaskViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.task_item, parent, false)
-        return CurrentTaskViewHolder(itemView)
+        binding = TaskItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CurrentTaskViewHolder(binding)
     }
 
     override fun getItemCount() = tasks.size
 
     override fun onBindViewHolder(holder: CurrentTaskViewHolder, position: Int) {
         val task = tasks[position]
-        holder.title.text = task.title
-        holder.date.text = DateHelper.getFullDate(task.reminderDate)
+        with(holder) {
+            title.text = task.title
+            date.text = DateHelper.getFullDate(task.reminderDate)
+        }
     }
 
-    inner class CurrentTaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.tvTaskTitle)
-        val date: TextView = itemView.findViewById(R.id.tvTaskDate)
+    inner class CurrentTaskViewHolder(binding: TaskItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        val title = binding.tvTaskTitle
+        val date = binding.tvTaskDate
     }
 
     fun addTasks(tasks: List<ModelTaskNew>) {

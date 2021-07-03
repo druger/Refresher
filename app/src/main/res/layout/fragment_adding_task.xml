@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_adding" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_adding" />
 
     <EditText
         android:id="@+id/etTitle"
@@ -15,8 +17,8 @@
         android:layout_marginEnd="16dp"
         android:background="@null"
         android:hint="@string/task_title"
-        android:textSize="22sp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="22sp" />
 
     <EditText
         android:id="@+id/etText"

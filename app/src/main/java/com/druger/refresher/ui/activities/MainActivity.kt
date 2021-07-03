@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.druger.refresher.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.druger.refresher.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupNavigation()
     }
 
@@ -19,7 +23,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             supportFragmentManager.findFragmentById(R.id.mainContainer) as NavHostFragment
 
         NavigationUI.setupWithNavController(
-            bottomNavigation,
+            binding.bottomNavigation,
             navHostFragment.navController
         )
     }

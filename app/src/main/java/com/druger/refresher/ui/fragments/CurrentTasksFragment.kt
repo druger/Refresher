@@ -1,26 +1,40 @@
 package com.druger.refresher.ui.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.druger.refresher.R
 import com.druger.refresher.adapters.CurrentTaskAdapter
+import com.druger.refresher.databinding.FragmentCurrentTaskBinding
 import com.druger.refresher.viewmodel.TaskViewModel
-import kotlinx.android.synthetic.main.fragment_current_task.*
 
-class CurrentTasksFragment: Fragment(R.layout.fragment_current_task) {
+class CurrentTasksFragment: Fragment() {
 
     private val taskModel: TaskViewModel by viewModels()
 
-    lateinit var adapter: CurrentTaskAdapter
+    private lateinit var adapter: CurrentTaskAdapter
+
+    private var binding: FragmentCurrentTaskBinding? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentCurrentTaskBinding.inflate(inflater, container, false)
+        return binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecycler()
         setupViewModel()
-        fabAddTask.setOnClickListener { showAddingTaskFragment() }
+        binding?.fabAddTask?.setOnClickListener { showAddingTaskFragment() }
+    }
+
+    override fun onDestroyView() {
+        binding = null
+        super.onDestroyView()
     }
 
     private fun showAddingTaskFragment() {
@@ -34,7 +48,7 @@ class CurrentTasksFragment: Fragment(R.layout.fragment_current_task) {
     }
 
     private fun setupRecycler() {
-        adapter = CurrentTaskAdapter(requireContext())
-        rvCurrentTasks.adapter = adapter
+        adapter = CurrentTaskAdapter()
+        binding?.rvCurrentTasks?.adapter = adapter
     }
 }
