@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                app:searchIcon="@drawable/ic_search_white_24dp"
+                app:searchIcon="@drawable/ic_search"
                 app:theme="@style/Theme.AppCompat.NoActionBar" />
         </Toolbar>
 
