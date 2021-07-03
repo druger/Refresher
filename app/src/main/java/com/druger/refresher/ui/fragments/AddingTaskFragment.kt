@@ -14,7 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.druger.refresher.databinding.FragmentAddingTaskBinding
-import com.druger.refresher.models.ModelTaskNew
+import com.druger.refresher.models.ModelTask
 import com.druger.refresher.utils.DateHelper
 import com.druger.refresher.viewmodel.TaskViewModel
 import kotlinx.coroutines.launch
@@ -67,7 +67,7 @@ class AddingTaskFragment : Fragment(),
         val title = binding?.etTitle?.text.toString().trim()
         if (title.isNotEmpty()) {
             viewLifecycleOwner.lifecycleScope.launch {
-                taskModel.insertTask(ModelTaskNew(title)).join()
+                taskModel.insertTask(ModelTask(title)).join()
                 findNavController().navigateUp()
             }
         }

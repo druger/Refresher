@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.druger.refresher.databinding.TaskItemBinding
-import com.druger.refresher.models.ModelTaskNew
+import com.druger.refresher.models.ModelTask
 import com.druger.refresher.utils.DateHelper
 
 class CurrentTaskAdapter :
     RecyclerView.Adapter<CurrentTaskAdapter.CurrentTaskViewHolder>() {
 
-    private var tasks = emptyList<ModelTaskNew>()
+    private var tasks = emptyList<ModelTask>()
 
     private lateinit var binding: TaskItemBinding
 
@@ -34,7 +34,7 @@ class CurrentTaskAdapter :
         val date = binding.tvTaskDate
     }
 
-    fun addTasks(tasks: List<ModelTaskNew>) {
+    fun addTasks(tasks: List<ModelTask>) {
         this.tasks = tasks
         notifyDataSetChanged()
     }

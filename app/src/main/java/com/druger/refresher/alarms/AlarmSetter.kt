@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.druger.refresher.App
-import com.druger.refresher.models.ModelTaskNew
+import com.druger.refresher.models.ModelTask
 import javax.inject.Inject
 
 /**
@@ -18,7 +18,7 @@ class AlarmSetter : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         App.getApplicationComponent().inject(this)
 
-        val tasks: MutableList<ModelTaskNew> = mutableListOf()
+        val tasks: MutableList<ModelTask> = mutableListOf()
 
         for (task in tasks) {
             if (task.reminderDate.toInt() != 0) {

@@ -3,7 +3,7 @@ package com.druger.refresher.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.druger.refresher.models.ModelTaskNew
+import com.druger.refresher.models.ModelTask
 import java.util.*
 
 @Entity(tableName = "task_table")
@@ -23,7 +23,7 @@ data class Task(
 }
 
 fun Task.map() =
-    ModelTaskNew(
+    ModelTask(
         title,
         timeStamp,
         status,

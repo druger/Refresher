@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Intent
 
 import com.druger.refresher.App
-import com.druger.refresher.models.ModelTaskNew
+import com.druger.refresher.models.ModelTask
 
 /**
 * Created by druger on 29.09.2015.
@@ -13,7 +13,7 @@ import com.druger.refresher.models.ModelTaskNew
 class AlarmHelper(private var alarmManager: AlarmManager,
                   private var app: App) {
 
-    fun setAlarm(task: ModelTaskNew) {
+    fun setAlarm(task: ModelTask) {
         val intent = Intent(app, AlarmReceiver::class.java)
         intent.putExtra("title", task.title)
         intent.putExtra("time_stamp", task.timeStamp)
