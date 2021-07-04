@@ -14,7 +14,7 @@ import com.druger.refresher.viewmodel.TaskViewModel
 
 class CurrentTasksFragment: Fragment() {
 
-    private val taskModel: TaskViewModel by viewModels()
+    private val viewModel: TaskViewModel by viewModels()
 
     private lateinit var adapter: CurrentTaskAdapter
 
@@ -28,7 +28,6 @@ class CurrentTasksFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecycler()
-        setupViewModel()
         binding?.fabAddTask?.setOnClickListener { showAddingTaskFragment() }
     }
 
@@ -41,14 +40,9 @@ class CurrentTasksFragment: Fragment() {
         findNavController().navigate(R.id.goToAddingTask)
     }
 
-    private fun setupViewModel() {
-        taskModel.getTasks().observe(viewLifecycleOwner, { tasks ->
-            adapter.addTasks(tasks)
-        })
-    }
-
     private fun setupRecycler() {
         adapter = CurrentTaskAdapter()
         binding?.rvCurrentTasks?.adapter = adapter
+        viewModel.tasks.observe(viewLifecycleOwner) { adapter.submitList(it) }
     }
 }

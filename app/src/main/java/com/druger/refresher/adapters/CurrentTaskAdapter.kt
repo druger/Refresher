@@ -2,27 +2,23 @@ package com.druger.refresher.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.druger.refresher.databinding.TaskItemBinding
 import com.druger.refresher.models.ModelTask
 import com.druger.refresher.utils.DateHelper
 
 class CurrentTaskAdapter :
-    RecyclerView.Adapter<CurrentTaskAdapter.CurrentTaskViewHolder>() {
-
-    private var tasks = emptyList<ModelTask>()
-
-    private lateinit var binding: TaskItemBinding
+    ListAdapter<ModelTask, CurrentTaskAdapter.CurrentTaskViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrentTaskViewHolder {
-        binding = TaskItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = TaskItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CurrentTaskViewHolder(binding)
     }
 
-    override fun getItemCount() = tasks.size
-
     override fun onBindViewHolder(holder: CurrentTaskViewHolder, position: Int) {
-        val task = tasks[position]
+        val task = getItem(position)
         with(holder) {
             title.text = task.title
             date.text = DateHelper.getFullDate(task.reminderDate)
@@ -34,8 +30,15 @@ class CurrentTaskAdapter :
         val date = binding.tvTaskDate
     }
 
-    fun addTasks(tasks: List<ModelTask>) {
-        this.tasks = tasks
-        notifyDataSetChanged()
+    companion object {
+        private val DiffCallback = object : DiffUtil.ItemCallback<ModelTask>() {
+            override fun areItemsTheSame(oldItem: ModelTask, newItem: ModelTask): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: ModelTask, newItem: ModelTask): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }
