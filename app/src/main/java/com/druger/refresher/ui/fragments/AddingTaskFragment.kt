@@ -28,6 +28,13 @@ class AddingTaskFragment : Fragment(),
 
     private var binding: FragmentAddingTaskBinding? = null
 
+    private lateinit var reminderCalendar: Calendar
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        reminderCalendar = Calendar.getInstance()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAddingTaskBinding.inflate(inflater, container, false)
         return binding?.root
@@ -44,18 +51,16 @@ class AddingTaskFragment : Fragment(),
     }
 
     override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.MONTH, monthOfYear)
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        binding?.tvDate?.text = DateHelper.getDate(calendar.timeInMillis)
+        reminderCalendar.set(year, monthOfYear, dayOfMonth)
+        binding?.tvDate?.text = DateHelper.getDate(reminderCalendar.timeInMillis)
     }
 
     override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        calendar.set(Calendar.MINUTE, minute)
-        binding?.tvTime?.text = DateHelper.getTime(calendar.timeInMillis)
+        reminderCalendar.apply {
+            set(Calendar.HOUR_OF_DAY, hourOfDay)
+            set(Calendar.MINUTE, minute)
+        }
+        binding?.tvTime?.text = DateHelper.getTime(reminderCalendar.timeInMillis)
     }
 
     override fun onDestroyView() {
@@ -67,7 +72,12 @@ class AddingTaskFragment : Fragment(),
         val title = binding?.etTitle?.text.toString().trim()
         if (title.isNotEmpty()) {
             viewLifecycleOwner.lifecycleScope.launch {
-                taskModel.insertTask(ModelTask(title)).join()
+                taskModel.insertTask(
+                    ModelTask(
+                        title = title,
+                        reminderDate = reminderCalendar.timeInMillis
+                    )
+                ).join()
                 findNavController().navigateUp()
             }
         }

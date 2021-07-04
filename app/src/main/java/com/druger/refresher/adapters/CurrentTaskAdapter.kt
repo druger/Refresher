@@ -21,7 +21,10 @@ class CurrentTaskAdapter :
         val task = getItem(position)
         with(holder) {
             title.text = task.title
-            date.text = DateHelper.getFullDate(task.reminderDate)
+            val reminderDate = task.reminderDate
+            if (reminderDate != 0L) {
+                date.text = DateHelper.getFullDate(reminderDate)
+            }
         }
     }
 
