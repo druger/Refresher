@@ -6,7 +6,7 @@ import java.util.*
 data class ModelTask(
     val title: String,
     val timeStamp: Long = Date().time,
-    val status: Int = Task.STATUS_CURRENT,
+    var status: Int = Task.STATUS_CURRENT,
     val reminderDate: Long = 0,
     val id: Int = 0
 )

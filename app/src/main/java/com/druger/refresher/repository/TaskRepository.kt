@@ -27,7 +27,7 @@ class TaskRepository(private val taskDao: TaskDao) {
         taskDao.insert(task.map())
     }
 
-    fun update(task: Task) = taskDao.update(task)
+    suspend fun update(task: ModelTask) = taskDao.update(task.map())
 
-    fun delete(task: Task) = taskDao.delete(task)
+    suspend fun delete(task: ModelTask) = taskDao.delete(task.map())
 }

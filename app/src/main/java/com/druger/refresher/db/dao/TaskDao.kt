@@ -14,8 +14,8 @@ interface TaskDao {
     fun getTasks(status: Int): LiveData<List<Task>>
 
     @Update
-    fun update(task: Task)
+    suspend fun update(task: Task)
 
     @Delete
-    fun delete(task: Task)
+    suspend fun delete(task: Task)
 }

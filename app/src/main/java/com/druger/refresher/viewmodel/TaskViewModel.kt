@@ -18,14 +18,21 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     init {
         val taskDao = TaskRoomDatabase.getDatabase(application).taskDao()
         repository = TaskRepository(taskDao)
-        loadTasks()
     }
 
-    private fun loadTasks() {
+    fun getCurrentTasks() {
         tasks = repository.getCurrentTasks()
+    }
+
+    fun getDoneTasks() {
+        tasks = repository.getDoneTasks()
     }
 
     fun insertTask(task: ModelTask) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(task)
+    }
+
+    fun updateTask(task: ModelTask) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(task)
     }
 }
