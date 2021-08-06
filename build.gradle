@@ -29,6 +29,8 @@ ext {
     constraint = "2.0.4"
     dagger = "2.27"
     daggerCompiler = "2.25.3"
+    compose = "1.0.1"
+    activity_compose = "1.3.0"
 }
 
 allprojects {
