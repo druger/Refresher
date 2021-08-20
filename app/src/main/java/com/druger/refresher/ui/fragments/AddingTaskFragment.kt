@@ -39,6 +39,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.druger.refresher.R
 import com.druger.refresher.models.ModelTask
+import com.druger.refresher.ui.Theme
 import com.druger.refresher.utils.DateHelper
 import com.druger.refresher.viewmodel.TaskViewModel
 import kotlinx.coroutines.launch
@@ -66,10 +67,12 @@ class AddingTaskFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            Scaffold(
-                topBar = { addToolbar() },
-                content = { addLayout() }
-            )
+            Theme.setupTheme {
+                Scaffold(
+                    topBar = { addToolbar() },
+                    content = { addLayout() }
+                )
+            }
         }
     }
 
