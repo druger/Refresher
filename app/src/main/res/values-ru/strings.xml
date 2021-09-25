@@ -14,7 +14,7 @@
     <string name="dialog_error_empty_title">Заполните поле</string>
     <string name="dialog_ok">ОК</string>
     <string name="dialog_removing_message">Удалить задачу?</string>
-    <string name="dialog_title">Добавление задачи</string>
+    <string name="adding_task">Добавление задачи</string>
     <string name="removed">Удалено</string>
     <string name="separator_future">Будущие</string>
     <string name="separator_overdue">Прошедшие</string>

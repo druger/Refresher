@@ -12,7 +12,7 @@ object Theme {
     fun setupTheme(content: @Composable () -> Unit) {
         MaterialTheme(
             colors = Colors(
-                primary = colorResource(R.color.colorPrimary),
+                primary = colorResource(R.color.primary),
                 primaryVariant = colorResource(R.color.primaryVariant),
                 secondary = colorResource(R.color.secondary),
                 secondaryVariant = colorResource(R.color.secondaryVariant),
