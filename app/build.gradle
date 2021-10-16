@@ -61,6 +61,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycle"
     implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycle"
+    implementation "androidx.compose.runtime:runtime-livedata:$rootProject.compose"
     // Room
     implementation "androidx.room:room-runtime:$rootProject.room"
     implementation "androidx.room:room-ktx:$rootProject.room"
