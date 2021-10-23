@@ -4,20 +4,22 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -25,6 +27,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.druger.refresher.R
 import com.druger.refresher.db.entity.Task
 import com.druger.refresher.models.ModelTask
 import com.druger.refresher.ui.Screen
@@ -113,17 +116,36 @@ class MainActivity : AppCompatActivity() {
     private fun TaskRow(task: ModelTask) {
         val isDone = task.status == Task.STATUS_DONE
         val isCurrent = task.status == Task.STATUS_CURRENT
-        Row {
+        Row(
+            modifier = Modifier
+                .height(60f.dp)
+                .padding(horizontal = 8f.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
             Checkbox(
                 checked = isDone,
                 onCheckedChange = {
                     if (isCurrent) moveTaskToDone(task)
                     else if (isDone) moveTaskToCurrent(task)
-                })
-            Text(text = task.title)
+                },
+                modifier = Modifier.weight(0.1f)
+            )
+            Text(
+                text = task.title,
+                modifier = Modifier.weight(0.6f),
+                color = colorResource(R.color.primary_text_light),
+                fontSize = 16.sp
+            )
             val reminderDate = task.reminderDate
             if (reminderDate != 0L) {
-                Text(text = DateHelper.getFullDate(reminderDate))
+                Text(
+                    text = DateHelper.getFullDate(reminderDate),
+                    modifier = Modifier.weight(0.3f),
+                    color = colorResource(R.color.secondary_text_light),
+                    fontSize = 14.sp
+                )
             }
         }
     }
