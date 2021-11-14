@@ -1,17 +1,24 @@
 package com.druger.refresher.ui.activities
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
+import android.text.format.DateFormat
+import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,11 +27,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -38,18 +47,42 @@ import com.druger.refresher.ui.Theme
 import com.druger.refresher.utils.DateHelper
 import com.druger.refresher.viewmodel.TaskViewModel
 import kotlinx.coroutines.launch
-
+import java.util.*
 
 // TODO Add view model
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
 
     private val viewModel: TaskViewModel by viewModels()
 
+    private lateinit var reminderCalendar: Calendar
+    private var titleText = mutableStateOf("")
+    private var dateText = mutableStateOf("")
+    private var timeText = mutableStateOf("")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            setContent()
+        reminderCalendar = Calendar.getInstance()
+        initDateAndTimeTitle()
+        setContent { setContent() }
+    }
+
+    private fun initDateAndTimeTitle() {
+        dateText.value = getString(R.string.task_date)
+        timeText.value = getString(R.string.task_time)
+    }
+
+    override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        reminderCalendar.set(year, monthOfYear, dayOfMonth)
+        dateText.value = DateHelper.getDate(reminderCalendar.timeInMillis)
+    }
+
+    override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
+        reminderCalendar.apply {
+            set(Calendar.HOUR_OF_DAY, hourOfDay)
+            set(Calendar.MINUTE, minute)
         }
+        timeText.value = DateHelper.getTime(reminderCalendar.timeInMillis)
     }
 
     @Preview
@@ -70,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             Scaffold(
                 topBar = { setupToolbar() },
                 bottomBar = { setupBottomBar(navController) },
-                floatingActionButton = { setupFAB() }
+                floatingActionButton = { setupFAB(navController) }
             ) { innerPadding ->
                 navigation(navController, innerPadding)
             }
@@ -78,9 +111,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun setupFAB() {
+    private fun setupFAB(navController: NavHostController) {
         FloatingActionButton(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate(Screen.AddingTask.route) },
             contentColor = Color.White
         ) {
             Icon(Icons.Filled.Add, contentDescription = null)
@@ -99,7 +132,131 @@ class MainActivity : AppCompatActivity() {
         ) {
             composable(Screen.CurrentTasks.route) { showCurrentTasks() }
             composable(Screen.DoneTasks.route) { showDoneTasks() }
+            composable(Screen.AddingTask.route) { showAddingTask(navController) }
         }
+    }
+
+    @Composable
+    private fun showAddingTask(navController: NavHostController) {
+        Scaffold(
+            topBar = { addTaskToolbar(navController) },
+            content = { addTaskLayout() }
+        )
+    }
+
+    @Composable
+    private fun addTaskToolbar(navController: NavHostController) {
+        TopAppBar {
+            Image(
+                ImageVector.vectorResource(R.drawable.ic_close),
+                contentDescription = null,
+                modifier = Modifier
+                    .weight(.1f)
+                    .clickable { navController.navigateUp() }
+            )
+
+            Text(
+                stringResource(R.string.add_task),
+                modifier = Modifier.weight(.8f),
+                textAlign = TextAlign.Center
+            )
+
+            Image(
+                ImageVector.vectorResource(R.drawable.ic_done),
+                contentDescription = null,
+                modifier = Modifier
+                    .weight(.1f)
+                    .clickable { addTask(navController) }
+            )
+        }
+    }
+
+    private fun addTask(navController: NavHostController) {
+        val title = titleText.value.trim()
+        if (title.isNotEmpty()) {
+            lifecycleScope.launch {
+                viewModel.insertTask(
+                    ModelTask(
+                        title = title,
+                        reminderDate = reminderCalendar.timeInMillis
+                    )
+                ).join()
+                navController.navigateUp()
+            }
+        }
+    }
+
+    @Composable
+    private fun addTaskLayout() {
+        var descriptionText by remember { mutableStateOf("") }
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = titleText.value,
+                onValueChange = { titleText.value = it },
+                label = { Text(stringResource(R.string.task_title)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                textStyle = TextStyle(color = Color.Black, fontSize = 22.sp)
+            )
+
+            OutlinedTextField(
+                value = descriptionText,
+                onValueChange = { descriptionText = it },
+                label = { Text(stringResource(R.string.text)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            ClickableText(
+                AnnotatedString(dateText.value),
+                modifier = Modifier.padding(16.dp),
+                onClick = { showDatePicker() },
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    color = colorResource(R.color.secondary_text_light)
+                )
+            )
+
+            ClickableText(
+                AnnotatedString(timeText.value),
+                modifier = Modifier.padding(horizontal = 16.dp),
+                onClick = { showTimePicker() },
+                style = TextStyle(
+                    fontSize = 22.sp,
+                    color = colorResource(R.color.secondary_text_light)
+                )
+            )
+        }
+    }
+
+    private fun showTimePicker() {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        TimePickerDialog(
+            this,
+            this,
+            hour,
+            minute,
+            DateFormat.is24HourFormat(this)
+        ).apply { show() }
+    }
+
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(
+            this,
+            this,
+            year,
+            month,
+            day
+        ).apply { show() }
     }
 
     @Composable
@@ -214,7 +371,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setVisibilityNavigation(navController: NavController) {
+    private fun setVisibilityNavigation(navController: NavHostController) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
 
