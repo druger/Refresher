@@ -9,6 +9,8 @@ import android.widget.TimePicker
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -45,20 +47,22 @@ import com.druger.refresher.models.ModelTask
 import com.druger.refresher.ui.Screen
 import com.druger.refresher.ui.Theme
 import com.druger.refresher.utils.DateHelper
-import com.druger.refresher.viewmodel.TaskViewModel
+import com.druger.refresher.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
-// TODO Add view model
+@ExperimentalAnimationApi
 class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
-    private val viewModel: TaskViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var reminderCalendar: Calendar
     private var titleText = mutableStateOf("")
     private var dateText = mutableStateOf("")
     private var timeText = mutableStateOf("")
+
+    private var navigationVisibility = mutableStateOf(true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,25 +91,27 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
     @Preview
     @Composable
-    private fun setupToolbar() {
-        // TODO add search
-        TopAppBar {
-
-        }
-    }
-
-    @Preview
-    @Composable
     private fun setContent() {
         val navController = rememberNavController()
+        setVisibilityNavigation(navController)
 
         Theme.setupTheme {
             Scaffold(
-                topBar = { setupToolbar() },
-                bottomBar = { setupBottomBar(navController) },
+                topBar = { setupToolbar(navigationVisibility) },
+                bottomBar = { setupBottomBar(navController, navigationVisibility) },
                 floatingActionButton = { setupFAB(navController) }
             ) { innerPadding ->
                 navigation(navController, innerPadding)
+            }
+        }
+    }
+
+    @Composable
+    private fun setupToolbar(navigationVisibility: MutableState<Boolean>) {
+        AnimatedVisibility(visible = navigationVisibility.value) {
+            // TODO add search
+            TopAppBar {
+
             }
         }
     }
@@ -334,64 +340,67 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     }
 
     @Composable
-    private fun setupBottomBar(navController: NavHostController) {
-        val menus = listOf(Screen.CurrentTasks, Screen.DoneTasks)
+    private fun setupBottomBar(
+        navController: NavHostController,
+        navigationVisibility: MutableState<Boolean>
+    ) {
+        AnimatedVisibility(visible = navigationVisibility.value) {
+            val menus = listOf(Screen.CurrentTasks, Screen.DoneTasks)
 
-        BottomNavigation {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry?.destination?.route
+            BottomNavigation {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
 
-            menus.forEach { item ->
-                BottomNavigationItem(
-                    selected = currentRoute == item.route,
-                    onClick = {
-                        navController.navigate(item.route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
-                            navController.graph.startDestinationRoute?.let { route ->
-                                popUpTo(route) { saveState = true }
+                menus.forEach { item ->
+                    BottomNavigationItem(
+                        selected = currentRoute == item.route,
+                        onClick = {
+                            navController.navigate(item.route) {
+                                // Pop up to the start destination of the graph to
+                                // avoid building up a large stack of destinations
+                                // on the back stack as users select items
+                                navController.graph.startDestinationRoute?.let { route ->
+                                    popUpTo(route) { saveState = true }
+                                }
+                                // Avoid multiple copies of the same destination when
+                                // reselecting the same item
+                                launchSingleTop = true
+                                // Restore state when reselecting a previously selected item
+                                restoreState = true
                             }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
-                        }
-                    },
-                    icon = {
-                        Icon(
-                            ImageVector.vectorResource(item.icon),
-                            contentDescription = null
-                        )
-                    },
-                    label = { Text(stringResource(item.title)) }
-                )
+                        },
+                        icon = {
+                            Icon(
+                                ImageVector.vectorResource(item.icon),
+                                contentDescription = null
+                            )
+                        },
+                        label = { Text(stringResource(item.title)) }
+                    )
+                }
             }
         }
     }
 
     private fun setVisibilityNavigation(navController: NavHostController) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            when (destination.id) {
-
+            when (destination.route) {
+                Screen.CurrentTasks.route,
+                Screen.DoneTasks.route -> {
+                    showBottomNav()
+                }
+                else -> {
+                    hideBottomNav()
+                }
             }
         }
     }
 
-    private fun showToolbar() {
-
-    }
-
     private fun showBottomNav() {
-
-    }
-
-    private fun hideToolbar() {
-
+        navigationVisibility.value = true
     }
 
     private fun hideBottomNav() {
-
+        navigationVisibility.value = false
     }
 }

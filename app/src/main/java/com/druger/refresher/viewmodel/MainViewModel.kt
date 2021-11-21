@@ -10,7 +10,7 @@ import com.druger.refresher.repository.TaskRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class TaskViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TaskRepository
 
     lateinit var tasks: LiveData<List<ModelTask>>
