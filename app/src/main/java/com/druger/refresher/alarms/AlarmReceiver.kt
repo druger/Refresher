@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.druger.refresher.R
@@ -16,6 +17,7 @@ import com.druger.refresher.ui.activities.MainActivity
  */
 class AlarmReceiver : BroadcastReceiver() {
 
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onReceive(context: Context, intent: Intent) {
 
         val title = intent.getStringExtra("title")
