@@ -7,29 +7,38 @@ import android.content.Intent
 import com.druger.refresher.App
 import com.druger.refresher.models.ModelTask
 
-/**
-* Created by druger on 29.09.2015.
-*/
-class AlarmHelper(private var alarmManager: AlarmManager,
-                  private var app: App) {
+class AlarmHelper(
+    private var alarmManager: AlarmManager,
+    private var app: App
+) {
 
     fun setAlarm(task: ModelTask) {
-        val intent = Intent(app, AlarmReceiver::class.java)
-        intent.putExtra("title", task.title)
-        intent.putExtra("time_stamp", task.timeStamp)
+        val intent = Intent(app, AlarmReceiver::class.java).apply {
+            putExtra(EXTRA_TITLE, task.title)
+            putExtra(EXTRA_REMINDER_DATE, task.reminderDate)
+        }
 
-        val pendingIntent: PendingIntent = PendingIntent.getBroadcast(app,
-                task.timeStamp.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
+            app,
+            task.reminderDate.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, task.reminderDate, pendingIntent)
     }
 
-    fun removeAlarm(taskTimeStamp: Long) {
+    fun removeAlarm(reminderDate: Long) {
         val intent = Intent(app, AlarmReceiver::class.java)
 
-        val pendingIntent: PendingIntent = PendingIntent.getBroadcast(app, taskTimeStamp.toInt(),
-                intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
+            app, reminderDate.toInt(),
+            intent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         alarmManager.cancel(pendingIntent)
+    }
+
+    companion object {
+        const val EXTRA_TITLE = "title"
+        const val EXTRA_REMINDER_DATE = "reminder_date"
     }
 }

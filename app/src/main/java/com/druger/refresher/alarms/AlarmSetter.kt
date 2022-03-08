@@ -7,9 +7,6 @@ import com.druger.refresher.App
 import com.druger.refresher.models.ModelTask
 import javax.inject.Inject
 
-/**
-* Created by druger on 29.09.2015.
-*/
 class AlarmSetter : BroadcastReceiver() {
 
     @Inject

@@ -8,47 +8,50 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import com.druger.refresher.R
 import com.druger.refresher.ui.activities.MainActivity
 
-/**
- * Created by druger on 29.09.2015.
- */
 class AlarmReceiver : BroadcastReceiver() {
 
     @OptIn(ExperimentalAnimationApi::class)
     override fun onReceive(context: Context, intent: Intent) {
 
-        val title = intent.getStringExtra("title")
-        val timeStamp = intent.getLongExtra("time_stamp", 0)
-        val color = intent.getIntExtra("color", 0)
+        val title = intent.getStringExtra(AlarmHelper.EXTRA_TITLE)
+        val reminderDate = intent.getLongExtra(AlarmHelper.EXTRA_REMINDER_DATE, 0)
 
         val resultIntent = Intent(context, MainActivity::class.java)
 
         resultIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, timeStamp.toInt(),
-                resultIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            context, reminderDate.toInt(),
+            resultIntent, PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
-        title?.let { setupNotification(context, it, timeStamp.toInt(), color, pendingIntent) }
+        title?.let { setupNotification(context, it, reminderDate.toInt(), pendingIntent) }
     }
 
-    private fun setupNotification(context: Context, title: String, timeStamp: Int, color: Int,
-                                  pendingIntent: PendingIntent) {
-        val builder = NotificationCompat.Builder(context, "1")
-        builder.setContentTitle("Reminder")
-        builder.setContentText(title)
-        builder.color = ContextCompat.getColor(context, color)
-        builder.setSmallIcon(R.drawable.ic_done)
+    private fun setupNotification(
+        context: Context,
+        title: String,
+        timeStamp: Int,
+        pendingIntent: PendingIntent
+    ) {
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID).apply {
+            setContentTitle(CONTENT_TITLE)
+            setContentText(title)
+            setSmallIcon(R.drawable.ic_done)
+            setDefaults(Notification.DEFAULT_ALL)
+            setContentIntent(pendingIntent)
+        }
+        val notification = builder.build().apply { flags = Notification.FLAG_AUTO_CANCEL }
 
-        builder.setDefaults(Notification.DEFAULT_ALL)
-        builder.setContentIntent(pendingIntent)
-
-        val notification = builder.build()
-        notification.flags = Notification.FLAG_AUTO_CANCEL
-
-        val notificationManager = context.
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(timeStamp, notification)
+    }
+
+    companion object {
+        private const val CHANNEL_ID = "1"
+        private const val CONTENT_TITLE = "Reminder"
     }
 }
