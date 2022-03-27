@@ -1,4 +1,4 @@
-package com.druger.refresher.ui.compose
+package com.druger.refresher.presentation.task
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

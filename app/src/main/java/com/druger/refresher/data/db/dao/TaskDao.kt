@@ -1,8 +1,8 @@
-package com.druger.refresher.db.dao
+package com.druger.refresher.data.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.druger.refresher.db.entity.Task
+import com.druger.refresher.data.db.entity.Task
 
 @Dao
 interface TaskDao {

@@ -1,4 +1,4 @@
-package com.druger.refresher.ui.compose
+package com.druger.refresher.presentation.task
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,9 +13,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.druger.refresher.R
-import com.druger.refresher.db.entity.Task
-import com.druger.refresher.extensions.getFullDate
-import com.druger.refresher.models.ModelTask
+import com.druger.refresher.data.db.entity.Task
+import com.druger.refresher.domain.task.model.ModelTask
+import com.druger.refresher.util.extensions.getFullDate
 
 object TaskRowCompose {
     @Composable

@@ -1,10 +1,10 @@
-package com.druger.refresher.alarms
+package com.druger.refresher.util.alarms
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.druger.refresher.App
-import com.druger.refresher.models.ModelTask
+import com.druger.refresher.domain.task.model.ModelTask
 import javax.inject.Inject
 
 class AlarmSetter : BroadcastReceiver() {

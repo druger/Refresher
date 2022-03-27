@@ -1,6 +1,6 @@
-package com.druger.refresher.models
+package com.druger.refresher.domain.task.model
 
-import com.druger.refresher.db.entity.Task
+import com.druger.refresher.data.db.entity.Task
 import java.util.*
 
 data class ModelTask(

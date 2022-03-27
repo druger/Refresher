@@ -1,11 +1,11 @@
-package com.druger.refresher.alarms
+package com.druger.refresher.util.alarms
 
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
 
 import com.druger.refresher.App
-import com.druger.refresher.models.ModelTask
+import com.druger.refresher.domain.task.model.ModelTask
 
 class AlarmHelper(
     private var alarmManager: AlarmManager,

@@ -1,4 +1,4 @@
-package com.druger.refresher.ui.activities
+package com.druger.refresher.presentation.main
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -36,15 +36,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.druger.refresher.R
-import com.druger.refresher.db.entity.Task
-import com.druger.refresher.extensions.getDate
-import com.druger.refresher.extensions.getTime
-import com.druger.refresher.models.ModelTask
-import com.druger.refresher.ui.Screen
-import com.druger.refresher.ui.Theme
-import com.druger.refresher.ui.compose.AddingTaskCompose
-import com.druger.refresher.ui.compose.TaskRowCompose
-import com.druger.refresher.viewmodel.MainViewModel
+import com.druger.refresher.data.db.entity.Task
+import com.druger.refresher.domain.task.model.ModelTask
+import com.druger.refresher.presentation.Screen
+import com.druger.refresher.presentation.Theme
+import com.druger.refresher.presentation.task.AddingTaskCompose
+import com.druger.refresher.presentation.task.TaskRowCompose
+import com.druger.refresher.util.extensions.getDate
+import com.druger.refresher.util.extensions.getTime
 import kotlinx.coroutines.launch
 import java.util.*
 

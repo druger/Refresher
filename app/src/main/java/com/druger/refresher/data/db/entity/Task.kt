@@ -1,9 +1,9 @@
-package com.druger.refresher.db.entity
+package com.druger.refresher.data.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.druger.refresher.models.ModelTask
+import com.druger.refresher.domain.task.model.ModelTask
 import java.util.*
 
 @Entity(tableName = "task_table")

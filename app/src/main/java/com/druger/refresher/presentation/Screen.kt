@@ -1,4 +1,4 @@
-package com.druger.refresher.ui
+package com.druger.refresher.presentation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

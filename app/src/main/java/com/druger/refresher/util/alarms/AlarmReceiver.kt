@@ -1,4 +1,4 @@
-package com.druger.refresher.alarms
+package com.druger.refresher.util.alarms
 
 import android.app.Notification
 import android.app.NotificationManager
@@ -9,7 +9,7 @@ import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.core.app.NotificationCompat
 import com.druger.refresher.R
-import com.druger.refresher.ui.activities.MainActivity
+import com.druger.refresher.presentation.main.MainActivity
 
 class AlarmReceiver : BroadcastReceiver() {
 

@@ -1,4 +1,4 @@
-package com.druger.refresher.extensions
+package com.druger.refresher.util.extensions
 
 import java.text.SimpleDateFormat
 import java.util.*

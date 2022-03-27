@@ -1,4 +1,4 @@
-package com.druger.refresher.ui
+package com.druger.refresher.presentation
 
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
