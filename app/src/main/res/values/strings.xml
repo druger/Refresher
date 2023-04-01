@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Do It</string>
+    <string name="app_name">Refresher</string>
 
     <string-array name="priority_levels">
         <item>Low priority</item>
