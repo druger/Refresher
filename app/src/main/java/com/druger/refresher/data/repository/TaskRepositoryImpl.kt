@@ -7,14 +7,17 @@ import com.druger.refresher.data.db.entity.Task
 import com.druger.refresher.data.db.entity.map
 import com.druger.refresher.domain.task.model.ModelTask
 import com.druger.refresher.domain.task.model.map
+import com.druger.refresher.domain.task.repository.TaskRepository
 
-// TODO add interface
-class TaskRepositoryImpl(private val taskDao: TaskDao) {
+class TaskRepositoryImpl(private val taskDao: TaskDao) : TaskRepository {
 
-    fun getCurrentTasks(): LiveData<List<ModelTask>> =
-        getTasks(Task.STATUS_CURRENT)
+    override suspend fun getCurrentTasks(): LiveData<List<ModelTask>> {
+        return getTasks(Task.STATUS_CURRENT)
+    }
 
-    fun getDoneTasks(): LiveData<List<ModelTask>> = getTasks(Task.STATUS_DONE)
+    override suspend fun getDoneTasks(): LiveData<List<ModelTask>> {
+        return getTasks(Task.STATUS_DONE)
+    }
 
     private fun getTasks(status: Int): LiveData<List<ModelTask>> {
         return taskDao.getTasks(status).map { tasks ->
@@ -24,11 +27,11 @@ class TaskRepositoryImpl(private val taskDao: TaskDao) {
         }
     }
 
-    suspend fun insert(task: ModelTask) {
+    override suspend fun insert(task: ModelTask) {
         taskDao.insert(task.map())
     }
 
-    suspend fun update(task: ModelTask) = taskDao.update(task.map())
+    override suspend fun update(task: ModelTask) = taskDao.update(task.map())
 
-    suspend fun delete(task: ModelTask) = taskDao.delete(task.map())
+    override suspend fun delete(task: ModelTask) = taskDao.delete(task.map())
 }
