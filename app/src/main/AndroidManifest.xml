@@ -24,10 +24,10 @@
         </activity>
 
         <receiver
-            android:name="com.druger.refresher.util.alarms.AlarmReceiver"
+            android:name="com.druger.refresher.utils.alarm.AlarmReceiver"
             android:process=":remote" />
         <receiver
-            android:name="com.druger.refresher.util.alarms.AlarmSetter"
+            android:name="com.druger.refresher.utils.alarm.AlarmSetter"
             android:exported="true">
             <intent-filter>
                 <action android:name="ANDROID.INTENT.ACTION.BOOT_COMPLETED" />

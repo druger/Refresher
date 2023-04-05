@@ -3,7 +3,7 @@ package com.druger.refresher.di.modules;
 import android.app.AlarmManager
 import android.content.Context
 import com.druger.refresher.App
-import com.druger.refresher.util.alarms.AlarmHelper
+import com.druger.refresher.utils.alarm.AlarmHelper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

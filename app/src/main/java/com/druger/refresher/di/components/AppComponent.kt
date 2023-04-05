@@ -1,7 +1,7 @@
 package com.druger.refresher.di.components
 
 import com.druger.refresher.di.modules.AppModule
-import com.druger.refresher.util.alarms.AlarmSetter
+import com.druger.refresher.utils.alarm.AlarmSetter
 import dagger.Component
 import javax.inject.Singleton
 

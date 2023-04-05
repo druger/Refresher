@@ -36,14 +36,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.druger.refresher.R
-import com.druger.refresher.data.db.entity.Task
-import com.druger.refresher.domain.task.model.ModelTask
 import com.druger.refresher.presentation.Screen
 import com.druger.refresher.presentation.Theme
 import com.druger.refresher.presentation.task.AddingTaskCompose
 import com.druger.refresher.presentation.task.TaskRowCompose
-import com.druger.refresher.util.extensions.getDate
-import com.druger.refresher.util.extensions.getTime
+import com.druger.refresher.utils.extensions.getDate
+import com.druger.refresher.utils.extensions.getTime
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -164,7 +162,7 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         if (title.isNotEmpty()) {
             lifecycleScope.launch {
                 viewModel.insertTask(
-                    ModelTask(
+                    com.druger.refresher.domain.model.TaskModel(
                         title = title,
                         reminderDate = reminderCalendar.timeInMillis
                     )
@@ -217,7 +215,7 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
     @Composable
     private fun setupRecycler() {
-        val tasks = viewModel.tasks.observeAsState().value
+        val tasks = viewModel.tasksLiveData?.observeAsState()?.value
         tasks?.let {
             LazyColumn {
                 items(it) { task ->
@@ -231,15 +229,15 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         }
     }
 
-    private fun moveTaskToDone(task: ModelTask) {
+    private fun moveTaskToDone(task: com.druger.refresher.domain.model.TaskModel) {
         lifecycleScope.launch {
-            viewModel.updateTask(task.copy(status = Task.STATUS_DONE))
+            viewModel.updateTask(task.copy(status = com.druger.refresher.data.db.entity.TaskEntity.STATUS_DONE))
         }
     }
 
-    private fun moveTaskToCurrent(task: ModelTask) {
+    private fun moveTaskToCurrent(task: com.druger.refresher.domain.model.TaskModel) {
         lifecycleScope.launch {
-            viewModel.updateTask(task.copy(status = Task.STATUS_CURRENT))
+            viewModel.updateTask(task.copy(status = com.druger.refresher.data.db.entity.TaskEntity.STATUS_CURRENT))
         }
     }
 

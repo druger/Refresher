@@ -13,19 +13,19 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.druger.refresher.R
-import com.druger.refresher.data.db.entity.Task
-import com.druger.refresher.domain.task.model.ModelTask
-import com.druger.refresher.util.extensions.getFullDate
+import com.druger.refresher.data.db.entity.TaskEntity
+import com.druger.refresher.domain.model.TaskModel
+import com.druger.refresher.utils.extensions.getFullDate
 
 object TaskRowCompose {
     @Composable
     fun TaskRow(
-        task: ModelTask,
-        moveTaskToDone: (task: ModelTask) -> Unit,
-        moveTaskToCurrent: (task: ModelTask) -> Unit
+        task: TaskModel,
+        moveTaskToDone: (task: TaskModel) -> Unit,
+        moveTaskToCurrent: (task: TaskModel) -> Unit
     ) {
-        val isDone = task.status == Task.STATUS_DONE
-        val isCurrent = task.status == Task.STATUS_CURRENT
+        val isDone = task.status == TaskEntity.STATUS_DONE
+        val isCurrent = task.status == TaskEntity.STATUS_CURRENT
         Row(
             modifier = Modifier
                 .height(60f.dp)

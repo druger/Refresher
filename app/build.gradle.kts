@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -9,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.druger.refresher"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -27,7 +28,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = "1.4.4"
     }
 
     compileOptions {
@@ -54,18 +55,21 @@ android {
 
 
 dependencies {
-    //val kotlinVersion: String by rootProject.extra
+    val kotlinVersion = "1.8.10"
     val activityCompose = "1.6.1"
     val composeBom = platform("androidx.compose:compose-bom:2023.03.00")
     val coroutines = "1.3.5"
     val dagger = "2.45"
     val daggerCompiler = "2.45"
-    val ktx = "1.7.0"
-    val lifecycle = "2.4.0"
+    val ktx = "1.9.0"
+    val lifecycle = "2.6.1"
     val material = "1.4.0"
     val navigationCompose = "2.5.3"
     val viewModelCompose = "2.6.1"
-    val room = "2.4.0"
+    val room = "2.5.1"
+
+    implementation(project(path = ":domain"))
+    implementation(project(path = ":data"))
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     // AndroidX
@@ -85,12 +89,10 @@ dependencies {
     implementation("com.google.dagger:dagger:$dagger")
     kapt("com.google.dagger:dagger-compiler:$daggerCompiler")
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle")
-    implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycle")
-    implementation("androidx.compose.runtime:runtime-livedata")
     // Room
     implementation("androidx.room:room-runtime:$room")
     implementation("androidx.room:room-ktx:$room")
