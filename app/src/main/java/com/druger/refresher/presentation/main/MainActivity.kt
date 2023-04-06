@@ -42,9 +42,11 @@ import com.druger.refresher.presentation.task.AddingTaskCompose
 import com.druger.refresher.presentation.task.TaskRowCompose
 import com.druger.refresher.utils.extensions.getDate
 import com.druger.refresher.utils.extensions.getTime
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.*
 
+@AndroidEntryPoint
 @ExperimentalAnimationApi
 class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {

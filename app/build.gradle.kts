@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -55,12 +56,12 @@ android {
 
 
 dependencies {
-    val kotlinVersion = "1.8.10"
     val activityCompose = "1.6.1"
     val composeBom = platform("androidx.compose:compose-bom:2023.03.00")
     val coroutines = "1.3.5"
-    val dagger = "2.45"
-    val daggerCompiler = "2.45"
+    val fragmentKtx = "1.5.6"
+    val hilt = "2.44"
+    val kotlinVersion = "1.8.10"
     val ktx = "1.9.0"
     val lifecycle = "2.6.1"
     val material = "1.4.0"
@@ -74,6 +75,7 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     // AndroidX
     implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.fragment:fragment-ktx:$fragmentKtx")
     // UI
     implementation("com.google.android.material:material:$material")
     // Compose
@@ -86,8 +88,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$viewModelCompose")
     implementation("androidx.compose.runtime:runtime-livedata")
     // DI
-    implementation("com.google.dagger:dagger:$dagger")
-    kapt("com.google.dagger:dagger-compiler:$daggerCompiler")
+    implementation("com.google.dagger:hilt-android:$hilt")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt")
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     // Lifecycle

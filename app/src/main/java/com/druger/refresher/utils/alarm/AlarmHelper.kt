@@ -2,22 +2,22 @@ package com.druger.refresher.utils.alarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import com.druger.refresher.App
 
 class AlarmHelper(
     private var alarmManager: AlarmManager,
-    private var app: App
+    private var context: Context
 ) {
 
     fun setAlarm(task: com.druger.refresher.domain.model.TaskModel) {
-        val intent = Intent(app, AlarmReceiver::class.java).apply {
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra(EXTRA_TITLE, task.title)
             putExtra(EXTRA_REMINDER_DATE, task.reminderDate)
         }
 
         val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
-            app,
+            context,
             task.reminderDate.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT
         )
 
@@ -25,10 +25,10 @@ class AlarmHelper(
     }
 
     fun removeAlarm(reminderDate: Long) {
-        val intent = Intent(app, AlarmReceiver::class.java)
+        val intent = Intent(context, AlarmReceiver::class.java)
 
         val pendingIntent: PendingIntent = PendingIntent.getBroadcast(
-            app, reminderDate.toInt(),
+            context, reminderDate.toInt(),
             intent, PendingIntent.FLAG_UPDATE_CURRENT
         )
 
