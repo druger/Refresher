@@ -29,13 +29,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.druger.refresher.R
+import com.druger.refresher.data.db.entity.TaskEntity
+import com.druger.refresher.domain.model.TaskModel
 import com.druger.refresher.presentation.Screen
 import com.druger.refresher.presentation.Theme
 import com.druger.refresher.presentation.task.AddingTaskCompose
@@ -43,7 +44,6 @@ import com.druger.refresher.presentation.task.TaskRowCompose
 import com.druger.refresher.utils.extensions.getDate
 import com.druger.refresher.utils.extensions.getTime
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import java.util.*
 
 @AndroidEntryPoint
@@ -92,11 +92,9 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         setVisibilityNavigation(navController)
 
         Theme.setupTheme {
-            Scaffold(
-                topBar = { setupToolbar(navigationVisibility) },
+            Scaffold(topBar = { setupToolbar(navigationVisibility) },
                 bottomBar = { setupBottomBar(navController, navigationVisibility) },
-                floatingActionButton = { setupFAB(navController) }
-            ) { innerPadding ->
+                floatingActionButton = { setupFAB(navController) }) { innerPadding ->
                 navigation(navController, innerPadding)
             }
         }
@@ -124,8 +122,7 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
     @Composable
     private fun navigation(
-        navController: NavHostController,
-        innerPadding: PaddingValues
+        navController: NavHostController, innerPadding: PaddingValues
     ) {
         NavHost(
             navController = navController,
@@ -140,37 +137,29 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
 
     @Composable
     private fun showAddingTask(navController: NavHostController) {
-        Scaffold(
-            topBar = {
-                AddingTaskCompose.addTaskToolbar(
-                    navController,
-                    addTask = { addTask(navController) })
-            },
-            content = {
-                AddingTaskCompose.addTaskLayout(
-                    titleText.value,
-                    dateText = dateText.value,
-                    timeText = timeText.value,
-                    onValueChange = { titleText.value = it },
-                    onDateClick = { showDatePicker() },
-                    onTimeClick = { showTimePicker() }
-                )
-            }
-        )
+        Scaffold(topBar = {
+            AddingTaskCompose.addTaskToolbar(navController, addTask = { addTask(navController) })
+        }, content = {
+            AddingTaskCompose.addTaskLayout(titleText.value,
+                dateText = dateText.value,
+                timeText = timeText.value,
+                onValueChange = { titleText.value = it },
+                onDateClick = { showDatePicker() },
+                onTimeClick = { showTimePicker() })
+        })
     }
 
     private fun addTask(navController: NavHostController) {
         val title = titleText.value.trim()
         if (title.isNotEmpty()) {
-            lifecycleScope.launch {
-                viewModel.insertTask(
-                    com.druger.refresher.domain.model.TaskModel(
-                        title = title,
-                        reminderDate = reminderCalendar.timeInMillis
+            viewModel.sendEvent(
+                InsertTaskEvent(
+                    TaskModel(
+                        title = title, reminderDate = reminderCalendar.timeInMillis
                     )
-                ).join()
-                navController.navigateUp()
-            }
+                )
+            )
+            navController.navigateUp()
         }
     }
 
@@ -180,11 +169,7 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         val minute = calendar.get(Calendar.MINUTE)
 
         TimePickerDialog(
-            this,
-            this,
-            hour,
-            minute,
-            DateFormat.is24HourFormat(this)
+            this, this, hour, minute, DateFormat.is24HourFormat(this)
         ).apply { show() }
     }
 
@@ -195,58 +180,46 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         DatePickerDialog(
-            this,
-            this,
-            year,
-            month,
-            day
+            this, this, year, month, day
         ).apply { show() }
     }
 
     @Composable
     private fun showDoneTasks() {
-        viewModel.getDoneTasks()
+        viewModel.sendEvent(GetDoneTasksEvent)
         setupRecycler()
     }
 
     @Composable
     private fun showCurrentTasks() {
-        viewModel.getCurrentTasks()
+        viewModel.sendEvent(GetCurrentTasksEvent)
         setupRecycler()
     }
 
     @Composable
     private fun setupRecycler() {
-        val tasks = viewModel.tasksLiveData?.observeAsState()?.value
-        tasks?.let {
+        viewModel.state.observeAsState().value?.tasks?.let { tasks ->
             LazyColumn {
-                items(it) { task ->
-                    TaskRowCompose.TaskRow(
-                        task,
+                items(tasks) { task ->
+                    TaskRowCompose.TaskRow(task,
                         moveTaskToDone = { moveTaskToDone(task) },
-                        moveTaskToCurrent = { moveTaskToCurrent(task) }
-                    )
+                        moveTaskToCurrent = { moveTaskToCurrent(task) })
                 }
             }
         }
     }
 
-    private fun moveTaskToDone(task: com.druger.refresher.domain.model.TaskModel) {
-        lifecycleScope.launch {
-            viewModel.updateTask(task.copy(status = com.druger.refresher.data.db.entity.TaskEntity.STATUS_DONE))
-        }
+    private fun moveTaskToDone(task: TaskModel) {
+        viewModel.sendEvent(UpdateTaskEvent(task.copy(status = TaskEntity.STATUS_DONE)))
     }
 
-    private fun moveTaskToCurrent(task: com.druger.refresher.domain.model.TaskModel) {
-        lifecycleScope.launch {
-            viewModel.updateTask(task.copy(status = com.druger.refresher.data.db.entity.TaskEntity.STATUS_CURRENT))
-        }
+    private fun moveTaskToCurrent(task: TaskModel) {
+        viewModel.sendEvent(UpdateTaskEvent(task.copy(status = TaskEntity.STATUS_CURRENT)))
     }
 
     @Composable
     private fun setupBottomBar(
-        navController: NavHostController,
-        navigationVisibility: MutableState<Boolean>
+        navController: NavHostController, navigationVisibility: MutableState<Boolean>
     ) {
         AnimatedVisibility(visible = navigationVisibility.value) {
             val menus = listOf(Screen.CurrentTasks, Screen.DoneTasks)
@@ -256,31 +229,25 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
                 val currentRoute = navBackStackEntry?.destination?.route
 
                 menus.forEach { item ->
-                    BottomNavigationItem(
-                        selected = currentRoute == item.route,
-                        onClick = {
-                            navController.navigate(item.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                navController.graph.startDestinationRoute?.let { route ->
-                                    popUpTo(route) { saveState = true }
-                                }
-                                // Avoid multiple copies of the same destination when
-                                // reselecting the same item
-                                launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
-                                restoreState = true
+                    BottomNavigationItem(selected = currentRoute == item.route, onClick = {
+                        navController.navigate(item.route) {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            // on the back stack as users select items
+                            navController.graph.startDestinationRoute?.let { route ->
+                                popUpTo(route) { saveState = true }
                             }
-                        },
-                        icon = {
-                            Icon(
-                                ImageVector.vectorResource(item.icon),
-                                contentDescription = null
-                            )
-                        },
-                        label = { Text(stringResource(item.title)) }
-                    )
+                            // Avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
+                    }, icon = {
+                        Icon(
+                            ImageVector.vectorResource(item.icon), contentDescription = null
+                        )
+                    }, label = { Text(stringResource(item.title)) })
                 }
             }
         }
@@ -289,8 +256,7 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private fun setVisibilityNavigation(navController: NavHostController) {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.route) {
-                Screen.CurrentTasks.route,
-                Screen.DoneTasks.route -> {
+                Screen.CurrentTasks.route, Screen.DoneTasks.route -> {
                     showBottomNav()
                 }
                 else -> hideBottomNav()
