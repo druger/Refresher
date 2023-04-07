@@ -58,7 +58,7 @@ android {
 dependencies {
     val activityCompose = "1.6.1"
     val composeBom = platform("androidx.compose:compose-bom:2023.03.00")
-    val coroutines = "1.3.5"
+    val coroutines = "1.3.9"
     val fragmentKtx = "1.5.6"
     val hilt = "2.44"
     val kotlinVersion = "1.8.10"
