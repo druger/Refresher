@@ -187,24 +187,34 @@ class MainActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     @Composable
     private fun showDoneTasks() {
         viewModel.sendEvent(GetDoneTasksEvent)
-        setupRecycler()
+        observeState()
     }
 
     @Composable
     private fun showCurrentTasks() {
         viewModel.sendEvent(GetCurrentTasksEvent)
-        setupRecycler()
+        observeState()
     }
 
     @Composable
-    private fun setupRecycler() {
-        viewModel.state.observeAsState().value?.tasks?.let { tasks ->
-            LazyColumn {
-                items(tasks) { task ->
-                    TaskRowCompose.TaskRow(task,
-                        moveTaskToDone = { moveTaskToDone(task) },
-                        moveTaskToCurrent = { moveTaskToCurrent(task) })
-                }
+    private fun observeState() {
+        val state = viewModel.state.observeAsState().value
+        when (state) {
+            is MainLoadingState -> {} // TODO("Not yet implemented")
+            is MainEmptyState -> {} // TODO("Not yet implemented")
+            is MainLoadedState -> setupRecycler(state.tasks)
+            is MainErrorState -> {} // TODO("Not yet implemented")
+            null -> {} // TODO("Not yet implemented")
+        }
+    }
+
+    @Composable
+    private fun setupRecycler(tasks: List<TaskModel>) {
+        LazyColumn {
+            items(tasks) { task ->
+                TaskRowCompose.TaskRow(task,
+                    moveTaskToDone = { moveTaskToDone(task) },
+                    moveTaskToCurrent = { moveTaskToCurrent(task) })
             }
         }
     }

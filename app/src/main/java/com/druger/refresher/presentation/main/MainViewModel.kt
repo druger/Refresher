@@ -23,7 +23,7 @@ class MainViewModel @Inject constructor(
     var state: LiveData<MainState> = mutableState
 
     init {
-        mutableState.value = MainState(listOf())
+        mutableState.value = MainEmptyState()
     }
 
     fun sendEvent(event: MainEvent) {
@@ -36,15 +36,21 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getCurrentTasks() {
+        loadingState()
         state = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-            emit(MainState(getCurrentTasksUseCase.execute()))
+            emit(MainLoadedState(getCurrentTasksUseCase.execute()))
         }
     }
 
     private fun getDoneTasks() {
+        loadingState()
         state = liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-            emit(MainState(getDoneTasksUseCase.execute()))
+            emit(MainLoadedState(getDoneTasksUseCase.execute()))
         }
+    }
+
+    private fun loadingState() {
+        mutableState.value = MainLoadingState
     }
 
     private fun insertTask(task: TaskModel) = viewModelScope.launch(Dispatchers.IO) {
