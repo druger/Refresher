@@ -11,7 +11,7 @@ data class TaskEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "title") val title: String,
     @ColumnInfo(name = "time_stamp") val timeStamp: Long =  Date().time,
-    @ColumnInfo(name = "status") val status: Int,
+    @ColumnInfo(name = "status") val status: Int = STATUS_CURRENT,
     @ColumnInfo(name = "reminder_date") val reminderDate: Long = 0
 ) {
     companion object {

@@ -13,6 +13,7 @@ abstract class TaskRoomDatabase: RoomDatabase() {
     abstract fun taskDao(): TaskDao
 
     companion object {
+        private const val DATABASE_NAME = "task_database"
 
         @Volatile
         private var INSTANCE: TaskRoomDatabase? = null
@@ -25,7 +26,7 @@ abstract class TaskRoomDatabase: RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     TaskRoomDatabase::class.java,
-                    "task_database"
+                    DATABASE_NAME
                 ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance

@@ -9,17 +9,13 @@ import com.druger.refresher.domain.usecase.UpdateTaskUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
-import org.junit.After
-import org.junit.Before
 import org.junit.Rule
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MainViewModelTest {
 
     @get:Rule
@@ -42,12 +38,12 @@ class MainViewModelTest {
         Mockito.reset(updateTaskUseCase)
     }
 
-    @After
+    @AfterAll
     fun reset() {
         Dispatchers.resetMain()
     }
 
-    @Before
+    @BeforeAll
     fun init() {
         Dispatchers.setMain(dispatcher)
     }

@@ -37,10 +37,16 @@ android {
         correctErrorTypes = true
     }
 
+    packagingOptions.resources.excludes.add("META-INF/*")
 }
 
 dependencies {
+    val coroutinesTest = "1.6.4"
+    val junit = "5.8.1"
     val room = "2.5.1"
+    val testKtx = "1.5.0"
+    val testRules = "1.5.0"
+    val testRunner = "1.5.2"
 
     implementation(project(path = ":domain"))
 
@@ -49,6 +55,15 @@ dependencies {
     implementation("androidx.room:room-ktx:$room")
     kapt("androidx.room:room-compiler:$room")
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    // Test
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:$junit")
+    testImplementation("androidx.room:room-testing:$room")
+    implementation("androidx.test:core-ktx:$testKtx")
+    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesTest")
+    androidTestImplementation("androidx.test:runner:$testRunner")
+    androidTestImplementation("androidx.test:rules:$testRules")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
